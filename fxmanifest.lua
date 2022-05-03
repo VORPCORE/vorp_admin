@@ -7,17 +7,15 @@ description 'VORP admin menu'
 version '1.0.0'
 
 client_scripts {
-    'client/functions.lua',
-    'client/client.lua',
-
+    'client/*.lua',
 }
 
-shared_scritp {
+shared_script {
     'config.lua',
     'locale.lua',
     'languages/*.lua'
 }
 
 server_scripts {
-    'server/server.lua'
+    'server/*.lua'
 }
