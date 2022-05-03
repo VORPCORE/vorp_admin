@@ -45,9 +45,17 @@ Citizen.CreateThread(function()
     end
 end)
 
+
 --Open menu
 RegisterNetEvent("vorp_admin:OpenMenu")
 AddEventHandler("vorp_admin:OpenMenu", function()
     MenuData.CloseAll()
     OpenMenu()
+end)
+
+
+RegisterNetEvent("vorp_admin:OpenUsersMenu")
+AddEventHandler("vorp_admin:OpenUsersMenu", function()
+    MenuData.CloseAll()
+    VORPUsers.OpenUsersMenu
 end)
