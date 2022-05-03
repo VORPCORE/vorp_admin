@@ -1,6 +1,7 @@
 ------------------------------------------------------------------------------------
 ------------------------------- CLIENT ---------------------------------------------
 local Key = Config.Key
+local CanOpen = Config.CanOpenMenuWhenDead
 local Inmenu
 
 -- get menu
@@ -21,15 +22,23 @@ AddEventHandler("onResourceStop", function(resourceName)
     end
 end)
 
---open menu
+--check if can open menu
 Citizen.CreateThread(function()
     while true do
         local player = PlayerPedId() --player
-        local isDead = IsPedDeadOrDying(player) -- is dead
+        local isDead = IsPedDeadOrDying(player) -- is dead so admins dont revive them selves unless they have permissions
 
-        if IsControlJustPressed(0, Key) and not isDead and not Inmenu then
-            print(Key)
-            TriggerServerEvent("vorp_admin:GetGroup") -- check permission
+        if CanOpen then
+            if IsControlJustPressed(0, Key) and not Inmenu then
+
+                TriggerServerEvent("vorp_admin:GetGroup") -- check permission
+
+            end
+        else
+            if IsControlJustPressed(0, Key) and not isDead and not Inmenu then
+
+                TriggerServerEvent("vorp_admin:GetGroup") -- check permission
+            end
         end
 
         Citizen.Wait(10)
