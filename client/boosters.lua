@@ -1,12 +1,12 @@
 ----------------------------------------------------------------------------
 ---------------------------------- BOOSTERS --------------------------------
-VORPBooster = {}
 
-VORPBooster.Boost = function()
+
+function Boost()
     MenuData.CloseAll()
     local elements = {
         { label = _U("godMode"), value = 'god', desc = _U("godMode_desc") },
-        { label = _U("noclipMode"), value = 'noclip', desc = _U("noclipMode_desc")},
+        { label = _U("noclipMode"), value = 'noclip', desc = _U("noclipMode_desc") },
         { label = _U("goldCores"), value = 'gold', desc = _U("goldCores_desc") }
 
     }
@@ -26,7 +26,7 @@ VORPBooster.Boost = function()
 
             end
             if data.current.value == "god" then
-               -- run code
+                -- run code
             end
         end,
 

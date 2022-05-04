@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------------------------------------------
 ---------------------------------------- TELEPORTS ---------------------------------------------------------
-VORPTeleports={}
 
-VORPTeleports.Teleport = function()
+
+function Teleport()
     MenuData.CloseAll()
     local elements = {
         { label = "Tpm", value = 'tpm', desc = "teleport to marker " },
