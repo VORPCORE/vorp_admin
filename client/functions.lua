@@ -31,10 +31,10 @@ end
 function OpenMenu()
     MenuData.CloseAll()
     local elements = {
-        { label = "Administration", value = 'administration', desc = "Administration" },
-        { label = "Boosters", value = 'boost', desc = "admin powers" },
-        { label = "Database", value = 'database', desc = "Access database" },
-        { label = "Teleport", value = 'teleport', desc = "Teleport options" },
+        { label = _U("administration_main"), value = 'administration', desc = _U("administration_desc") },
+        { label = _U("boosters_main"), value = 'boost', desc = _U("boosters_desc") },
+        { label = _U("database_main"), value = 'database', desc = _U("database_desc") },
+        { label = _U("teleport_main"), value = 'teleport', desc = _U("Teleports_desc") },
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
