@@ -2,6 +2,7 @@
 --------------------------------------- FUNCTIONS -------------------------------------------------
 
 --close menu
+VORP = {}
 
 function Closem()
     MenuData.CloseAll()
@@ -11,7 +12,7 @@ function Closem()
 end
 
 --Get players list
-function GetPlayers()
+VORP.GetPlayers = function()
     TriggerServerEvent("vorp_admin:GetPlayers")
     local X = {}
 
@@ -63,7 +64,7 @@ function OpenMenu()
             end
 
             if data.current.value == "teleport" then
-                Teleport()
+                VOPRTeleports.Teleport()
             end
 
 
@@ -123,7 +124,7 @@ function PlayerList()
     local elements = {
     }
 
-    local players = GetPlayers()
+    local players = VORP.GetPlayers()
     for k, v in pairs(players) do
 
         table.insert(elements,
@@ -230,7 +231,7 @@ function DataBase()
     local elements = {
     }
 
-    local players = GetPlayers()
+    local players = VORP.GetPlayers()
     for k, v in pairs(players) do
 
         table.insert(elements,
