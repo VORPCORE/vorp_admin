@@ -1,21 +1,23 @@
+----------------------------------------------------------------------------
+---------------------------------- BOOSTERS --------------------------------
 VORPBooster = {}
 
 VORPBooster.Boost = function()
     MenuData.CloseAll()
     local elements = {
-        { label = "God mode", value = 'god', desc = "God mode protect you against every element " },
-        { label = "Noclip mode", value = 'noclip', desc = "No clip makes you invisible " },
-        { label = "Gold cores", value = 'Gold', desc = "Gives you golden cores " },
+        { label = _U("godMode"), value = 'god', desc = _U("godMode_desc") },
+        { label = _U("noclipMode"), value = 'noclip', desc = _U("noclipMode_desc")},
+        { label = _U("goldCores"), value = 'gold', desc = _U("goldCores_desc") }
 
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = _U("MenuTitle"),
-            subtext  = "Boosters",
+            subtext  = _U("Boosters"),
             align    = 'top-left',
             elements = elements,
-            lastmenu = 'OpenMenu', --Go back
+            lastmenu = 'OpenMenu'
         },
 
         function(data)
@@ -24,7 +26,7 @@ VORPBooster.Boost = function()
 
             end
             if data.current.value == "god" then
-
+               -- run code
             end
         end,
 
