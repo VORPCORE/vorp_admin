@@ -57,5 +57,5 @@ end)
 RegisterNetEvent("vorp_admin:OpenUsersMenu")
 AddEventHandler("vorp_admin:OpenUsersMenu", function()
     MenuData.CloseAll()
-    VORPUsers.OpenUsersMenu
+    VORPUsers.OpenUsersMenu()
 end)
