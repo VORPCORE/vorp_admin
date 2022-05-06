@@ -4,7 +4,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 
 author 'outsider'
 description 'VORP admin menu'
-version '2.0'
+version '1.0'
 
 client_scripts {
     'client/*.lua',
@@ -18,10 +18,9 @@ shared_script {
 
 server_scripts {
     'server/*.lua',
-    'versioncheck.lua',
 }
 
 
-name '^2VORP ADMIN'
-github 'https://github.com/VORPCORE/vorp_admin'
-fivem_checker 'yes'
+kc_name '^2VORP ADMIN'
+kc_github 'https://github.com/VORPCORE/vorp_admin'
+kc_checker 'yes'
