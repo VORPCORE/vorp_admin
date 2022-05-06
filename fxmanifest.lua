@@ -21,6 +21,4 @@ server_scripts {
 }
 
 
-kc_name '^2VORP ADMIN'
-kc_github 'https://github.com/VORPCORE/vorp_admin'
-kc_checker 'yes'
+
