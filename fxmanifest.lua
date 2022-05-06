@@ -22,6 +22,6 @@ server_scripts {
 }
 
 
-name '^2FiveM Vehicle Loader'
+name '^2VORP ADMIN'
 github 'https://github.com/VORPCORE/vorp_admin'
 fivem_checker 'yes'
