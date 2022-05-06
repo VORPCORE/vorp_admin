@@ -4,7 +4,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 
 author 'outsider'
 description 'VORP admin menu'
-version '1.0'
+version '2.0'
 
 client_scripts {
     'client/*.lua',
