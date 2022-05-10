@@ -19,6 +19,6 @@ shared_script {
 server_scripts {
     'server/*.lua',
 }
-kc_checker 'yes'
-kc_name '^4Self Check'
-kc_github 'https://github.com/VORPCORE/vorp_admin'
+vorp_checker 'yes'
+vorp_name '^4Resource version Check^3'
+vorp_github 'https://github.com/VORPCORE/vorp_admin'
