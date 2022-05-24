@@ -1,13 +1,15 @@
 ----------------------------------------------------------------------------
 ---------------------------------- BOOSTERS --------------------------------
-
+local god = false
+local player
 
 function Boost()
+    player = PlayerPedId()
     MenuData.CloseAll()
     local elements = {
-        { label = _U("godMode"), value = 'god', desc = _U("godMode_desc") },
-        { label = _U("noclipMode"), value = 'noclip', desc = _U("noclipMode_desc") },
-        { label = _U("goldCores"), value = 'gold', desc = _U("goldCores_desc") }
+        { label = "godMode", value = 'god', desc = _U("godMode_desc") },
+        { label = "noclipMode", value = 'noclip', desc = _U("noclipMode_desc") },
+        { label = "goldCores", value = 'gold', desc = _U("goldCores_desc") }
 
     }
 
@@ -26,12 +28,25 @@ function Boost()
 
             end
             if data.current.value == "god" then
-                -- run code
+                if not god then
+                    god = true
+                    print("god mode on")
+                    SetEntityCanBeDamaged(player, false)
+                    SetEntityInvincible(player, true)
+
+                else
+                    god = false
+                    print("god mode off")
+                    SetEntityCanBeDamaged(player, true)
+                    SetEntityInvincible(player, false)
+
+                end
+
             end
         end,
 
         function(menu)
-        menu.close()
-    end)
+            menu.close()
+        end)
 
 end
