@@ -30,13 +30,13 @@ function Boost()
             if data.current.value == "god" then
                 if not god then
                     god = true
-                    print("god mode on")
+                    TriggerEvent('vorp:TipRight', "god mode on", 3000)
                     SetEntityCanBeDamaged(player, false)
                     SetEntityInvincible(player, true)
 
                 else
                     god = false
-                    print("god mode off")
+                    TriggerEvent('vorp:TipRight', "god mode off", 3000)
                     SetEntityCanBeDamaged(player, true)
                     SetEntityInvincible(player, false)
 
