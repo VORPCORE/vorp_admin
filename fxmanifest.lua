@@ -4,7 +4,8 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 
 author 'outsider'
 description 'VORP admin menu'
-version '1.0'
+
+ui_page 'html/index.html'
 
 client_scripts {
     'client/*.lua',
@@ -13,12 +14,16 @@ client_scripts {
 shared_script {
     'config.lua',
     'locale.lua',
-    'languages/*.lua'
+    'languages/*.lua',
+
 }
 
 server_scripts {
     'server/*.lua',
 }
-vorp_checker 'yes'
-vorp_name '^4Resource version Check^3'
-vorp_github 'https://github.com/VORPCORE/vorp_admin'
+
+files { -- Credits to https://github.com/LVRP-BEN/bl_coords for clipboard copy method
+    'html/index.html',
+    'html/index.js'
+}
+--version check dont touch
