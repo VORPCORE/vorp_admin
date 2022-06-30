@@ -4,6 +4,7 @@ local Key = Config.Key
 local CanOpen = Config.CanOpenMenuWhenDead
 local Inmenu
 
+
 -- get menu
 TriggerEvent("menuapi:getData", function(call)
     MenuData = call
@@ -18,7 +19,7 @@ AddEventHandler("onResourceStop", function(resourceName)
     if resourceName == GetCurrentResourceName() then
         local player = PlayerPedId()
         ClearPedTasksImmediately(player, true, true) -- clear tasks
-        MenuData.CloseAll() --close menu
+        Closem() --close menu
     end
 end)
 
@@ -26,7 +27,7 @@ end)
 Citizen.CreateThread(function()
     while true do
         local player = PlayerPedId() --player
-        local isDead = IsPedDeadOrDying(player) -- is dead so admins dont revive them selves unless they have permissions
+        local isDead = IsPedDeadOrDying(player) -- is dead so admins dont revive them selves unless they have VORPperms
 
         if CanOpen then
             if IsControlJustPressed(0, Key) and not Inmenu then
@@ -46,14 +47,14 @@ Citizen.CreateThread(function()
 end)
 
 
---Open menu
+--Open staff menu
 RegisterNetEvent("vorp_admin:OpenMenu")
 AddEventHandler("vorp_admin:OpenMenu", function()
     MenuData.CloseAll()
     OpenMenu()
 end)
 
-
+--Open user menu
 RegisterNetEvent("vorp_admin:OpenUsersMenu")
 AddEventHandler("vorp_admin:OpenUsersMenu", function()
     MenuData.CloseAll()

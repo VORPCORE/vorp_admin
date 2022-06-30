@@ -3,28 +3,25 @@
 
 function DataBase()
     MenuData.CloseAll()
-    local elements = {
-    }
-
+    local elements = {}
     local players = GetPlayers()
-    for k, v in pairs(players) do
 
-        table.insert(elements,
-            {
-            label = "<span style= margin-left:160px;>" .. v.PlayerName .. "</span>",
-            value = "players",
-            desc = "<span>Steam Name: "
-                .. v.name .. "</span><br><span>Server ID: "
-                .. v.serverId .. "</span><br><span>Player Group: "
-                .. v.Group .. "</span><br><span>Player Job: "
-                .. v.Job .. " Grade: "
-                .. v.Grade .. "</span><br><span>Identifier: "
-                .. v.SteamId .. "</span><br><span>Player Money: "
-                .. v.Money .. "</span><br><span>Player Gold: "
-                .. v.Gold .. "</span>"
-        })
+    for _, PlayersData in pairs(players) do
+        elements[#elements + 1] = {
+
+            label = "<span style= margin-left:160px;>" .. PlayersData.PlayerName .. "</span>", value = "players",
+            desc = "Steam Name: <span style=color:MediumSeaGreen;> "
+                .. PlayersData.name .. "</span><br>Server ID:  <span style=color:MediumSeaGreen;>"
+                .. PlayersData.serverId .. "</span><br> Group:  <span style=color:MediumSeaGreen;>"
+                .. PlayersData.Group .. "</span><br>Job:  <span style=color:MediumSeaGreen;>"
+                .. PlayersData.Job .. "</span> Grade:  <span style=color:MediumSeaGreen;>"
+                .. PlayersData.Grade .. "</span><br>Identifier:  <span style=color:MediumSeaGreen;>"
+                .. PlayersData.SteamId .. "</span><br> Money:  <span style=color:MediumSeaGreen;>"
+                .. PlayersData.Money .. "</span><br>Player Gold:  <span style=color:Gold;>"
+                .. PlayersData.Gold .. "</span>", PlayerData = PlayersData
+        }
+
     end
-
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
@@ -34,135 +31,394 @@ function DataBase()
             elements = elements,
             lastmenu = 'OpenMenu',
         },
-
         function(data)
             if data.current == "backup" then
                 _G[data.trigger]()
-
-            else
-
-                for k, Player in pairs(players) do
-
-                    DatabasePlayers(Player)
-                end
+            end
+            if data.current.value == "players" then
+                DatabasePlayers(data.current.PlayerData)
             end
         end,
         function(menu)
-        menu.close()
-    end)
-
+            menu.close()
+        end)
 end
 
-function DatabasePlayers()
+function DatabasePlayers(PlayerData)
     MenuData.CloseAll()
     local elements = {
-        { label = "Give", value = 'give', desc = "Give options " },
-        { label = "Remove", value = 'remove', desc = "Remove options" },
+        { label = _U("give"), value = 'give', desc = _U("Give_desc") },
+        { label = _U("remove"), value = 'remove', desc = _U("Remove_desc") },
     }
-
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = _U("MenuTitle"),
-            subtext  = "Boosters",
+            subtext  = _U("MenuSubtitle2"),
             align    = 'top-left',
             elements = elements,
             lastmenu = 'DataBase', --Go back
         },
-
         function(data)
             if data.current == "backup" then
                 _G[data.trigger]()
-
             end
             if data.current.value == "give" then
-                GivePlayers()
+                GivePlayers(PlayerData)
             end
             if data.current.value == "remove" then
-                RemovePlayers()
+                RemovePlayers(PlayerData)
             end
         end,
 
         function(menu)
-        menu.close()
-    end)
-
+            menu.close()
+        end)
 end
 
-function GivePlayers()
+function GivePlayers(PlayerData)
     MenuData.CloseAll()
     local elements = {
-        { label = "Add Items", value = 'addItems', desc = "give an item to player " },
-        { label = "Add Weapons", value = 'addWeapons', desc = "give a weapon to player" },
-        { label = "Add money", value = 'addMoney', desc = "give money to player " },
-        { label = "Add Gold", value = 'addGold', desc = "give gold to player " },
-        { label = "Add Xp", value = 'addXp', desc = "give XP to player " },
-        { label = "Add Horse", value = 'addHorse', desc = "give horse to player " },
-        { label = "Add Wagon", value = 'addWagon', desc = "give wagon to player " },
-
-
-
+        { label = _U("showInventory"), value = 'inventory',
+            desc = _U("showinventory_desc") ..
+                "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            info = PlayerData.serverId },
+        { label = _U("GiveItems"), value = 'addItem',
+            desc = _U("giveitem_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            info = PlayerData.serverId },
+        { label = _U("GiveWeapons"), value = 'addWeapon',
+            desc = _U("giveweapon_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName,
+            info = PlayerData.serverId },
+        { label = _U("GiveMoneyGold"), value = 'addMoneygold',
+            desc = _U("givemoney_desc") ..
+                "<span style=color:MediumSeaGreen;>" ..
+                PlayerData.PlayerName .. "</span><br><span> 0 FOR CASH 1 FOR GOLD THEN QUANTITY</span>",
+            info = PlayerData.serverId },
+        { label = _U("GiveHorse"), value = 'addHorse',
+            desc = _U("givehorse_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            info = PlayerData.serverId },
+        { label = _U("GiveWagon"), value = 'addWagon',
+            desc = _U("givewagon_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            info = PlayerData.serverId },
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = _U("MenuTitle"),
-            subtext  = "Boosters",
+            subtext  = "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             align    = 'top-left',
             elements = elements,
-            lastmenu = 'DatabasePlayers', --Go back
+            lastmenu = 'DataBase', --Go back
         },
-
         function(data)
             if data.current == "backup" then
                 _G[data.trigger]()
-
             end
-            if data.current.value == "tpm" then
+            if data.current.value == "addItem" then
+                local targetID = data.current.info
+                local type = "item"
+                local myInput = {
+                    type = "enableinput", -- dont touch
+                    inputType = "input",
+                    button = _U("confirm"), -- button name
+                    placeholder = "NAME  QUANTITY", --placeholdername
+                    style = "block", --- dont touch
+                    attributes = {
+                        inputHeader = "GIVE ITEM", -- header
+                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                        pattern = "[A-Za-z0-9_ ]{3,60}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                        title = "DONT USE - and . or , comas", -- if input doesnt match show this message
+                        style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                    }
+                }
+                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
+                    local result = tostring(cb)
+                    if result ~= "" then
+                        local splitString = {}
+                        for i in string.gmatch(result, "%S+") do
+                            splitString[#splitString + 1] = i
+                        end
+                        local itemName, itemQuantity = tostring(splitString[1]), tonumber(splitString[2])
+                        TriggerServerEvent("vorp_admin:givePlayer", targetID, type, itemName, itemQuantity)
+                    else
+                        TriggerEvent("vorp:TipRight", _U("empty"), 4000)
+                    end
+                end)
 
+            elseif data.current.value == "addWeapon" then
+                local targetID = data.current.info
+                local myInput = {
+                    type = "enableinput", -- dont touch
+                    inputType = "input",
+                    button = _U("confirm"), -- button name
+                    placeholder = "WEAPON_MELEE_KNIFE", --placeholdername
+                    style = "block", --- dont touch
+                    attributes = {
+                        inputHeader = "GIVE WEAPON", -- header
+                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                        pattern = "[A-Za-z_ ]{5,60}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                        title = "DONT USE - and . or , comas", -- if input doesnt match show this message
+                        style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                    }
+                }
+                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
+                    local result = tostring(cb)
+                    if result ~= "" then
+                        local weaponName = result
+                        local type = "weapon"
+                        TriggerServerEvent("vorp_admin:givePlayer", targetID, type, weaponName)
+                    else
+                        TriggerEvent("vorp:TipRight", _U("empty"), 4000)
+                    end
+                end)
 
+            elseif data.current.value == "addMoneygold" then
+                local targetID = data.current.info
+                local type = "moneygold"
+                local myInput = {
+                    type = "enableinput", -- dont touch
+                    inputType = "input",
+                    button = _U("confirm"), -- button name
+                    placeholder = "CURRENCY QUANTITY", --placeholdername
+                    style = "block", --- dont touch
+                    attributes = {
+                        inputHeader = "GIVE CURRENCY", -- header
+                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                        pattern = "[0-9 ]{1,20}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                        title = "DONT USE - and . or , comas", -- if input doesnt match show this message
+                        style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                    }
+                }
+
+                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
+                    local result = tostring(cb)
+                    if result ~= "" then
+                        local splitString = {}
+                        for i in string.gmatch(result, "%S+") do
+                            splitString[#splitString + 1] = i
+                        end
+                        local moneyType, Quantity = tonumber(splitString[1]), tonumber(splitString[2])
+                        TriggerServerEvent("vorp_admin:givePlayer", targetID, type, moneyType, Quantity)
+                    else
+                        TriggerEvent("vorp:TipRight", _U("empty"), 4000)
+                    end
+                end)
+
+            elseif data.current.value == "addHorse" then
+                local targetID = data.current.info
+                local type = "horse"
+                local myInput = {
+                    type = "enableinput", -- dont touch
+                    inputType = "input",
+                    button = _U("confirm"), -- button name
+                    placeholder = "HASH NAME SEX", --placeholdername
+                    style = "block", --- dont touch
+                    attributes = {
+                        inputHeader = "GIVE HORSE", -- header
+                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                        pattern = "[A-Za-z0-9_ ]{9,30}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                        title = "DONT USE - and . or , comas", -- if input doesnt match show this message
+                        style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                    }
+                }
+                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
+                    local result = tostring(cb)
+                    if result ~= "" then
+                        local splitString = {}
+                        for i in string.gmatch(result, "%S+") do
+                            splitString[#splitString + 1] = i
+                        end
+                        local Hashname, Horsename, Horsesex = tostring(splitString[1]), tostring(splitString[2]),
+                            tonumber(splitString[3])
+                        TriggerServerEvent("vorp_admin:givePlayer", targetID, type, Hashname, Horsename, Horsesex)
+                    else
+                        TriggerEvent("vorp:TipRight", _U("empty"), 4000)
+                    end
+                end)
+            elseif data.current.value == "addWagon" then
+                local targetID = data.current.info
+                local type = "wagon"
+                local myInput = {
+                    type = "enableinput", -- dont touch
+                    inputType = "input",
+                    button = _U("confirm"), -- button name
+                    placeholder = "MODEL NAME ", --placeholdername
+                    style = "block", --- dont touch
+                    attributes = {
+                        inputHeader = "GIVE WAGON", -- header
+                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                        pattern = "[A-Za-z0-9_ ]{9,30}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                        title = "DONT USE - and . or , comas", -- if input doesnt match show this message
+                        style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                    }
+                }
+
+                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
+                    local result = tostring(cb)
+                    if result ~= "" then
+                        local splitString = {}
+                        for i in string.gmatch(result, "%S+") do
+                            splitString[#splitString + 1] = i
+                        end
+                        local Modelname, Wagonname = tostring(splitString[1]), tostring(splitString[2])
+                        TriggerServerEvent("vorp_admin:givePlayer", targetID, type, Modelname, Wagonname)
+                    else
+                        TriggerEvent("vorp:TipRight", _U("empty"), 4000)
+                    end
+                end)
+            elseif data.current.value == "inventory" then
+                local TargetID = data.current.info
+                TriggerServerEvent("vorp_admin:checkInventory", TargetID)
             end
         end,
 
         function(menu)
-        menu.close()
-    end)
+            menu.close()
+        end)
 
 end
 
-function RemovePlayers()
+function RemovePlayers(PlayerData)
     MenuData.CloseAll()
-    local elements = {
-        { label = "Remove Items", value = 'removeItems', desc = "remove an Item from player" },
-        { label = "Remove Weapons", value = 'removeWeapons', desc = "remove a weapon from player" },
-        { label = "Remove money", value = 'removeMoney', desc = "remove money from player " },
-        { label = "Remove Gold", value = 'removeGold', desc = "remove gold from player " },
-        { label = "Remove Xp", value = 'removeXp', desc = "remove xp from player" },
-        { label = "Remove Horse", value = 'RemoveHorse', desc = "remove horse from player" },
-        { label = "Remove Wagon", value = 'RemoveWagon', desc = " remove wagon from player" },
 
+    local elements = {
+        { label = _U("showInventory"), value = 'showinventory',
+            desc = _U("accessplayers_desc") ..
+                "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            info = PlayerData.serverId },
+        { label = _U("Removemoney"), value = "clearmoney",
+            desc = _U("removemoney_desc") ..
+                "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            info = PlayerData.serverId },
+        { label = _U("RemoveGold"), value = "cleargold",
+            desc = _U("removegold_desc") ..
+                "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            info = PlayerData.serverId },
+        { label = _U("Clearallitems"), value = 'clearitems',
+            desc = _U("clearallitems_desc") ..
+                "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span> Inventory",
+            info = PlayerData.serverId },
+        { label = _U("Clearallweapons"), value = 'clearweapons',
+            desc = _U("clearallweapons_desc") ..
+                "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span> Inventory",
+            info = PlayerData.serverId },
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = _U("MenuTitle"),
-            subtext  = "Boosters",
+            subtext  = _U("MenuSubTitle"),
             align    = 'top-left',
             elements = elements,
-            lastmenu = 'DatabasePlayers', --Go back
+            lastmenu = 'DataBase', --Go back
         },
-
         function(data)
             if data.current == "backup" then
                 _G[data.trigger]()
-
             end
-            if data.current.value == "removeItems" then
+            if data.current.value == "clearmoney" then
+                local targetID = data.current.info
+                local type = "money"
+                TriggerServerEvent("vorp_admin:ClearCurrency", targetID, type)
+            elseif data.current.value == "cleargold" then
+                local targetID = data.current.info
+                local type = "gold"
+                TriggerServerEvent("vorp_admin:ClearCurrency", targetID, type)
+            elseif data.current.value == "clearitems" then
+                local targetID = data.current.info
+                local type = "items"
+                local myInput = {
+                    type = "enableinput", -- dont touch
+                    inputType = "input",
+                    button = _U("confirm"), -- button name
+                    placeholder = " yes or no ", --placeholdername
+                    style = "block", --- dont touch
+                    attributes = {
+                        inputHeader = "ARE YOU SURE?", -- header
+                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                        pattern = "[A-Za-z]+", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                        title = "DONT USE - and . or , comas", -- if input doesnt match show this message
+                        style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                    }
+                }
+                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
+                    local result = tostring(cb)
+                    if result ~= "" then
+                        if result == "yes" then
+                            TriggerServerEvent("vorp_admin:ClearAllItems", type, targetID)
+                        end
+                    else
+                        TriggerEvent("vorp:TipRight", _U("empty"), 4000)
+                    end
+                end)
 
+            elseif data.current.value == "clearweapons" then
+                local targetID = data.current.info
+                local type = "weapons"
+
+                local myInput = {
+                    type = "enableinput", -- dont touch
+                    inputType = "input",
+                    button = _U("confirm"), -- button name
+                    placeholder = " yes or no ", --placeholdername
+                    style = "block", --- dont touch
+                    attributes = {
+                        inputHeader = "ARE YOU SURE?", -- header
+                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                        pattern = "[A-Za-z]+", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                        title = "DONT USE - and . or , comas", -- if input doesnt match show this message
+                        style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                    }
+                }
+                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
+                    local result = tostring(cb)
+                    if result ~= "" then
+                        if result == "yes" then
+                            TriggerServerEvent("vorp_admin:ClearAllItems", type, targetID)
+                        end
+                    else
+                        TriggerEvent("vorp:TipRight", _U("empty"), 4000)
+                    end
+                end)
+
+            elseif data.current.value == "sowinventory" then
+                local TargetID = data.current.info
+                TriggerServerEvent("vorp_admin:checkInventory", TargetID)
+            end
+
+        end,
+        function(menu)
+            menu.close()
+        end)
+end
+
+-- show items inventory
+RegisterNetEvent("vorp_admin:getplayerInventory", function(inventorydata)
+    OpenInvnetory(inventorydata)
+end)
+
+function OpenInvnetory(inventorydata)
+    MenuData.CloseAll()
+    local elements = {}
+    for item, dataItems in pairs(inventorydata) do
+        elements[#elements + 1] = { label = dataItems.label ..
+            " <span style='margin-left:10px; color: Yellow;'>" .. dataItems.count .. '</span>', value = "",
+            desc = dataItems.label }
+    end
+    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+        {
+            title    = _U("MenuTitle"),
+            subtext  = _U("Playerinventory"),
+            align    = 'top-left',
+            elements = elements,
+            lastmenu = 'DataBase',
+        },
+        function(data)
+            if data.current == "backup" then
+                _G[data.trigger]()
             end
         end,
-
         function(menu)
-        menu.close()
-    end)
+            menu.close()
+        end)
 
 end
