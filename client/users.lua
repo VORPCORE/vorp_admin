@@ -9,12 +9,12 @@ end)
 function OpenUsersMenu()
     MenuData.CloseAll()
     local elements = {
-        { label = "Scoreboard", value = 'scoreboard', desc = " list of online players" },
-        { label = "Report", value = 'report', desc = "Report Options" },
-        { label = "request staff", value = 'requestStaff', desc = "Request staff presence" },
-        { label = "create ticket", value = 'ticket', desc = "add a ticket in discord" },
-        { label = "show My Info", value = 'showinfo', desc = " show your character info" },
-        { label = "show Jobs Online", value = 'showjobs', desc = "show jobs online" },
+        { label = _U("Scoreboard"), value = 'scoreboard', desc = _U("scoreboard_desc") },
+        { label = _U("Report"), value = 'report', desc = _U("reportoptions_desc") },
+        { label = _U("requeststaff"), value = 'requestStaff', desc = _U("Requeststaff_desc") },
+        { label = _U("createticket"), value = 'ticket', desc = _U("tickectdiscord_desc") },
+        { label = _U("showMyInfo"), value = 'showinfo', desc = _U("showmyinfo_desc") },
+        { label = _U("showJobsOnline"), value = 'showjobs', desc = _U("showjobsonline_desc") },
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
@@ -33,20 +33,20 @@ function OpenUsersMenu()
                 ScoreBoard()
             elseif data.current.value == "report" then
 
-                VORPNotify.displayRightTip(" not yet available", 4000)
-                
+                VORPNotify.displayRightTip(_U("notyetavailable"), 4000)
+
             elseif data.current.value == "requeststaff" then
 
-                VORPNotify.displayRightTip(" not yet available", 4000)
+                VORPNotify.displayRightTip(_U("notyetavailable"), 4000)
             elseif data.current.value == "ticket" then
 
-                VORPNotify.displayRightTip(" not yet available", 4000)
+                VORPNotify.displayRightTip(_U("notyetavailable"), 4000)
             elseif data.current.value == "showinfo" then
 
-                VORPNotify.displayRightTip(" not yet available", 4000)
+                VORPNotify.displayRightTip(_U("notyetavailable"), 4000)
             elseif data.current.value == "showjobs" then
 
-                VORPNotify.displayRightTip(" not yet available", 4000)
+                VORPNotify.displayRightTip(_U("notyetavailable"), 4000)
             end
 
 
