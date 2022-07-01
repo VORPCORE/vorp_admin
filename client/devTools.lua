@@ -52,7 +52,8 @@ function OpenDevTools()
                         ped = CreatePed(ped, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
                         Citizen.InvokeNative(0x77FF8D35EEC6BBC4, ped, 1, 0)
                         Wait(2000)
-
+                    else
+                        TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
                     end
                 end)
 
@@ -60,7 +61,7 @@ function OpenDevTools()
                 OpenObjMenu()
             elseif data.current.value == "getcoords" then
                 OpenCoordsMenu()
-            elseif data.current.value == "dellwagon" then
+            elseif data.current.value == "spawnwagon" then
                 local myInput = {
                     type = "enableinput", -- dont touch
                     inputType = "input",
@@ -87,7 +88,8 @@ function OpenDevTools()
                         wagon = CreateVehicle(wagon, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
                         Citizen.InvokeNative(0x77FF8D35EEC6BBC4, wagon, 1, 0)
                         SetPedIntoVehicle(player, wagon, -1)
-
+                    else
+                        TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
                     end
                 end)
             end

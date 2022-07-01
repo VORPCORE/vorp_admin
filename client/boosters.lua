@@ -41,168 +41,196 @@ function Boost()
                 _G[data.trigger]()
 
             end
-            if data.current.value == "showid" then
-                local target = data.current.info
-
-            end
             if data.current.value == "god" then
-                if not god then
-                    god = true
-                    TriggerEvent('vorp:TipRight', _U("switchedon"), 3000)
-                    SetEntityCanBeDamaged(player, false)
-                    SetEntityInvincible(player, true)
-                    SetPedConfigFlag(player, 2, true) -- no critical hits
-                    SetPedCanRagdoll(player, false)
-                    SetPedCanBeTargetted(player, false)
-                    Citizen.InvokeNative(0x5240864E847C691C, player, false) --set ped can be incapacitaded
-                    SetPlayerInvincible(player, true)
-                    Citizen.InvokeNative(0xFD6943B6DF77E449, player, false) -- set ped can be lassoed
-                else
-                    god = false
-                    TriggerEvent('vorp:TipRight', _U("switchedoff"), 3000)
-                    SetEntityCanBeDamaged(player, true)
-                    SetEntityInvincible(player, false)
-                    SetPedConfigFlag(player, 2, false)
-                    SetPedCanRagdoll(player, true)
-                    SetPedCanBeTargetted(player, true)
-                    Citizen.InvokeNative(0x5240864E847C691C, player, true)
-                    SetPlayerInvincible(PlayerId(), false)
-                    Citizen.InvokeNative(0xFD6943B6DF77E449, player, true)
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.Godmode")
+                Wait(100)
+                if AdminAllowed then
+                    if not god then
+                        god = true
+                        TriggerEvent('vorp:TipRight', _U("switchedon"), 3000)
+                        SetEntityCanBeDamaged(player, false)
+                        SetEntityInvincible(player, true)
+                        SetPedConfigFlag(player, 2, true) -- no critical hits
+                        SetPedCanRagdoll(player, false)
+                        SetPedCanBeTargetted(player, false)
+                        Citizen.InvokeNative(0x5240864E847C691C, player, false) --set ped can be incapacitaded
+                        SetPlayerInvincible(player, true)
+                        Citizen.InvokeNative(0xFD6943B6DF77E449, player, false) -- set ped can be lassoed
+                    else
+                        god = false
+                        TriggerEvent('vorp:TipRight', _U("switchedoff"), 3000)
+                        SetEntityCanBeDamaged(player, true)
+                        SetEntityInvincible(player, false)
+                        SetPedConfigFlag(player, 2, false)
+                        SetPedCanRagdoll(player, true)
+                        SetPedCanBeTargetted(player, true)
+                        Citizen.InvokeNative(0x5240864E847C691C, player, true)
+                        SetPlayerInvincible(PlayerId(), false)
+                        Citizen.InvokeNative(0xFD6943B6DF77E449, player, true)
+                    end
                 end
-
             elseif data.current.value == "goldcores" then
-                if not goldenCores then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.Golden")
+                Wait(100)
+                if AdminAllowed then
+                    if not goldenCores then
 
-                    goldenCores = true
-                    TriggerEvent('vorp:TipRight', _U("switchedon"), 3000)
-                    -- inner cores
-                    Citizen.InvokeNative(0xC6258F41D86676E0, player, 0, 100)
-                    Citizen.InvokeNative(0xC6258F41D86676E0, player, 1, 100)
-                    Citizen.InvokeNative(0xC6258F41D86676E0, player, 2, 100)
+                        goldenCores = true
+                        TriggerEvent('vorp:TipRight', _U("switchedon"), 3000)
+                        -- inner cores
+                        Citizen.InvokeNative(0xC6258F41D86676E0, player, 0, 100)
+                        Citizen.InvokeNative(0xC6258F41D86676E0, player, 1, 100)
+                        Citizen.InvokeNative(0xC6258F41D86676E0, player, 2, 100)
 
-                    --outter cores
-                    Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 0, 5000.0)
-                    Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 1, 5000.0)
-                    Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 2, 5000.0)
+                        --outter cores
+                        Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 0, 5000.0)
+                        Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 1, 5000.0)
+                        Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 2, 5000.0)
 
-                    Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 1, 5000.0)
-                    Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 2, 5000.0)
-                    Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 0, 5000.0)
-                else
-                    goldenCores = false
-                    TriggerEvent('vorp:TipRight', _U("switchedoff"), 3000)
-                    --inner cores
-                    Citizen.InvokeNative(0xC6258F41D86676E0, player, 0, 100)
-                    Citizen.InvokeNative(0xC6258F41D86676E0, player, 1, 100)
-                    Citizen.InvokeNative(0xC6258F41D86676E0, player, 2, 100)
+                        Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 1, 5000.0)
+                        Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 2, 5000.0)
+                        Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 0, 5000.0)
+                    else
+                        goldenCores = false
+                        TriggerEvent('vorp:TipRight', _U("switchedoff"), 3000)
+                        --inner cores
+                        Citizen.InvokeNative(0xC6258F41D86676E0, player, 0, 100)
+                        Citizen.InvokeNative(0xC6258F41D86676E0, player, 1, 100)
+                        Citizen.InvokeNative(0xC6258F41D86676E0, player, 2, 100)
 
-                    --outter cores
-                    Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 0, 0.0)
-                    Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 1, 0.0)
-                    Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 2, 0.0)
+                        --outter cores
+                        Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 0, 0.0)
+                        Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 1, 0.0)
+                        Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 2, 0.0)
 
-                    Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 1, 0.0)
-                    Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 2, 0.0)
-                    Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 0, 0.0)
+                        Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 1, 0.0)
+                        Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 2, 0.0)
+                        Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 0, 0.0)
+                    end
                 end
             elseif data.current.value == "noclip" then
-                if not NoClipActive then
-                    NoClipActive = true
-                    TriggerEvent('vorp:TipRight', _U("switchedon"), 3000)
-                    if Config.FrozenPosition then
-                        SetEntityHeading(player, GetEntityHeading(player) + 180)
-                    end
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.Noclip")
+                Wait(100)
+                if AdminAllowed then
+                    if not NoClipActive then
+                        NoClipActive = true
+                        TriggerEvent('vorp:TipRight', _U("switchedon"), 3000)
+                        if Config.FrozenPosition then
+                            SetEntityHeading(player, GetEntityHeading(player) + 180)
+                        end
 
-                else
-                    NoClipActive = false
-                    timer = 5000
-                    TriggerEvent('vorp:TipRight', _U("switchedoff"), 3000)
+                    else
+                        NoClipActive = false
+                        timer = 5000
+                        TriggerEvent('vorp:TipRight', _U("switchedoff"), 3000)
+                    end
                 end
             elseif data.current.value == "infiniteammo" then
-                local _, weaponHash = GetCurrentPedWeapon(player, false, 0, false)
-                if not infiniteammo then
-                    infiniteammo = true
-                    local unarmed = -1569615261
-                    TriggerEvent("vorp:TipRight", _U("switchedon"), 3000)
-                    if weaponHash == unarmed then
-                        TriggerEvent("vorp:Tip", _U("noweapon"), 3000)
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.InfiniteAmmo")
+                Wait(100)
+                if AdminAllowed then
+                    local _, weaponHash = GetCurrentPedWeapon(player, false, 0, false)
+                    if not infiniteammo then
+                        infiniteammo = true
+                        local unarmed = -1569615261
+                        TriggerEvent("vorp:TipRight", _U("switchedon"), 3000)
+                        if weaponHash == unarmed then
+                            TriggerEvent("vorp:Tip", _U("noweapon"), 3000)
+                        else
+                            SetPedInfiniteAmmo(player, true, weaponHash)
+                        end
                     else
-                        SetPedInfiniteAmmo(player, true, weaponHash)
+                        infiniteammo = false
+                        TriggerEvent("vorp:TipRight", _U("switchedoff"), 3000)
+                        SetPedInfiniteAmmo(player, false, weaponHash)
                     end
-                else
-                    infiniteammo = false
-                    TriggerEvent("vorp:TipRight", _U("switchedoff"), 3000)
-                    SetPedInfiniteAmmo(player, false, weaponHash)
                 end
             elseif data.current.value == "selfrevive" then
-                TriggerEvent('vorp:resurrectPlayer')
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.SelfRevive")
+                Wait(100)
+                if AdminAllowed then
+                    TriggerEvent('vorp:resurrectPlayer')
+                end
             elseif data.current.value == "selfheal" then
-                TriggerEvent('vorp:heal')
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.SelfHeal")
+                Wait(100)
+                if AdminAllowed then
+                    TriggerEvent('vorp:heal')
+                end
             elseif data.current.value == "spawnhorse" then
-                local myInput = {
-                    type = "enableinput", -- dont touch
-                    inputType = "input",
-                    button = _U("confirm"), -- button name
-                    placeholder = _U("inserthashmodel"), --placeholdername
-                    style = "block", --- dont touch
-                    attributes = {
-                        inputHeader = _U("spawnhorse"), -- header
-                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
-                        pattern = "[A-Za-z0-9_ \\-]{5,60}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                        title = "wrong syntax", -- if input doesnt match show this message
-                        style = "border-radius: 10px; backgRound-color: ; border:none;", -- style  the inptup
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.SpawHorse")
+                Wait(100)
+                if AdminAllowed then
+                    local myInput = {
+                        type = "enableinput", -- dont touch
+                        inputType = "input",
+                        button = _U("confirm"), -- button name
+                        placeholder = _U("inserthashmodel"), --placeholdername
+                        style = "block", --- dont touch
+                        attributes = {
+                            inputHeader = _U("spawnhorse"), -- header
+                            type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                            pattern = "[A-Za-z0-9_ \\-]{5,60}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                            title = "wrong syntax", -- if input doesnt match show this message
+                            style = "border-radius: 10px; backgRound-color: ; border:none;", -- style  the inptup
+                        }
                     }
-                }
-                MenuData.CloseAll()
-                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
-                    local horse = result
-                    local playerCoords = GetEntityCoords(player) + 1
-                    if horse ~= "" then
-                        RequestModel(horse)
-                        while not HasModelLoaded(horse) do
-                            Wait(10)
+                    MenuData.CloseAll()
+                    TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
+                        local horse = result
+                        local playerCoords = GetEntityCoords(player) + 1
+                        if horse ~= "" then
+                            RequestModel(horse)
+                            while not HasModelLoaded(horse) do
+                                Wait(10)
+                            end
+                            horse = CreatePed(horse, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
+                            Citizen.InvokeNative(0x77FF8D35EEC6BBC4, horse, 1, 0)
+                            Citizen.InvokeNative(0x028F76B6E78246EB, player, horse, -1, true)
+                        else
+                            TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
                         end
-                        horse = CreatePed(horse, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
-                        Citizen.InvokeNative(0x77FF8D35EEC6BBC4, horse, 1, 0)
-                        Citizen.InvokeNative(0x028F76B6E78246EB, player, horse, -1, true)
-
-                    end
-                end)
+                    end)
+                end
 
             elseif data.current.value == "spawnwagon" then
-
-                local myInput = {
-                    type = "enableinput", -- dont touch
-                    inputType = "input",
-                    button = _U("confirm"), -- button name
-                    placeholder = _U("insertmodel"), --placeholdername
-                    style = "block", --- dont touch
-                    attributes = {
-                        inputHeader = _U("SpawnWagon"), -- header
-                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
-                        pattern = "[A-Za-z0-9_ \\-]{5,60}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                        title = "wrong syntax", -- if input doesnt match show this message
-                        style = "border-radius: 10px; backgRound-color: ; border:none;", -- style  the inptup
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.SpawnWagon")
+                Wait(100)
+                if AdminAllowed then
+                    local myInput = {
+                        type = "enableinput", -- dont touch
+                        inputType = "input",
+                        button = _U("confirm"), -- button name
+                        placeholder = _U("insertmodel"), --placeholdername
+                        style = "block", --- dont touch
+                        attributes = {
+                            inputHeader = _U("SpawnWagon"), -- header
+                            type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                            pattern = "[A-Za-z0-9_ \\-]{5,60}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                            title = "wrong syntax", -- if input doesnt match show this message
+                            style = "border-radius: 10px; backgRound-color: ; border:none;", -- style  the inptup
+                        }
                     }
-                }
-                MenuData.CloseAll()
+                    MenuData.CloseAll()
 
-                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
-                    local wagon = result
-                    local playerCoords = GetEntityCoords(player)
+                    TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
+                        local wagon = result
+                        local playerCoords = GetEntityCoords(player)
 
-                    if wagon ~= "" then
-                        RequestModel(wagon)
-                        while not HasModelLoaded(wagon) do
-                            Wait(10)
+                        if wagon ~= "" then
+                            RequestModel(wagon)
+                            while not HasModelLoaded(wagon) do
+                                Wait(10)
+                            end
+
+                            wagon = CreateVehicle(wagon, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
+                            Citizen.InvokeNative(0x77FF8D35EEC6BBC4, wagon, 1, 0)
+                            SetPedIntoVehicle(player, wagon, -1)
+                        else
+                            TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
                         end
-
-                        wagon = CreateVehicle(wagon, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
-                        Citizen.InvokeNative(0x77FF8D35EEC6BBC4, wagon, 1, 0)
-                        SetPedIntoVehicle(player, wagon, -1)
-
-                    end
-                end)
+                    end)
+                end
             end
         end,
 

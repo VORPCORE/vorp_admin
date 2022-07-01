@@ -1,7 +1,7 @@
 ---------------------------------------------------------------------------------------------------
 --------------------------------------- FUNCTIONS -------------------------------------------------
-
 --close menu
+
 
 function Closem()
     MenuData.CloseAll()
@@ -26,6 +26,7 @@ end
 ----------------------------------- MAIN MENU -----------------------------------------------------------------
 function OpenMenu()
     MenuData.CloseAll()
+
     local elements = {
         { label = _U("Administration"), value = 'administration', desc = _U("administration_desc") },
         { label = _U("Booster"), value = 'boost', desc = _U("booster_desc") },
@@ -46,18 +47,39 @@ function OpenMenu()
             end
 
             if data.current.value == "administration" then
-                Admin()
-
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Admin')
+                Wait(100)
+                if AdminAllowed then
+                    Admin()
+                else
+                    print("false")
+                end
             elseif data.current.value == "boost" then
-                Boost()
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Boosters')
+                Wait(100)
+                if AdminAllowed then
+                    Boost()
+                end
 
             elseif data.current.value == "database" then
-                DataBase()
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Database')
+                Wait(100)
+                if AdminAllowed then
+                    DataBase()
+                end
 
             elseif data.current.value == "teleport" then
-                Teleport()
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Teleports')
+                Wait(100)
+                if AdminAllowed then
+                    Teleport()
+                end
             elseif data.current.value == "devtools" then
-                OpenDevTools()
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Devtools')
+                Wait(100)
+                if AdminAllowed then
+                    OpenDevTools()
+                end
             end
         end,
 

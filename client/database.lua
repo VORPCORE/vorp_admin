@@ -1,6 +1,5 @@
 ------------------------------------------------------------------------------------------------------------------
 ---------------------------------------- DATABASE ----------------------------------------------------------------
-
 function DataBase()
     MenuData.CloseAll()
     local elements = {}
@@ -36,7 +35,11 @@ function DataBase()
                 _G[data.trigger]()
             end
             if data.current.value == "players" then
-                DatabasePlayers(data.current.PlayerData)
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenDatabase")
+                Wait(100)
+                if AdminAllowed then
+                    DatabasePlayers(data.current.PlayerData)
+                end
             end
         end,
         function(menu)
@@ -63,10 +66,18 @@ function DatabasePlayers(PlayerData)
                 _G[data.trigger]()
             end
             if data.current.value == "give" then
-                GivePlayers(PlayerData)
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenGiveMenu")
+                Wait(100)
+                if AdminAllowed then
+                    GivePlayers(PlayerData)
+                end
             end
             if data.current.value == "remove" then
-                RemovePlayers(PlayerData)
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenRemoveMenu")
+                Wait(100)
+                if AdminAllowed then
+                    RemovePlayers(PlayerData)
+                end
             end
         end,
 
@@ -114,160 +125,181 @@ function GivePlayers(PlayerData)
                 _G[data.trigger]()
             end
             if data.current.value == "addItem" then
-                local targetID = data.current.info
-                local type = "item"
-                local myInput = {
-                    type = "enableinput", -- dont touch
-                    inputType = "input",
-                    button = _U("confirm"), -- button name
-                    placeholder = "NAME  QUANTITY", --placeholdername
-                    style = "block", --- dont touch
-                    attributes = {
-                        inputHeader = "GIVE ITEM", -- header
-                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
-                        pattern = "[A-Za-z0-9_ ]{3,60}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                        title = "DONT USE - and . or , comas", -- if input doesnt match show this message
-                        style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.Giveitems")
+                Wait(100)
+                if AdminAllowed then
+                    local targetID = data.current.info
+                    local type = "item"
+                    local myInput = {
+                        type = "enableinput", -- dont touch
+                        inputType = "input",
+                        button = _U("confirm"), -- button name
+                        placeholder = "NAME  QUANTITY", --placeholdername
+                        style = "block", --- dont touch
+                        attributes = {
+                            inputHeader = "GIVE ITEM", -- header
+                            type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                            pattern = "[A-Za-z0-9_ ]{3,60}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                            title = "DONT USE - and . or , comas", -- if input doesnt match show this message
+                            style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                        }
                     }
-                }
-                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
-                    local result = tostring(cb)
-                    if result ~= "" then
-                        local splitString = {}
-                        for i in string.gmatch(result, "%S+") do
-                            splitString[#splitString + 1] = i
+                    TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
+                        local result = tostring(cb)
+                        if result ~= "" then
+                            local splitString = {}
+                            for i in string.gmatch(result, "%S+") do
+                                splitString[#splitString + 1] = i
+                            end
+                            local itemName, itemQuantity = tostring(splitString[1]), tonumber(splitString[2])
+                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, itemName, itemQuantity)
+                        else
+                            TriggerEvent("vorp:TipRight", _U("empty"), 4000)
                         end
-                        local itemName, itemQuantity = tostring(splitString[1]), tonumber(splitString[2])
-                        TriggerServerEvent("vorp_admin:givePlayer", targetID, type, itemName, itemQuantity)
-                    else
-                        TriggerEvent("vorp:TipRight", _U("empty"), 4000)
-                    end
-                end)
-
+                    end)
+                end
             elseif data.current.value == "addWeapon" then
-                local targetID = data.current.info
-                local myInput = {
-                    type = "enableinput", -- dont touch
-                    inputType = "input",
-                    button = _U("confirm"), -- button name
-                    placeholder = "WEAPON_MELEE_KNIFE", --placeholdername
-                    style = "block", --- dont touch
-                    attributes = {
-                        inputHeader = "GIVE WEAPON", -- header
-                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
-                        pattern = "[A-Za-z_ ]{5,60}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                        title = "DONT USE - and . or , comas", -- if input doesnt match show this message
-                        style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.GiveWeapons")
+                Wait(100)
+                if AdminAllowed then
+                    local targetID = data.current.info
+                    local myInput = {
+                        type = "enableinput", -- dont touch
+                        inputType = "input",
+                        button = _U("confirm"), -- button name
+                        placeholder = "WEAPON_MELEE_KNIFE", --placeholdername
+                        style = "block", --- dont touch
+                        attributes = {
+                            inputHeader = "GIVE WEAPON", -- header
+                            type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                            pattern = "[A-Za-z_ ]{5,60}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                            title = "DONT USE - and . or , comas", -- if input doesnt match show this message
+                            style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                        }
                     }
-                }
-                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
-                    local result = tostring(cb)
-                    if result ~= "" then
-                        local weaponName = result
-                        local type = "weapon"
-                        TriggerServerEvent("vorp_admin:givePlayer", targetID, type, weaponName)
-                    else
-                        TriggerEvent("vorp:TipRight", _U("empty"), 4000)
-                    end
-                end)
-
+                    TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
+                        local result = tostring(cb)
+                        if result ~= "" then
+                            local weaponName = result
+                            local type = "weapon"
+                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, weaponName)
+                        else
+                            TriggerEvent("vorp:TipRight", _U("empty"), 4000)
+                        end
+                    end)
+                end
             elseif data.current.value == "addMoneygold" then
-                local targetID = data.current.info
-                local type = "moneygold"
-                local myInput = {
-                    type = "enableinput", -- dont touch
-                    inputType = "input",
-                    button = _U("confirm"), -- button name
-                    placeholder = "CURRENCY QUANTITY", --placeholdername
-                    style = "block", --- dont touch
-                    attributes = {
-                        inputHeader = "GIVE CURRENCY", -- header
-                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
-                        pattern = "[0-9 ]{1,20}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                        title = "DONT USE - and . or , comas", -- if input doesnt match show this message
-                        style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.GiveCurrency")
+                Wait(100)
+                if AdminAllowed then
+                    local targetID = data.current.info
+                    local type = "moneygold"
+                    local myInput = {
+                        type = "enableinput", -- dont touch
+                        inputType = "input",
+                        button = _U("confirm"), -- button name
+                        placeholder = "CURRENCY QUANTITY", --placeholdername
+                        style = "block", --- dont touch
+                        attributes = {
+                            inputHeader = "GIVE CURRENCY", -- header
+                            type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                            pattern = "[0-9 ]{1,20}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                            title = "DONT USE - and . or , comas", -- if input doesnt match show this message
+                            style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                        }
                     }
-                }
 
-                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
-                    local result = tostring(cb)
-                    if result ~= "" then
-                        local splitString = {}
-                        for i in string.gmatch(result, "%S+") do
-                            splitString[#splitString + 1] = i
+                    TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
+                        local result = tostring(cb)
+                        if result ~= "" then
+                            local splitString = {}
+                            for i in string.gmatch(result, "%S+") do
+                                splitString[#splitString + 1] = i
+                            end
+                            local moneyType, Quantity = tonumber(splitString[1]), tonumber(splitString[2])
+                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, moneyType, Quantity)
+                        else
+                            TriggerEvent("vorp:TipRight", _U("empty"), 4000)
                         end
-                        local moneyType, Quantity = tonumber(splitString[1]), tonumber(splitString[2])
-                        TriggerServerEvent("vorp_admin:givePlayer", targetID, type, moneyType, Quantity)
-                    else
-                        TriggerEvent("vorp:TipRight", _U("empty"), 4000)
-                    end
-                end)
-
+                    end)
+                end
             elseif data.current.value == "addHorse" then
-                local targetID = data.current.info
-                local type = "horse"
-                local myInput = {
-                    type = "enableinput", -- dont touch
-                    inputType = "input",
-                    button = _U("confirm"), -- button name
-                    placeholder = "HASH NAME SEX", --placeholdername
-                    style = "block", --- dont touch
-                    attributes = {
-                        inputHeader = "GIVE HORSE", -- header
-                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
-                        pattern = "[A-Za-z0-9_ ]{9,30}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                        title = "DONT USE - and . or , comas", -- if input doesnt match show this message
-                        style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.GiveHorse")
+                Wait(100)
+                if AdminAllowed then
+                    local targetID = data.current.info
+                    local type = "horse"
+                    local myInput = {
+                        type = "enableinput", -- dont touch
+                        inputType = "input",
+                        button = _U("confirm"), -- button name
+                        placeholder = "HASH NAME SEX", --placeholdername
+                        style = "block", --- dont touch
+                        attributes = {
+                            inputHeader = "GIVE HORSE", -- header
+                            type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                            pattern = "[A-Za-z0-9_ ]{9,30}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                            title = "DONT USE - and . or , comas", -- if input doesnt match show this message
+                            style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                        }
                     }
-                }
-                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
-                    local result = tostring(cb)
-                    if result ~= "" then
-                        local splitString = {}
-                        for i in string.gmatch(result, "%S+") do
-                            splitString[#splitString + 1] = i
+                    TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
+                        local result = tostring(cb)
+                        if result ~= "" then
+                            local splitString = {}
+                            for i in string.gmatch(result, "%S+") do
+                                splitString[#splitString + 1] = i
+                            end
+                            local Hashname, Horsename, Horsesex = tostring(splitString[1]), tostring(splitString[2]),
+                                tonumber(splitString[3])
+                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, Hashname, Horsename, Horsesex)
+                        else
+                            TriggerEvent("vorp:TipRight", _U("empty"), 4000)
                         end
-                        local Hashname, Horsename, Horsesex = tostring(splitString[1]), tostring(splitString[2]),
-                            tonumber(splitString[3])
-                        TriggerServerEvent("vorp_admin:givePlayer", targetID, type, Hashname, Horsename, Horsesex)
-                    else
-                        TriggerEvent("vorp:TipRight", _U("empty"), 4000)
-                    end
-                end)
+                    end)
+                end
             elseif data.current.value == "addWagon" then
-                local targetID = data.current.info
-                local type = "wagon"
-                local myInput = {
-                    type = "enableinput", -- dont touch
-                    inputType = "input",
-                    button = _U("confirm"), -- button name
-                    placeholder = "MODEL NAME ", --placeholdername
-                    style = "block", --- dont touch
-                    attributes = {
-                        inputHeader = "GIVE WAGON", -- header
-                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
-                        pattern = "[A-Za-z0-9_ ]{9,30}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                        title = "DONT USE - and . or , comas", -- if input doesnt match show this message
-                        style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.GiveWagons")
+                Wait(100)
+                if AdminAllowed then
+                    local targetID = data.current.info
+                    local type = "wagon"
+                    local myInput = {
+                        type = "enableinput", -- dont touch
+                        inputType = "input",
+                        button = _U("confirm"), -- button name
+                        placeholder = "MODEL NAME ", --placeholdername
+                        style = "block", --- dont touch
+                        attributes = {
+                            inputHeader = "GIVE WAGON", -- header
+                            type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                            pattern = "[A-Za-z0-9_ ]{9,30}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                            title = "DONT USE - and . or , comas", -- if input doesnt match show this message
+                            style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                        }
                     }
-                }
 
-                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
-                    local result = tostring(cb)
-                    if result ~= "" then
-                        local splitString = {}
-                        for i in string.gmatch(result, "%S+") do
-                            splitString[#splitString + 1] = i
+                    TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
+                        local result = tostring(cb)
+                        if result ~= "" then
+                            local splitString = {}
+                            for i in string.gmatch(result, "%S+") do
+                                splitString[#splitString + 1] = i
+                            end
+                            local Modelname, Wagonname = tostring(splitString[1]), tostring(splitString[2])
+                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, Modelname, Wagonname)
+                        else
+                            TriggerEvent("vorp:TipRight", _U("empty"), 4000)
                         end
-                        local Modelname, Wagonname = tostring(splitString[1]), tostring(splitString[2])
-                        TriggerServerEvent("vorp_admin:givePlayer", targetID, type, Modelname, Wagonname)
-                    else
-                        TriggerEvent("vorp:TipRight", _U("empty"), 4000)
-                    end
-                end)
+                    end)
+                end
             elseif data.current.value == "inventory" then
-                local TargetID = data.current.info
-                TriggerServerEvent("vorp_admin:checkInventory", TargetID)
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.ShowInvGive")
+                Wait(100)
+                if AdminAllowed then
+                    local TargetID = data.current.info
+                    TriggerServerEvent("vorp_admin:checkInventory", TargetID)
+                end
             end
         end,
 
@@ -282,7 +314,7 @@ function RemovePlayers(PlayerData)
 
     local elements = {
         { label = _U("showInventory"), value = 'showinventory',
-            desc = _U("accessplayers_desc") ..
+            desc = _U("showinventory_desc") ..
                 "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId },
         { label = _U("Removemoney"), value = "clearmoney",
@@ -316,73 +348,92 @@ function RemovePlayers(PlayerData)
                 _G[data.trigger]()
             end
             if data.current.value == "clearmoney" then
-                local targetID = data.current.info
-                local type = "money"
-                TriggerServerEvent("vorp_admin:ClearCurrency", targetID, type)
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.RemoveAllMoney")
+                Wait(100)
+                if AdminAllowed then
+                    local targetID = data.current.info
+                    local type = "money"
+                    TriggerServerEvent("vorp_admin:ClearCurrency", targetID, type)
+                end
             elseif data.current.value == "cleargold" then
-                local targetID = data.current.info
-                local type = "gold"
-                TriggerServerEvent("vorp_admin:ClearCurrency", targetID, type)
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.RemoveAllGold")
+                Wait(100)
+                if AdminAllowed then
+                    local targetID = data.current.info
+                    local type = "gold"
+                    TriggerServerEvent("vorp_admin:ClearCurrency", targetID, type)
+                end
             elseif data.current.value == "clearitems" then
-                local targetID = data.current.info
-                local type = "items"
-                local myInput = {
-                    type = "enableinput", -- dont touch
-                    inputType = "input",
-                    button = _U("confirm"), -- button name
-                    placeholder = " yes or no ", --placeholdername
-                    style = "block", --- dont touch
-                    attributes = {
-                        inputHeader = "ARE YOU SURE?", -- header
-                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
-                        pattern = "[A-Za-z]+", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                        title = "DONT USE - and . or , comas", -- if input doesnt match show this message
-                        style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.RemoveAllItems")
+                Wait(100)
+                if AdminAllowed then
+                    local targetID = data.current.info
+                    local type = "items"
+                    local myInput = {
+                        type = "enableinput", -- dont touch
+                        inputType = "input",
+                        button = _U("confirm"), -- button name
+                        placeholder = " yes or no ", --placeholdername
+                        style = "block", --- dont touch
+                        attributes = {
+                            inputHeader = "ARE YOU SURE?", -- header
+                            type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                            pattern = "[A-Za-z]+", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                            title = "DONT USE - and . or , comas", -- if input doesnt match show this message
+                            style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                        }
                     }
-                }
-                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
-                    local result = tostring(cb)
-                    if result ~= "" then
-                        if result == "yes" then
-                            TriggerServerEvent("vorp_admin:ClearAllItems", type, targetID)
+                    TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
+                        local result = tostring(cb)
+                        if result ~= "" then
+                            if result == "yes" then
+                                TriggerServerEvent("vorp_admin:ClearAllItems", type, targetID)
+                            end
+                        else
+                            TriggerEvent("vorp:TipRight", _U("empty"), 4000)
                         end
-                    else
-                        TriggerEvent("vorp:TipRight", _U("empty"), 4000)
-                    end
-                end)
+                    end)
+                end
 
             elseif data.current.value == "clearweapons" then
-                local targetID = data.current.info
-                local type = "weapons"
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.RemoveAllWeapons")
+                Wait(100)
+                if AdminAllowed then
+                    local targetID = data.current.info
+                    local type = "weapons"
 
-                local myInput = {
-                    type = "enableinput", -- dont touch
-                    inputType = "input",
-                    button = _U("confirm"), -- button name
-                    placeholder = " yes or no ", --placeholdername
-                    style = "block", --- dont touch
-                    attributes = {
-                        inputHeader = "ARE YOU SURE?", -- header
-                        type = "text", -- inputype text, number,date.etc if number comment out the pattern
-                        pattern = "[A-Za-z]+", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                        title = "DONT USE - and . or , comas", -- if input doesnt match show this message
-                        style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                    local myInput = {
+                        type = "enableinput", -- dont touch
+                        inputType = "input",
+                        button = _U("confirm"), -- button name
+                        placeholder = " yes or no ", --placeholdername
+                        style = "block", --- dont touch
+                        attributes = {
+                            inputHeader = "ARE YOU SURE?", -- header
+                            type = "text", -- inputype text, number,date.etc if number comment out the pattern
+                            pattern = "[A-Za-z]+", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                            title = "DONT USE - and . or , comas", -- if input doesnt match show this message
+                            style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
+                        }
                     }
-                }
-                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
-                    local result = tostring(cb)
-                    if result ~= "" then
-                        if result == "yes" then
-                            TriggerServerEvent("vorp_admin:ClearAllItems", type, targetID)
+                    TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
+                        local result = tostring(cb)
+                        if result ~= "" then
+                            if result == "yes" then
+                                TriggerServerEvent("vorp_admin:ClearAllItems", type, targetID)
+                            end
+                        else
+                            TriggerEvent("vorp:TipRight", _U("empty"), 4000)
                         end
-                    else
-                        TriggerEvent("vorp:TipRight", _U("empty"), 4000)
-                    end
-                end)
-
-            elseif data.current.value == "sowinventory" then
-                local TargetID = data.current.info
-                TriggerServerEvent("vorp_admin:checkInventory", TargetID)
+                    end)
+                end
+            elseif data.current.value == "showinventory" then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.ShowInvRemove")
+                Wait(100)
+                if AdminAllowed then
+                    local TargetID = data.current.info
+                    TriggerServerEvent("vorp_admin:checkInventory", TargetID)
+                end
             end
 
         end,
@@ -391,19 +442,16 @@ function RemovePlayers(PlayerData)
         end)
 end
 
--- show items inventory
-RegisterNetEvent("vorp_admin:getplayerInventory", function(inventorydata)
-    OpenInvnetory(inventorydata)
-end)
 
-function OpenInvnetory(inventorydata)
+
+function OpenInvnetory(dataItems)
     MenuData.CloseAll()
     local elements = {}
-    for item, dataItems in pairs(inventorydata) do
-        elements[#elements + 1] = { label = dataItems.label ..
-            " <span style='margin-left:10px; color: Yellow;'>" .. dataItems.count .. '</span>', value = "",
-            desc = dataItems.label }
-    end
+
+    elements[#elements + 1] = { label = dataItems.label ..
+        " <span style='margin-left:10px; color: Yellow;'>" .. dataItems.count .. '</span>', value = "",
+        desc = dataItems.label }
+
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = _U("MenuTitle"),

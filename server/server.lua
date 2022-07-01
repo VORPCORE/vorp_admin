@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------------------------
-------------------------------------- SERVER ------------------------------------------------------
+------------------------------------- SERVER EXPORTS ------------------------------------------------------
 local VorpCore = {}
 local VORPwl = {}
 
@@ -15,22 +15,7 @@ end)
 VORPInv = exports.vorp_inventory:vorp_inventoryApi()
 
 ----------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------
--- get group permission
-RegisterServerEvent("vorp_admin:GetGroup")
-AddEventHandler("vorp_admin:GetGroup", function()
-    local _source = source
-    local Character = VorpCore.getUser(_source).getUsedCharacter
-    local adminGroup = Character.group
-
-    if IsPlayerAceAllowed(_source, 'vorp.staff.OpenMenu') or adminGroup == "admin" then
-        TriggerClientEvent("vorp_admin:OpenMenu", _source)
-        TriggerClientEvent("vorp:TipRight", _source, "~e~you are being monitored!", 3000) --youre staff
-    else
-        TriggerClientEvent("vorp_admin:OpenUsersMenu", _source) --youre not staff
-    end
-
-end)
+------------------------------------- EVENTS -------------------------------------------------------
 
 --get players info list
 RegisterServerEvent('vorp_admin:GetPlayers')
@@ -85,6 +70,7 @@ end)
 --TP TO
 RegisterServerEvent("vorp_admin:TpToPlayer", function(targetID)
     local _source = source
+
     if targetID then
         local targetCoords = GetEntityCoords(GetPlayerPed(targetID))
         TriggerClientEvent('vorp_admin:gotoPlayer', _source, targetCoords)
@@ -127,10 +113,8 @@ end)
 RegisterServerEvent("vorp_admin:kick", function(targetID, reason)
     local _source = targetID
     if targetID then
-        TriggerClientEvent('vorp:updatemissioNotify', _source "YOU HAVE BEEN KICKED",
-            "Follow the rules!", 8000)
+        TriggerClientEvent('vorp:updatemissioNotify', _source, _U("kickednotify"), _U("notify"), 8000)
         Wait(8000)
-
         DropPlayer(_source, reason)
     end
 end)
@@ -180,8 +164,8 @@ RegisterServerEvent("vorp_admin:BanPlayer", function(targetID, staticid, time)
             datetime = datetime + banTime * 3600
         end
 
-        TriggerClientEvent('vorp:updatemissioNotify', _source, "YOU HAVE BEEN BANNED",
-            "For a period of " .. datetime .. "minutes. follow the rules!", 8000)
+        TriggerClientEvent('vorp:updatemissioNotify', _source, _U("banned"),
+            _U("notify"), 8000)
         Wait(8000)
         TriggerClientEvent("vorp:ban", _source, targetStaticId, datetime)
     end
@@ -194,8 +178,8 @@ RegisterServerEvent("vorp_admin:respawnPlayer", function(targetID)
         TriggerEvent("vorp:PlayerForceRespawn", _source)
         TriggerClientEvent("vorp:PlayerForceRespawn", _source)
         VORPInv.CloseInv(_source)
-        TriggerClientEvent('vorp:updatemissioNotify', _source, "RESPAWNED BY ADMINS",
-            "you have been respawned and will loose all your items and money", 8000)
+        TriggerClientEvent('vorp:updatemissioNotify', _source, _U("respawned"),
+            _U("lostall"), 8000)
         Wait(8000)
         TriggerClientEvent("vorp_core:respawnPlayer", _source) --remove player 
         TriggerClientEvent("vorp_admin:respawn", _source) --add effects
@@ -223,17 +207,18 @@ RegisterServerEvent("vorp_admin:givePlayer", function(targetID, type, data1, dat
                 if canCarry then
                     if canCarry2 then
                         VORPInv.addItem(targetID, item, qty)
-                        TriggerClientEvent("vorp:TipRight", targetID, "you have received " .. qty .. " of: " .. itemLabel
+                        TriggerClientEvent("vorp:TipRight", targetID,
+                            _U("received") .. qty .. _U("of") .. itemLabel .. "~q~"
                             , 5000)
                         TriggerClientEvent("vorp:TipRight", _source, _U("itemgiven"), 4000)
                     else
-                        TriggerClientEvent("vorp:TipRight", _source, "player item limit has reached", 5000)
+                        TriggerClientEvent("vorp:TipRight", _source, _U("itemlimit"), 5000)
                     end
                 else
-                    TriggerClientEvent("vorp:TipRight", _source, "player inventory is full", 5000)
+                    TriggerClientEvent("vorp:TipRight", _source, _U("inventoryfull"), 5000)
                 end
             else
-                TriggerClientEvent("vorp:TipRight", _source, "ITEM does not exist in the DATABASE", 5000)
+                TriggerClientEvent("vorp:TipRight", _source, _U("doesnotexist"), 5000)
             end
 
         elseif type == "weapon" then
@@ -242,17 +227,21 @@ RegisterServerEvent("vorp_admin:givePlayer", function(targetID, type, data1, dat
                 local canCarry = cb
                 if canCarry then
                     VORPInv.createWeapon(targetID, weapon)
-                    TriggerClientEvent("vorp:TipRight", targetID, "you have received A WEAPON", 5000)
+                    TriggerClientEvent("vorp:TipRight", targetID, _U("receivedweapon"), 5000)
                     TriggerClientEvent("vorp:TipRight", _source, _U("weapongiven"), 4000)
                 else
-                    TriggerClientEvent("vorp:TipRight", _source, "player cant carry more weapons ", 5000)
+                    TriggerClientEvent("vorp:TipRight", _source, _U("cantcarryweapon"), 5000)
                 end
             end)
         elseif type == "moneygold" then
             local CurrencyType = data1
             local qty = data2
             Character.addCurrency(tonumber(CurrencyType), tonumber(qty))
-            TriggerClientEvent("vorp:TipRight", targetID, "you have received: " .. qty .. "", 5000)
+            if CurrencyType == 0 then
+                TriggerClientEvent("vorp:TipRight", targetID, _U("received") .. qty .. _U("money"), 5000)
+            else
+                TriggerClientEvent("vorp:TipRight", targetID, _U("received") .. qty .. _U("gold"), 5000)
+            end
             TriggerClientEvent("vorp:TipRight", _source, _U("sent"), 4000)
         elseif type == "horse" then
             local identifier = Character.identifier
@@ -265,7 +254,7 @@ RegisterServerEvent("vorp_admin:givePlayer", function(targetID, type, data1, dat
                 ['model'] = hash, ['sex'] = sex })
 
             TriggerClientEvent("vorp:TipRight", targetID,
-                "you have been given a horse, head to the stables. might have to relog! ", 5000)
+                _U("horsereceived"), 5000)
             TriggerClientEvent("vorp:TipRight", _source, _U("horsegiven"), 4000)
 
         elseif type == "wagon" then
@@ -277,7 +266,7 @@ RegisterServerEvent("vorp_admin:givePlayer", function(targetID, type, data1, dat
                 , { ['identifier'] = identifier, ['charid'] = charid, ['name'] = tostring(name),
                 ['model'] = hash })
             TriggerClientEvent("vorp:TipRight", targetID,
-                "you have been given a wagon, head to the stables. might have to relog! ", 5000)
+                _U("wagonreceived"), 5000)
             TriggerClientEvent("vorp:TipRight", _source, _U("givenwagon"), 4000)
         end
     end
@@ -298,18 +287,18 @@ RegisterServerEvent("vorp_admin:ClearAllItems", function(type, targetID)
                 VORPInv.subItem(targetID, inventoryItems.name, inventoryItems.count)
             end
             TriggerClientEvent("vorp:TipRight", _source, _U("itemswiped"), 4000)
-            TriggerClientEvent("vorp:TipRight", targetID, "all your items have been wiped by an admin", 5000)
-        else
+            TriggerClientEvent("vorp:TipRight", targetID, _U("itemwipe"), 5000)
+        elseif type == "weapons" then
             local weaponsPlayer = VORPInv.getUserWeapons(targetID) --getloadoutcharweapons
             for key, value in pairs(weaponsPlayer) do
                 local id = value.id
                 VORPInv.subWeapon(targetID, id)
                 exports.ghmattimysql:execute("DELETE FROM loadout WHERE id=@id", { ['id'] = id })
-                TriggerClientEvent('syn_weapons:removeallammo') -- syn script
+                TriggerClientEvent('syn_weapons:removeallammo', targetID) -- syn script
                 TriggerClientEvent('vorp_weapons:removeallammo', targetID) -- vorp
             end
             TriggerClientEvent("vorp:TipRight", _source, _U("weaponswiped"), 4000)
-            TriggerClientEvent("vorp:TipRight", targetID, "your weapons were wiped and AMMO by an admin", 5000)
+            TriggerClientEvent("vorp:TipRight", targetID, _U("weaponwipe"), 5000)
         end
     end
 end)
@@ -351,7 +340,7 @@ RegisterServerEvent("vorp_admin:setGroup", function(targetID, newgroup)
     if _source then
         TriggerEvent("vorp:setGroup", _source, NewPlayerGroup)
         TriggerClientEvent("vorp:TipRight", _source,
-            "you have been given the Group: ~o~" .. NewPlayerGroup .. " ~q~You might have to relog!", 5000)
+            _U("groupgiven") .. NewPlayerGroup, 5000)
     end
 end)
 -- JOB
@@ -361,9 +350,9 @@ RegisterServerEvent("vorp_admin:setJob", function(targetID, newjob, newgrade)
     local NewPlayerGrade = newgrade
     if _source then
         TriggerEvent("vorp:setJob", _source, NewPlayerJoB, NewPlayerGrade) -- it doesnt update players need to relog
-        TriggerClientEvent("vorp:TipRight", _source, "you have been given the JOB: ~o~" .. NewPlayerJoB, 5000)
+        TriggerClientEvent("vorp:TipRight", _source, _U("jobgiven") .. NewPlayerJoB, 5000)
         Wait(500)
-        TriggerClientEvent("vorp:TipRight", _source, "with Grade: ~o~" .. NewPlayerGrade, 5000)
+        TriggerClientEvent("vorp:TipRight", _source, _U("gradegiven") .. NewPlayerGrade, 5000)
     end
 end)
 
@@ -402,5 +391,32 @@ RegisterServerEvent("vorp_admin:spectate", function(targetID)
     if targetID then
         local targetCoords = GetEntityCoords(GetPlayerPed(targetID))
         TriggerClientEvent("vorp_sdmin:spectatePlayer", _source, targetID, targetCoords)
+    end
+end)
+
+
+
+function Check(table, isallow)
+    for k, list in pairs(table) do
+        if list == isallow then
+            return true
+        end
+    end
+    return false
+end
+
+-----------------------------------------------------------------------------------------------------------------
+--PERMISSIONS
+--OPEN MAIN MENU
+RegisterServerEvent('vorp_admin:opneStaffMenu', function(object)
+    local _source = source
+    local ace = IsPlayerAceAllowed(_source, object)
+    if ace then
+        Perm = true
+        TriggerClientEvent('vorp_admin:OpenStaffMenu', _source, Perm)
+    else
+        Perm = false
+        TriggerClientEvent("vorp:TipRight", _source, _U("noperms"), 4000)
+        TriggerClientEvent('vorp_admin:OpenStaffMenu', _source, Perm)
     end
 end)

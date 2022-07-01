@@ -15,6 +15,7 @@ shared_script {
     'config.lua',
     'locale.lua',
     'languages/*.lua',
+    'functions.lua'
 
 }
 
