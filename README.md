@@ -40,6 +40,7 @@ theres also  a menu for users
 * [VORP_INPUTS](https://github.com/VORPCORE/vorp_inputs-lua) ***Lua***
 * [VORP_INVENTORY 1.1.0](https://github.com/VORPCORE/vorp_inventory-lua)  ***You must have the whitelist tables updated in the DB and users***
 * [VORP_CORE 1.3](https://github.com/VORPCORE/vorp-core-lua) ***Lua***
+* menuapi
 
 #### LlICENSE
 * this resource its protected by its license
