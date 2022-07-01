@@ -172,6 +172,20 @@ Locales["en_lang"] = {
     clearallitems_desc        = "clear all player items",
     clearallweapons_desc      = "clear all player weapons and ammo",
     showinventory_desc        = "sow player inventory",
+    ------------------------------------------------------------------------------
+    -- USERSMENU
+    Scoreboard                = "ScoreBoard",
+    scoreboard_desc           = "list of players online",
+    Report                    = "Report",
+    reportoptions_desc        = "Report options",
+    requeststaff              = "Request staff",
+    Requeststaff_desc         = "Request staff if you need help",
+    createticket              = "create ticket",
+    tickectdiscord_desc       = " create a tick to discord",
+    showMyInfo                = "Show my info",
+    showmyinfo_desc           = "your winfo will be displayed",
+    showJobsOnline            = "Jobs Online",
+    showjobsonline_desc       = "Show waht jobs are online ",
     --------------------------------------------------------------------------
     -- NOTIFY
     goldremoved               = "gold has been removed",
@@ -208,5 +222,6 @@ Locales["en_lang"] = {
     noperms                   = "~e~you dont have permmision for this action",
     givehorse_desc            = "Gave a horse",
     copied                    = "coords copied to clipboard",
+    notyetavailable           = "~e~not yet available",
 
 }
