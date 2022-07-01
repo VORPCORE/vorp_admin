@@ -416,7 +416,6 @@ RegisterServerEvent('vorp_admin:opneStaffMenu', function(object)
         TriggerClientEvent('vorp_admin:OpenStaffMenu', _source, Perm)
     else
         Perm = false
-        TriggerClientEvent("vorp:TipRight", _source, _U("noperms"), 4000)
         TriggerClientEvent('vorp_admin:OpenStaffMenu', _source, Perm)
     end
 end)
