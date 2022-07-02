@@ -32,34 +32,36 @@ AddEventHandler('vorp_admin:GetPlayers', function()
             local User = VorpCore.getUser(player)
             local Character = User.getUsedCharacter --get player info
             local group = Character.group
-            local playername = Character.firstname .. ' ' .. Character.lastname --player char name
-            local job = Character.job --player job
-            local identifier = Character.identifier --player steam
-            local PlayerMoney = Character.money --money
-            local PlayerGold = Character.gold --gold
-            local JobGrade = Character.jobGrade --jobgrade
-            local getid = VORPwl.getEntry(identifier).getId() -- userID this is a static ID used to whitelist or ban
-            local getstatus = VORPwl.getEntry(identifier).getStatus() -- whitelisted returns true or false
-            local warnstatus = User.getPlayerwarnings() --get players warnings
+            if Character.firstname then
+                local playername = Character.firstname .. ' ' .. Character.lastname --player char name
+                local job = Character.job --player job
+                local identifier = Character.identifier --player steam
+                local PlayerMoney = Character.money --money
+                local PlayerGold = Character.gold --gold
+                local JobGrade = Character.jobGrade --jobgrade
+                local getid = VORPwl.getEntry(identifier).getId() -- userID this is a static ID used to whitelist or ban
+                local getstatus = VORPwl.getEntry(identifier).getStatus() -- whitelisted returns true or false
+                local warnstatus = User.getPlayerwarnings() --get players warnings
 
-            data[tostring(player)] = {
-                serverId = player,
-                x = coords.x,
-                y = coords.y,
-                z = coords.z,
-                name = GetPlayerName(player),
-                Group = group,
-                PlayerName = playername,
-                Job = job,
-                SteamId = identifier,
-                ped = playerPed,
-                Money = PlayerMoney,
-                Gold = PlayerGold,
-                Grade = JobGrade,
-                staticID = tonumber(getid),
-                WLstatus = tostring(getstatus),
-                warns = tonumber(warnstatus),
-            }
+                data[tostring(player)] = {
+                    serverId = player,
+                    x = coords.x,
+                    y = coords.y,
+                    z = coords.z,
+                    name = GetPlayerName(player),
+                    Group = group,
+                    PlayerName = playername,
+                    Job = job,
+                    SteamId = identifier,
+                    ped = playerPed,
+                    Money = PlayerMoney,
+                    Gold = PlayerGold,
+                    Grade = JobGrade,
+                    staticID = tonumber(getid),
+                    WLstatus = tostring(getstatus),
+                    warns = tonumber(warnstatus),
+                }
+            end
         end
     end
     TriggerClientEvent("vorp_admin:SendPlayers", _source, data)
