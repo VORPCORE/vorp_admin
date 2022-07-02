@@ -234,15 +234,19 @@ RegisterServerEvent("vorp_admin:givePlayer", function(targetID, type, data1, dat
                 end
             end)
         elseif type == "moneygold" then
-            local CurrencyType = data1
+         local CurrencyType = data1
             local qty = data2
-            Character.addCurrency(tonumber(CurrencyType), tonumber(qty))
-            if CurrencyType == 0 then
-                TriggerClientEvent("vorp:TipRight", targetID, _U("received") .. qty .. _U("money"), 5000)
+            if qty then
+                Character.addCurrency(tonumber(CurrencyType), tonumber(qty))
+                if CurrencyType == 0 then
+                    TriggerClientEvent("vorp:TipRight", targetID, _U("received") .. qty .. _U("money"), 5000)
+                elseif CurrencyType == 1 then
+                    TriggerClientEvent("vorp:TipRight", targetID, _U("received") .. qty .. _U("gold"), 5000)
+                end
+                TriggerClientEvent("vorp:TipRight", _source, _U("sent"), 4000)
             else
-                TriggerClientEvent("vorp:TipRight", targetID, _U("received") .. qty .. _U("gold"), 5000)
+                TriggerClientEvent("vorp:TipRight", _source, "add quantity", 4000)
             end
-            TriggerClientEvent("vorp:TipRight", _source, _U("sent"), 4000)
         elseif type == "horse" then
             local identifier = Character.identifier
             local charid = Character.charIdentifier
