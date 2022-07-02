@@ -32,6 +32,8 @@ function Admin()
 
                 if AdminAllowed then
                     PlayerList()
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "actions" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.AdminActions')
@@ -39,6 +41,8 @@ function Admin()
 
                 if AdminAllowed then
                     Actions()
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "offline" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.OfflineActions')
@@ -46,6 +50,8 @@ function Admin()
 
                 if AdminAllowed then
                     OffLine()
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
             end
@@ -100,6 +106,8 @@ function PlayerList()
                 if AdminAllowed then
                     local player = data.current.info
                     OpenSubAdminMenu(player)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
             end
@@ -133,12 +141,16 @@ function OpenSubAdminMenu(Player)
                 Wait(100)
                 if AdminAllowed then
                     OpenSimpleActionMenu(Player)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "advancedaction" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.OpenAdvancedActions')
                 Wait(100)
                 if AdminAllowed then
                     OpenAdvancedActions(Player)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             end
         end,
@@ -215,6 +227,8 @@ function OpenSimpleActionMenu(PlayerInfo)
                             TriggerEvent("vorp:TipRight", _U("switchedoff"), 3000)
                         end
                     end
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
 
@@ -228,6 +242,8 @@ function OpenSimpleActionMenu(PlayerInfo)
 
                     local adminCoords = GetEntityCoords(PlayerPedId())
                     TriggerServerEvent("vorp_admin:Bring", target, adminCoords)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
             elseif data.current.value == "sendback" then
@@ -244,6 +260,8 @@ function OpenSimpleActionMenu(PlayerInfo)
                     local target = data.current.info
 
                     TriggerServerEvent("vorp_admin:TpToPlayer", target)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
             elseif data.current.value == "goback" then
@@ -257,6 +275,8 @@ function OpenSimpleActionMenu(PlayerInfo)
                 if AdminAllowed then
                     local target = data.current.info
                     TriggerServerEvent('vorp_admin:revive', target)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "heal" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Heal')
@@ -265,6 +285,8 @@ function OpenSimpleActionMenu(PlayerInfo)
                 if AdminAllowed then
                     local target = data.current.info
                     TriggerServerEvent('vorp_admin:heal', target)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "warn" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Warn')
@@ -304,6 +326,8 @@ function OpenSimpleActionMenu(PlayerInfo)
                             TriggerEvent("vorp:TipRight", _U("empty"), 4000)
                         end
                     end)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
             elseif data.current.value == "unwarn" then
@@ -315,6 +339,8 @@ function OpenSimpleActionMenu(PlayerInfo)
                     local target = data.current.info2
                     local status = "unwarn"
                     TriggerServerEvent("vorp_admin:warns", target, status, staticID)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "spectate" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Spectate')
@@ -323,6 +349,8 @@ function OpenSimpleActionMenu(PlayerInfo)
                 if AdminAllowed then
                     local target = data.current.info
                     TriggerServerEvent("vorp_admin:spectate", target)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
             end
@@ -385,6 +413,8 @@ function OpenAdvancedActions(Player)
                 if AdminAllowed then
                     local target = data.current.info
                     TriggerServerEvent("vorp_admin:respawnPlayer", target)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "kick" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Kick')
@@ -421,6 +451,8 @@ function OpenAdvancedActions(Player)
                             TriggerEvent("vorp:TipRight", _U("empty"), 4000)
                         end
                     end)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
 
@@ -462,6 +494,8 @@ function OpenAdvancedActions(Player)
                             TriggerEvent("vorp:TipRight", _U("empty"), 4000)
                         end
                     end)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
             elseif data.current.value == "unban" then
@@ -471,6 +505,8 @@ function OpenAdvancedActions(Player)
                 if AdminAllowed then
                     local staticID = data.current.info
                     TriggerEvent("vorp:unban", staticID)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "whitelist" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Whitelist')
@@ -482,6 +518,8 @@ function OpenAdvancedActions(Player)
                     local type = "addWhiteList"
                     TriggerServerEvent("vorp_admin:Whitelist", target, staticID, type)
                     TriggerEvent("vorp:TipRight", "whitelist was set", 5000)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
             elseif data.current.value == "unwhitelist" then
@@ -494,6 +532,8 @@ function OpenAdvancedActions(Player)
                     local type = "removewhitelist"
                     TriggerServerEvent("vorp_admin:Whitelist", target, staticID, type)
                     TriggerEvent("vorp:TipRight", "whitelist was removed", 5000)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "setgroup" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Setgroup')
@@ -524,6 +564,8 @@ function OpenAdvancedActions(Player)
                             TriggerEvent("vorp:TipRight", _U("empty"), 4000)
                         end
                     end)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
             elseif data.current.value == "setjob" then
@@ -564,6 +606,8 @@ function OpenAdvancedActions(Player)
                             TriggerEvent("vorp:TipRight", _U("empty"), 4000)
                         end
                     end)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
             end
@@ -612,6 +656,8 @@ function Actions()
                 if AdminAllowed then
 
                     TriggerEvent("vorp:delHorse")
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
             elseif data.current.value == "delwagon" then
@@ -632,6 +678,8 @@ function Actions()
                     else
                         TriggerEvent('vorp:TipRight', _U("youneedtobeseatead"), 3000)
                     end
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
             elseif data.current.value == "delwagonradius" then
@@ -664,6 +712,8 @@ function Actions()
                             TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
                         end
                     end)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "getcoords" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.GetCoords')
@@ -671,6 +721,8 @@ function Actions()
 
                 if AdminAllowed then
                     OpenCoordsMenu()
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
             end
