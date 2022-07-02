@@ -70,7 +70,7 @@ function PlayerList()
     for k, playersInfo in pairs(players) do
 
         elements[#elements + 1] = {
-            label = "<span style= margin-left:160px;>" .. playersInfo.PlayerName .. "</span>",
+            label = playersInfo.PlayerName,
             value = "players" .. k,
             desc = _U("SteamName").."<span style=color:MediumSeaGreen;> "
                 .. playersInfo.name .. "</span><br>".._U("ServerID").."<span style=color:MediumSeaGreen;>"
