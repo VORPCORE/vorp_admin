@@ -31,6 +31,8 @@ function Teleport()
                 Wait(100)
                 if AdminAllowed then
                     TriggerEvent('vorp:teleportWayPoint')
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "tptocoords" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.TpCoords")
@@ -55,7 +57,7 @@ function Teleport()
                         local coords = result
                         local admin = PlayerPedId()
                         if coords ~= "" and coords then
-                           
+
                             local finalCoords = {}
                             for i in string.gmatch(coords, "%S+") do
                                 finalCoords[#finalCoords + 1] = i
@@ -70,6 +72,8 @@ function Teleport()
                             TriggerEvent("vorp:TipRight", _U("empty"), 5000)
                         end
                     end)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "tptoplayer" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.TpPlayer")
@@ -80,9 +84,11 @@ function Teleport()
                         if TargetID ~= "" then
                             TriggerServerEvent("vorp_admin:TpToPlayer", TargetID)
                         else
-                            TriggerEvent("vorp:TipRight", _U("empty"),4000)
+                            TriggerEvent("vorp:TipRight", _U("empty"), 4000)
                         end
                     end)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "admingoback" then
                 if lastLocation then
@@ -101,6 +107,8 @@ function Teleport()
                             TriggerEvent("vorp:TipRight", _U("empty"))
                         end
                     end)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "sendback" then
                 TriggerEvent("vorpinputs:getInput", _U("confirm"), _U("insertid"), function(result)
@@ -120,5 +128,3 @@ function Teleport()
         end)
 
 end
-
-
