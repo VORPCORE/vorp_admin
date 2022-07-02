@@ -52,20 +52,23 @@ function OpenMenu()
                 if AdminAllowed then
                     Admin()
                 else
-                    print("false")
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "boost" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Boosters')
                 Wait(100)
                 if AdminAllowed then
                     Boost()
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
-
             elseif data.current.value == "database" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Database')
                 Wait(100)
                 if AdminAllowed then
                     DataBase()
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
             elseif data.current.value == "teleport" then
@@ -79,6 +82,8 @@ function OpenMenu()
                 Wait(100)
                 if AdminAllowed then
                     OpenDevTools()
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             end
         end,
