@@ -254,5 +254,6 @@ Locales["en_lang"] = {
     copied                    = "coords copied to clipboard",
     notyetavailable           = "~e~not yet available",
     insertnumber              = "Insert a number",
-    radius                    = "Radius"
+    radius                    = "Radius",
+    addquantity               = "add quantity"
 }
