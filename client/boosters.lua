@@ -68,6 +68,8 @@ function Boost()
                         SetPlayerInvincible(PlayerId(), false)
                         Citizen.InvokeNative(0xFD6943B6DF77E449, player, true)
                     end
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "goldcores" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.Golden")
@@ -107,6 +109,8 @@ function Boost()
                         Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 2, 0.0)
                         Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 0, 0.0)
                     end
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "noclip" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.Noclip")
@@ -124,6 +128,8 @@ function Boost()
                         timer = 5000
                         TriggerEvent('vorp:TipRight', _U("switchedoff"), 3000)
                     end
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "infiniteammo" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.InfiniteAmmo")
@@ -144,18 +150,24 @@ function Boost()
                         TriggerEvent("vorp:TipRight", _U("switchedoff"), 3000)
                         SetPedInfiniteAmmo(player, false, weaponHash)
                     end
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "selfrevive" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.SelfRevive")
                 Wait(100)
                 if AdminAllowed then
                     TriggerEvent('vorp:resurrectPlayer')
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "selfheal" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.SelfHeal")
                 Wait(100)
                 if AdminAllowed then
                     TriggerEvent('vorp:heal')
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "spawnhorse" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.SpawHorse")
@@ -191,6 +203,8 @@ function Boost()
                             TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
                         end
                     end)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
 
             elseif data.current.value == "spawnwagon" then
@@ -230,6 +244,8 @@ function Boost()
                             TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
                         end
                     end)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             end
         end,
