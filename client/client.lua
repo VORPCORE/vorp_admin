@@ -157,8 +157,6 @@ end)
 -- show items inventory
 RegisterNetEvent("vorp_admin:getplayerInventory", function(inventorydata)
 
-    for _, dataItems in pairs(inventorydata) do -- to prevent menu from opening empty and give errors
-        OpenInvnetory(dataItems)
-    end
-
+        OpenInvnetory(inventorydata)
+   
 end)
