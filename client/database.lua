@@ -9,14 +9,15 @@ function DataBase()
         elements[#elements + 1] = {
 
             label = "<span style= margin-left:160px;>" .. PlayersData.PlayerName .. "</span>", value = "players",
-            desc = "Steam Name: <span style=color:MediumSeaGreen;> "
-                .. PlayersData.name .. "</span><br>Server ID:  <span style=color:MediumSeaGreen;>"
-                .. PlayersData.serverId .. "</span><br> Group:  <span style=color:MediumSeaGreen;>"
-                .. PlayersData.Group .. "</span><br>Job:  <span style=color:MediumSeaGreen;>"
-                .. PlayersData.Job .. "</span> Grade:  <span style=color:MediumSeaGreen;>"
-                .. PlayersData.Grade .. "</span><br>Identifier:  <span style=color:MediumSeaGreen;>"
-                .. PlayersData.SteamId .. "</span><br> Money:  <span style=color:MediumSeaGreen;>"
-                .. PlayersData.Money .. "</span><br>Player Gold:  <span style=color:Gold;>"
+            desc = _U("SteamName").."<span style=color:MediumSeaGreen;> "
+                .. PlayersData.name .. "</span><br>".._U("ServerID").."<span style=color:MediumSeaGreen;>"
+                .. PlayersData.serverId .. "</span><br>".._U("PlayerGroup").."<span style=color:MediumSeaGreen;>"
+                .. PlayersData.Group .. "</span><br>".._U("PlayerJob").."<span style=color:MediumSeaGreen;>"
+                .. PlayersData.Job .. "</span>".._U("Grade").."<span style=color:MediumSeaGreen;>"
+                .. PlayersData.Grade .. "</span><br>".._U("Identifier").."<span style=color:MediumSeaGreen;>"
+                .. PlayersData.SteamId .. "</span><br>".._U("PlayerMoney").."<span style=color:MediumSeaGreen;>"
+                .. PlayersData.Money .. "</span><br>".._U("PlayerGold").."<span style=color:Gold;>"
+                .. PlayersData.Gold .. "</span><br>".._U("PlayerStaticID").."<span style=color:Red;>"
                 .. PlayersData.Gold .. "</span>", PlayerData = PlayersData
         }
 

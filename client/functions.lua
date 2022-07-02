@@ -76,6 +76,8 @@ function OpenMenu()
                 Wait(100)
                 if AdminAllowed then
                     Teleport()
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             elseif data.current.value == "devtools" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Devtools')

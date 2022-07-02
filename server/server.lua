@@ -245,7 +245,7 @@ RegisterServerEvent("vorp_admin:givePlayer", function(targetID, type, data1, dat
                 end
                 TriggerClientEvent("vorp:TipRight", _source, _U("sent"), 4000)
             else
-                TriggerClientEvent("vorp:TipRight", _source, "add quantity", 4000)
+                TriggerClientEvent("vorp:TipRight", _source, _U("addquantity"), 4000)
             end
         elseif type == "horse" then
             local identifier = Character.identifier
