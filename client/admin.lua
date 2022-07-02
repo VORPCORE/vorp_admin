@@ -72,17 +72,17 @@ function PlayerList()
         elements[#elements + 1] = {
             label = "<span style= margin-left:160px;>" .. playersInfo.PlayerName .. "</span>",
             value = "players" .. k,
-            desc = "Steam Name: <span style=color:MediumSeaGreen;> "
-                .. playersInfo.name .. "</span><br>Server ID:  <span style=color:MediumSeaGreen;>"
-                .. playersInfo.serverId .. "</span><br>Player Group:  <span style=color:MediumSeaGreen;>"
-                .. playersInfo.Group .. "</span><br>Player Job:  <span style=color:MediumSeaGreen;>"
-                .. playersInfo.Job .. "</span> Grade:  <span style=color:MediumSeaGreen;>"
-                .. playersInfo.Grade .. "</span><br>Identifier:  <span style=color:MediumSeaGreen;>"
-                .. playersInfo.SteamId .. "</span><br>Player Money:  <span style=color:MediumSeaGreen;>"
-                .. playersInfo.Money .. "</span><br>Player Gold:  <span style=color:Gold;>"
-                .. playersInfo.Gold .. "</span><br>Player Static ID: <span style=color:Red;>"
-                .. playersInfo.staticID .. "</span><br>Player Is whitelist:  <span style=color:Gold;>"
-                .. playersInfo.WLstatus .. "</span><br>Player warnings:  <span style=color:Gold;>"
+            desc = _U("SteamName").."<span style=color:MediumSeaGreen;> "
+                .. playersInfo.name .. "</span><br>".._U("ServerID").."<span style=color:MediumSeaGreen;>"
+                .. playersInfo.serverId .. "</span><br>".._U("PlayerGroup").."<span style=color:MediumSeaGreen;>"
+                .. playersInfo.Group .. "</span><br>".._U("PlayerJob").."<span style=color:MediumSeaGreen;>"
+                .. playersInfo.Job .. "</span>".._U("Grade").."<span style=color:MediumSeaGreen;>"
+                .. playersInfo.Grade .. "</span><br>".._U("Identifier").."<span style=color:MediumSeaGreen;>"
+                .. playersInfo.SteamId .. "</span><br>".._U("PlayerMoney").."<span style=color:MediumSeaGreen;>"
+                .. playersInfo.Money .. "</span><br>".._U("PlayerGold").."<span style=color:Gold;>"
+                .. playersInfo.Gold .. "</span><br>".._U("PlayerStaticID").."<span style=color:Red;>"
+                .. playersInfo.staticID .. "</span><br>".._U("PlyaerWhitelist").."<span style=color:Gold;>"
+                .. playersInfo.WLstatus .. "</span><br>".._U("PlayerWarnings").."<span style=color:Gold;>"
                 .. playersInfo.warns .. "</span>", info = playersInfo
         }
 
@@ -121,13 +121,13 @@ end
 function OpenSubAdminMenu(Player)
     MenuData.CloseAll()
     local elements = {
-        { label = "simple actions", value = 'simpleaction', desc = "simples actions " },
-        { label = "advanced actions", value = 'advancedaction', desc = "advanced actions" },
+        { label = _U("SimpleAction"), value = 'simpleaction', desc = _U("SimpleAction") },
+        { label = _U("AdvancedAction"), value = 'advancedaction', desc = _U("AdvancedAction") },
     }
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = _U("MenuTitle"),
-            subtext  = "Player Manegement",
+            subtext  = _U("MenuTitle_desc"),
             align    = 'top-left',
             elements = elements,
             lastmenu = 'PlayerList',
@@ -371,22 +371,22 @@ function OpenAdvancedActions(Player)
         { label = _U("ban_p"), value = 'ban',
             desc = _U("ban_desc") .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.staticID, info2 = Player.Group, info3 = Player.serverId },
-        { label = "unban", value = 'unban',
+        { label = _U("unban_p"), value = 'unban',
             desc = _U("unban_desc") .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.staticID },
         { label = _U("respawn_p"), value = 'respawn',
             desc = _U("respawn_desc") .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.serverId },
-        { label = "whitelist", value = 'whitelist',
+        { label = _U("whitelist_p"), value = 'whitelist',
             desc = _U("whitelist_desc") .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.serverId, info2 = Player.staticID },
-        { label = "unwhitelist", value = 'unwhitelist',
+        { label = _U("unwhitelist_p"), value = 'unwhitelist',
             desc = _U("unwarn_desc") .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.serverId, info2 = Player.staticID },
-        { label = "setjob", value = 'setjob',
+        { label = _U("setjob_p"), value = 'setjob',
             desc = _U("setjob_desc") .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.serverId },
-        { label = "setgroup", value = 'setgroup',
+        { label = _U("setgroup_p"), value = 'setgroup',
             desc = _U("setgroup_desc") .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.serverId },
     }
@@ -692,10 +692,10 @@ function Actions()
                         type = "enableinput", -- dont touch
                         inputType = "input",
                         button = _U("confirm"), -- button name
-                        placeholder = "Insert a number", --placeholdername
+                        placeholder = _U("insertnumber"), --placeholdername
                         style = "block", --- dont touch
                         attributes = {
-                            inputHeader = "Radius", -- header
+                            inputHeader = _U("radius"), -- header
                             type = "number", -- inputype text, number,date.etc if number comment out the pattern
                             pattern = "[0-9]{1,2}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
                             title = "numbers only max allowed is 2", -- if input doesnt match show this message
@@ -777,11 +777,11 @@ end
 function OffLine()
     MenuData.CloseAll()
     local elements = {
-        { label = "BAN/UNBAN", value = 'bans',
-            desc = "type = ban/unban<br> StaticID = number NOT server ID <br> Time example 1h,1d,1w,1m,1y permaban 0 <br>DONT USE IF TYPE IS UNBAN" },
-        { label = "WHITE/UNWHITE", value = 'whites',
-            desc = " type = whitelist/unwhitelist <br> StaicID = number<br> check discord to get his static ID or databse" },
-        { label = "WARN/UNWARN", value = 'warn', desc = _U("warn_desc") },
+        { label = _U("banunban"), value = 'bans',
+            desc = _U("banunban_desc") },
+        { label = _U("whiteunwhite"), value = 'whites',
+            desc = _U("whiteunwhite_desc") },
+        { label = _U("warnunwarn"), value = 'warn', desc = _U("warn_desc") },
 
     }
 
@@ -805,10 +805,10 @@ function OffLine()
                     type = "enableinput", -- dont touch
                     inputType = "input",
                     button = _U("confirm"), -- button name
-                    placeholder = "TYPE STATICID *TIME", --placeholdername
+                    placeholder = _U("typestaticidtime"), --placeholdername
                     style = "block", --- dont touch
                     attributes = {
-                        inputHeader = "BAN/UNBAN", -- header
+                        inputHeader = _U("banunban"), -- header
                         type = "text", -- inputype text, number,date.etc if number comment out the pattern
                         pattern = "[A-Za-z0-9 ]{1,10}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
                         title = " min 1 max 20 no . no , no - no _", -- if input doesnt match show this message
@@ -847,10 +847,10 @@ function OffLine()
                     type = "enableinput", -- dont touch
                     inputType = "input",
                     button = _U("confirm"), -- button name
-                    placeholder = "TYPE STATICID", --placeholdername
+                    placeholder = _U("typestaticid"), --placeholdername
                     style = "block", --- dont touch
                     attributes = {
-                        inputHeader = "WHITE/UNWHITE", -- header
+                        inputHeader = _U("whiteunwhite"), -- header
                         type = "text", -- inputype text, number,date.etc if number comment out the pattern
                         pattern = "[0-9 ]{1,10}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
                         title = " min 1 max 20 no . no , no - no _", -- if input doesnt match show this message
@@ -884,10 +884,10 @@ function OffLine()
                     type = "enableinput", -- dont touch
                     inputType = "textarea",
                     button = _U("confirm"), -- button name
-                    placeholder = "TYPE STATICID", --placeholdername
+                    placeholder = _U("typestaticid"), --placeholdername
                     style = "block", --- dont touch
                     attributes = {
-                        inputHeader = "WARN/UNWARN", -- header
+                        inputHeader = _U("warnunwarn"), -- header
                         type = "text", -- inputype text, number,date.etc if number comment out the pattern
                         pattern = "[A-Za-z0-9 ]{10,100}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
                         title = " min 10 max 100 chars dont use dot or commas", -- if input doesnt match show this message

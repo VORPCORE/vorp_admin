@@ -17,6 +17,22 @@ Locales["en_lang"] = {
     teleport_desc             = "Teleports ",
     confirm                   = "Confirm", -- for all inputs
     empty                     = "its empty", --for all inputs
+    MenuTitle_desc            = "Player Manegement",
+    SimpleAction              = "simple actions",
+    AdvancedAction            = "advanced actions",
+    ------------------------------------------------
+    -- Player status
+    SteamName                 = "Steam Name: ",
+    ServerID                  = "Server ID: ",
+    PlayerGroup               = "Player Group: ",
+    PlayerJob                 = "Player Job: ",
+    Grade                     = "Grade: ",
+    Identifier                = "Identifier: ",
+    PlayerMoney               = "Player Money: ",
+    PlayerGold                = "Player Gold: ",
+    PlayerStaticID            = "Player Static ID: ",
+    PlyaerWhitelist           = "Player Is whitelist: ",
+    PlayerWarnings            = "Player warnings: ",
     ------------------------------------------------
     -- submenu ADMIN ACTIONS
     MenuSubtitle2             = "Players online",
@@ -32,6 +48,11 @@ Locales["en_lang"] = {
     bring_p                   = "Bring ",
     warn_p                    = "Warn ",
     unwarn_p                  = "Unwarn",
+    unban_p                   = "Unban",
+    whitelist_p               = "whitelist",
+    unwhitelist_p             = "unwhitelist",
+    setjob_p                  = "setjob",
+    setgroup_p                = "setgroup",
     -- the description of the above ^^
     kick_desc                 = "Kick: ",
     freeze_desc               = "Freeze; ",
@@ -49,6 +70,13 @@ Locales["en_lang"] = {
     whitelist_desc            = "whitelist: ",
     setjob_desc               = "set job to: ",
     setgroup_desc             = "set group to: ",
+    banunban                  = "BAN/UNBAN",
+    whiteunwhite              = "WHITE/UNWHITE",
+    warnunwarn                = "WARN/UNWARN",
+    banunban_desc             = "type = ban/unban<br> StaticID = number NOT server ID <br> Time example 1h,1d,1w,1m,1y permaban 0 <br>DONT USE IF TYPE IS UNBAN",
+    whiteunwhite_desc         = "type = whitelist/unwhitelist <br> StaicID = number<br> check discord to get his static ID or databse",
+    typestaticid              = "TYPE STATICID",
+    typestaticidtime          = "TYPE STATICID *Time",
     -------------------------------------------------
     --BOOSTERS
     Boosters                  = "Boosters",
@@ -225,5 +253,6 @@ Locales["en_lang"] = {
     givehorse_desc            = "Gave a horse",
     copied                    = "coords copied to clipboard",
     notyetavailable           = "~e~not yet available",
-
+    insertnumber              = "Insert a number",
+    radius                    = "Radius"
 }
