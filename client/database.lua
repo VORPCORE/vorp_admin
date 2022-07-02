@@ -8,7 +8,7 @@ function DataBase()
     for _, PlayersData in pairs(players) do
         elements[#elements + 1] = {
 
-            label = "<span style= margin-left:160px;>" .. PlayersData.PlayerName .. "</span>", value = "players",
+            label =  PlayersData.PlayerName, value = "players",
             desc = _U("SteamName").."<span style=color:MediumSeaGreen;> "
                 .. PlayersData.name .. "</span><br>".._U("ServerID").."<span style=color:MediumSeaGreen;>"
                 .. PlayersData.serverId .. "</span><br>".._U("PlayerGroup").."<span style=color:MediumSeaGreen;>"
