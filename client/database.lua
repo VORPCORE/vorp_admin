@@ -471,14 +471,16 @@ function RemovePlayers(PlayerData)
         end)
 end
 
-function OpenInvnetory(dataItems)
+function OpenInvnetory(inventorydata)
     MenuData.CloseAll()
     local elements = {}
 
-    elements[#elements + 1] = { label = dataItems.label ..
-        " <span style='margin-left:10px; color: Yellow;'>" .. dataItems.count .. '</span>', value = "",
-        desc = dataItems.label }
+       for _, dataItems in pairs(inventorydata) do -- to prevent menu from opening empty and give errors
 
+        elements[#elements + 1] = { label = dataItems.label ..
+            " <span style='margin-left:10px; color: Yellow;'>" .. dataItems.count .. '</span>', value = "",
+            desc = dataItems.label }
+        end
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = _U("MenuTitle"),
