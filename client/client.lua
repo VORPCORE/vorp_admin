@@ -42,7 +42,6 @@ Citizen.CreateThread(function()
             if IsControlJustPressed(0, Key) and not Inmenu then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenMenu")
                 Wait(100)
-
                 if AdminAllowed then
                     MenuData.CloseAll()
                     OpenMenu()
