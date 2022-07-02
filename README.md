@@ -38,8 +38,8 @@ theres also  a menu for users
 ### DEPENDENCIES
 ##### you need all these updated to lattest verions or it wont work 
 * [VORP_INPUTS](https://github.com/VORPCORE/vorp_inputs-lua) ***Lua***
-* [VORP_INVENTORY 1.1.0](https://github.com/VORPCORE/vorp_inventory-lua)  ***You must have the whitelist tables updated in the DB and users***
-* [VORP_CORE 1.3](https://github.com/VORPCORE/vorp-core-lua) ***Lua***
+* [VORP_INVENTORY 1.1.0](https://github.com/VORPCORE/vorp_inventory-lua)  
+* [VORP_CORE 1.3](https://github.com/VORPCORE/vorp-core-lua) ***You must have the whitelist tables updated in the DB and users***
 * [menuapi](https://github.com/outsider31000/menuapi)
 
 #### LlICENSE
