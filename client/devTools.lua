@@ -30,7 +30,7 @@ function OpenDevTools()
                     placeholder = _U("insertpedhash"), --placeholdername
                     style = "block", --- dont touch
                     attributes = {
-                        inputHeader = _U("spawnentity "), -- header
+                        inputHeader = _U("spawnentity"), -- header
                         type = "text", -- inputype text, number,date.etc if number comment out the pattern
                         pattern = "[A-Za-z0-9 \\_\\-]{5,60}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
                         title = "wrong syntax", -- if input doesnt match show this message
