@@ -73,6 +73,8 @@ Locales["en_lang"] = {
     goback_p                  = "Go back to Last location",
     goback_desc               = "GO back to Last location ",
     inserthashmodel           = "insert hashmodel",
+    spawnhorse_desc           = "spawn a horse",
+    spawnwagon_desc           = "spawn a wagon",
     ---------------------------------------------------
     -- TELEPORTS
     teleports                 = "Teleports",
