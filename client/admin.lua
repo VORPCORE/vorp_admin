@@ -852,7 +852,7 @@ function OffLine()
                     attributes = {
                         inputHeader = _U("whiteunwhite"), -- header
                         type = "text", -- inputype text, number,date.etc if number comment out the pattern
-                        pattern = ""[A-Za-z0-9 ]{1,20}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+                        pattern = "[A-Za-z0-9 ]{1,20}", -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
                         title = " min 1 max 20 no . no , no - no _", -- if input doesnt match show this message
                         style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
                     }
