@@ -77,6 +77,14 @@ Locales["en_lang"] = {
     whiteunwhite_desc         = "type = whitelist/unwhitelist <br> StaicID = number<br> check discord to get his static ID or databse",
     typestaticid              = "TYPE STATICID",
     typestaticidtime          = "TYPE STATICID *Time",
+    cantwarnstaff             = "you cant warn staff",
+    cantkickstaff             = "you cant kick staff",
+    cantbanstaff              = "you cant ban staff",
+    whiteset                  = "whitelist was set",
+    whiteremove               = "whitelist was remove",
+    incorrecttype             = "incorrect type",
+    incorrect                 = "incorrect",
+    missing                   = "missing one argument add type and staticID",
     -------------------------------------------------
     --BOOSTERS
     Boosters                  = "Boosters",
