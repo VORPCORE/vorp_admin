@@ -94,9 +94,7 @@ end)
 RegisterNetEvent("vorp_sdmin:spectatePlayer")
 AddEventHandler("vorp_sdmin:spectatePlayer", function(target, targetCoords)
     local admin = PlayerPedId()
-    local playerIdx = GetPlayerFromServerId(tonumber(target))
-    local ped = GetPlayerPed(playerIdx)
-
+    local ped = 0
     if not spectating then
         DoScreenFadeOut(2000)
         lastcoords = GetEntityCoords(admin)
@@ -104,11 +102,13 @@ AddEventHandler("vorp_sdmin:spectatePlayer", function(target, targetCoords)
         SetEntityCanBeDamaged(admin, false)
         SetEntityInvincible(admin, true)
         SetEntityCoords(admin, targetCoords.x + 15, targetCoords.y + 15, targetCoords.z)
+        Wait(500)
+        ped = GetPlayersClient(target)
+        Wait(500)
         Camera = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
         AttachCamToEntity(Camera, ped, 0.0, -2.0, 1.0, false)
         SetCamActive(Camera, true)
         RenderScriptCams(true, true, 1, true, true)
-        Wait(1000)
         DoScreenFadeIn(2000)
         spectating = true
     else
@@ -120,11 +120,9 @@ AddEventHandler("vorp_sdmin:spectatePlayer", function(target, targetCoords)
         SetEntityVisible(admin, true)
         SetEntityCanBeDamaged(admin, false)
         SetEntityInvincible(admin, true)
-        Wait(1000)
-        DoScreenFadeIn(4000)
+        DoScreenFadeIn(2000)
         spectating = false
     end
-
 end)
 
 ------------------------- TELEPORT  EVENTS FROM SERVER  -------------------------------
