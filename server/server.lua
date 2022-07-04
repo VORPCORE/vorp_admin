@@ -312,7 +312,7 @@ end)
 --GET ITEMS FROM INVENTORY
 RegisterServerEvent("vorp_admin:checkInventory", function(targetID)
     local _source = source
-    local inv = VORPInv.getUserInventory(_source) --getcharinventory
+    local inv = VORPInv.getUserInventory(targetID) --getcharinventory
     if targetID then
         TriggerClientEvent("vorp_admin:getplayerInventory", _source, inv)
     end
