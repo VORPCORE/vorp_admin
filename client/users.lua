@@ -66,15 +66,33 @@ function ScoreBoard()
     local players = GetPlayers()
     for key, playersInfo in pairs(players) do
 
-        elements[#elements + 1] = {
-            label =  playersInfo.PlayerName ,
-            value = "players",
-            desc = "</span><br>Server ID:  <span style=color:MediumSeaGreen;>" ..
+
+        if Config.showUsersInfo == "showAll" then
+            ShowInfo = "</span><br>Server ID:  <span style=color:MediumSeaGreen;>" ..
                 playersInfo.serverId ..
                 "</span><br>Player Group:  <span style=color:MediumSeaGreen;>" ..
                 playersInfo.Group ..
-                "</span><br>Player Job: <span style=color:MediumSeaGreen;> " .. playersInfo.Job .. ""
+                "</span><br>Player Job: <span style=color:MediumSeaGreen;> " ..
+                playersInfo.Job
+        elseif Config.showUsersInfo == "showJob" then
+            ShowInfo = "</span><br>Player Job: <span style=color:MediumSeaGreen;> " ..
+                playersInfo.Job
+        elseif Config.showUsersInfo == "showGroup" then
+            ShowInfo = "</span><br>Player Group:  <span style=color:MediumSeaGreen;>" ..
+                playersInfo.Group
+        elseif Config.showUsersInfo == "showID" then
+            ShowInfo = "</span><br>Server ID:  <span style=color:MediumSeaGreen;>" ..
+                playersInfo.serverId
+        end
+
+
+        elements[#elements + 1] = {
+            label = playersInfo.PlayerName,
+            value = "players",
+            desc = ShowInfo
         }
+
+
     end
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',

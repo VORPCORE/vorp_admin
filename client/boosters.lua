@@ -23,7 +23,7 @@ function Boost()
         { label = _U("spawnhorse"), value = 'spawnhorse', desc = _U("spawnhorse_desc") },
         { label = _U("selfheal"), value = 'selfheal', desc = _U("selfheal_desc") },
         { label = _U("selfrevive"), value = 'selfrevive', desc = _U("selfrevive_desc") },
-        --{ label = "players bip map", value = 'playerblip', desc = "show players blip on the map" }, todo
+        --{ label = "players blip map", value = 'playerblip', desc = "show players blip on the map" }, todo
         --{ label = "players id", value = 'showid', desc = "show players id over head", }, todo
     }
 
@@ -56,6 +56,11 @@ function Boost()
                         Citizen.InvokeNative(0x5240864E847C691C, player, false) --set ped can be incapacitaded
                         SetPlayerInvincible(player, true)
                         Citizen.InvokeNative(0xFD6943B6DF77E449, player, false) -- set ped can be lassoed
+
+                        if Config.BoosterLogs.GodMode then -- if nil dont send
+                            TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.GodMode, _U("titlebooster"),
+                                _U("usedgod"))
+                        end
                     else
                         god = false
                         TriggerEvent('vorp:TipRight', _U("switchedoff"), 3000)
@@ -92,6 +97,10 @@ function Boost()
                         Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 1, 5000.0)
                         Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 2, 5000.0)
                         Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 0, 5000.0)
+                        if Config.BoosterLogs.GoldenCores then
+                            TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.GoldenCores, _U("titlebooster"),
+                                _U("usedgoldcores"))
+                        end
                     else
                         goldenCores = false
                         TriggerEvent('vorp:TipRight', _U("switchedoff"), 3000)
@@ -117,12 +126,16 @@ function Boost()
                 Wait(100)
                 if AdminAllowed then
                     if not NoClipActive then
+
                         NoClipActive = true
                         TriggerEvent('vorp:TipRight', _U("switchedon"), 3000)
                         if Config.FrozenPosition then
                             SetEntityHeading(player, GetEntityHeading(player) + 180)
                         end
-
+                        if Config.BoosterLogs.NoClip then
+                            TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.NoClip, _U("titlebooster"),
+                                _U("usednoclip"))
+                        end
                     else
                         NoClipActive = false
                         timer = 5000
@@ -137,6 +150,7 @@ function Boost()
                 if AdminAllowed then
                     local _, weaponHash = GetCurrentPedWeapon(player, false, 0, false)
                     if not infiniteammo then
+
                         infiniteammo = true
                         local unarmed = -1569615261
                         TriggerEvent("vorp:TipRight", _U("switchedon"), 3000)
@@ -144,6 +158,10 @@ function Boost()
                             TriggerEvent("vorp:Tip", _U("noweapon"), 3000)
                         else
                             SetPedInfiniteAmmo(player, true, weaponHash)
+                            if Config.BoosterLogs.InfiniteAmmo then
+                                TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.InfiniteAmmo, _U("titlebooster")
+                                    , _U("usedinfinitammo"))
+                            end
                         end
                     else
                         infiniteammo = false
@@ -158,6 +176,12 @@ function Boost()
                 Wait(100)
                 if AdminAllowed then
                     TriggerEvent('vorp:resurrectPlayer')
+
+                    if Config.BoosterLogs.SelfRevive then
+                        TriggerServerEvent("vorp_admin:logs",
+                            Config.BoosterLogs.SelfRevive
+                            , _U("titlebooster"), _U("usedrevive"))
+                    end
                 else
                     TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
@@ -165,6 +189,11 @@ function Boost()
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.SelfHeal")
                 Wait(100)
                 if AdminAllowed then
+                    if Config.BoosterLogs.SelfHeal then
+                        TriggerServerEvent("vorp_admin:logs",
+                            Config.BoosterLogs.SelfHeal
+                            , _U("titlebooster"), _U("usedheal"))
+                    end
                     TriggerEvent('vorp:heal')
                 else
                     TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
@@ -199,6 +228,11 @@ function Boost()
                             horse = CreatePed(horse, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
                             Citizen.InvokeNative(0x77FF8D35EEC6BBC4, horse, 1, 0)
                             Citizen.InvokeNative(0x028F76B6E78246EB, player, horse, -1, true)
+                            if Config.BoosterLogs.SelfSpawnHorse then
+                                TriggerServerEvent("vorp_admin:logs",
+                                    Config.BoosterLogs.SelfSpawnHorse
+                                    , _U("titlebooster"), _U("spawned") .. horse)
+                            end
                         else
                             TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
                         end
@@ -240,6 +274,10 @@ function Boost()
                             wagon = CreateVehicle(wagon, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
                             Citizen.InvokeNative(0x77FF8D35EEC6BBC4, wagon, 1, 0)
                             SetPedIntoVehicle(player, wagon, -1)
+                            if Config.BoosterLogs.SelfSpawnWagon then
+                                TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfSpawnWagon
+                                    , _U("titlebooster"), _U("spawned") .. wagon)
+                            end
                         else
                             TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
                         end

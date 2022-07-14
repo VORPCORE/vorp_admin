@@ -155,6 +155,6 @@ end)
 -- show items inventory
 RegisterNetEvent("vorp_admin:getplayerInventory", function(inventorydata)
 
-        OpenInvnetory(inventorydata)
-   
+    OpenInvnetory(inventorydata)
+
 end)
