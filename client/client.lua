@@ -39,7 +39,7 @@ Citizen.CreateThread(function()
         local isDead = IsPedDeadOrDying(player)
         if CanOpen then
             if IsControlJustPressed(0, Key) and not Inmenu then
-                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staf.OpenMenu")
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenMenu")
                 Wait(100)
                 if AdminAllowed then
                     MenuData.CloseAll()
