@@ -48,8 +48,14 @@ Config = {
 
     --------------------------------------------------------
     -- WEBHOOKS/LOGS
+
+    webhookColor = 16711680, --EMBED COLOR RED
+    name         = "VORP", --NAME OF EMBED
+    logo         = "https://via.placeholder.com/30x30", --HEAD LOGO
+    footerLogo   = "https://via.placeholder.com/30x30", --FOOTER LOGO
+    Avatar       = "https://via.placeholder.com/30x30", -- AVATAR LOGO
     -- delete the ones you dont want to LOG into your discord.
-    BoosterLogs = {
+    BoosterLogs  = {
         NoClip = "",
         InfiniteAmmo = "",
         GoldenCores = "",
@@ -60,7 +66,7 @@ Config = {
         SelfSpawnWagon = "",
     },
     -- delete the ones you dont want to LOG into your discord.
-    AdminLogs = {
+    AdminLogs    = {
         --simple actions
         Freezed = "",
         Bring = "",
