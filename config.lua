@@ -48,7 +48,7 @@ Config = {
 
     --------------------------------------------------------
     -- WEBHOOKS/LOGS
-
+    ReportLogs   = "", -- for reports
     webhookColor = 16711680, --EMBED COLOR RED
     name         = "VORP", --NAME OF EMBED
     logo         = "https://via.placeholder.com/30x30", --HEAD LOGO

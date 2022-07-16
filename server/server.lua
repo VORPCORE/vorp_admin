@@ -2,7 +2,7 @@
 ------------------------------------- SERVER EXPORTS ------------------------------------------------------
 local VorpCore = {}
 local VORPwl = {}
-
+local stafftable = {}
 TriggerEvent("getCore", function(core)
     VorpCore = core
 end)
@@ -402,20 +402,9 @@ end)
 
 
 RegisterServerEvent("vorp_admin:announce", function(announce)
-
     VorpCore.NotifySimpleTop(-1, _U("announce"), announce, 10000)
-
 end)
 
-
-function Check(table, isallow)
-    for k, list in pairs(table) do
-        if list == isallow then
-            return true
-        end
-    end
-    return false
-end
 
 -----------------------------------------------------------------------------------------------------------------
 --PERMISSIONS
@@ -489,4 +478,61 @@ RegisterServerEvent('vorp_admin:logs', function(webhook, title, description)
         ">**\nIP: **`" .. ip .. "`\n `" .. description .. "`"
 
     Discord(webhook, title, message)
+end)
+
+-- alert staff of report
+RegisterServerEvent('vorp_admin:alertstaff', function(source)
+    local _source = source
+    local Character = VorpCore.getUser(_source).getUsedCharacter
+    local playername = Character.firstname .. ' ' .. Character.lastname --player char name
+
+    for id, group in pairs(stafftable) do
+        VorpCore.NotifyRightTip(id, _U("player") .. playername .. _U("reportedtodiscord"), 4000)
+    end
+end)
+
+-- check if staff is available
+RegisterServerEvent("vorp_admin:getStaffInfo", function(source)
+    local _source = source
+    local Staff = VorpCore.getUser(_source).getUsedCharacter
+    local staffgroup = Staff.group
+
+    if staffgroup and staffgroup ~= "user" then
+        stafftable[#stafftable + 1] = staffgroup
+    end
+
+end)
+
+RegisterNetEvent("vorp_admin:requeststaff", function(type)
+    local _source = source
+    local Character = VorpCore.getUser(_source).getUsedCharacter
+    local playername = Character.firstname .. ' ' .. Character.lastname --player char name
+    for id, group in pairs(stafftable) do
+        if type == "new" then
+            VorpCore.NotifyRightTip(id, playername .. " ID: " .. id .. _U("requestingassistance") .. _U("New"),
+                4000)
+        elseif type == "bug" then
+            VorpCore.NotifyRightTip(id, playername .. " ID: " .. id .. _U("requestingassistance") .. _U("Foundbug")
+                , 4000)
+        elseif type == "rules" then
+            VorpCore.NotifyRightTip(id,
+                playername .. " ID: " .. id .. _U("requestingassistance") .. _U("Someonebrokerules"), 4000)
+        elseif type == "cheating" then
+            VorpCore.NotifyRightTip(id, playername .. " ID: " ..
+                id .. _U("requestingassistance") .. _U("Someonecheating"), 4000)
+        end
+
+    end
+
+end)
+
+-- remove staff from table
+AddEventHandler('playerDropped', function()
+    local _source = source
+    for index, value in pairs(stafftable) do
+        if value == _source then
+            stafftable[index] = nil
+        end
+    end
+
 end)
