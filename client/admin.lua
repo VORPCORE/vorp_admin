@@ -746,19 +746,7 @@ function Actions()
                 Wait(100)
 
                 if AdminAllowed then
-
-                    local wagon = GetVehiclePedIsIn(player, true)
-
-                    if IsPedInAnyVehicle(player, true) then
-                        wagon = GetVehiclePedIsIn(player, true)
-                    end
-                    if DoesEntityExist(wagon) then
-                        DeleteVehicle(wagon)
-                        DeleteEntity(wagon)
-                        TriggerEvent('vorp:TipRight', _U("youdeletedWagon"), 3000)
-                    else
-                        TriggerEvent('vorp:TipRight', _U("youneedtobeseatead"), 3000)
-                    end
+                    Delwagon()
                 else
                     TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end

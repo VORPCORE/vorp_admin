@@ -334,5 +334,11 @@ Locales["en_lang"] = {
     Foundbug                  = " have found a bug",
     Someonebrokerules         = " somone is breaking the rules",
     Someonecheating           = " someone is cheating",
+    delhorse                  = "Del horse",
+    usercommands              = "user commands",
+    delwagon                  = "Del wagon",
+    hideui                    = "Hide UI",
+    cancelanimation           = "Cancel animation",
+    commands                  = "Commands"
 
 }

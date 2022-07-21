@@ -33,6 +33,7 @@ RegisterNetEvent('vorp:SelectedCharacter', function()
 end)
 
 
+
 Citizen.CreateThread(function()
     while true do
         local player = PlayerPedId()

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------ USERS MENU ------------------------------------------------
 local VORP = {}
-
+local hideUI = false
 TriggerEvent("getCore", function(core)
     VORP = core
 end)
@@ -13,6 +13,7 @@ function OpenUsersMenu()
         { label = _U("Report"), value = 'report', desc = _U("reportoptions_desc") },
         { label = _U("requeststaff"), value = 'requeststaff', desc = _U("Requeststaff_desc") },
         { label = _U("showMyInfo"), value = 'showinfo', desc = _U("showmyinfo_desc") },
+        { label = _U("commands"), value = 'commands', desc = _U("user commands") },
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
@@ -35,6 +36,8 @@ function OpenUsersMenu()
                 RequestStaff()
             elseif data.current.value == "showinfo" then
                 VORP.NotifyRightTip(_U("notyetavailable"), 4000)
+            elseif data.current.value == "commands" then
+                OpenCommands()
             end
         end,
         function(data, menu)
@@ -200,4 +203,90 @@ function RequestStaff()
             menu.close()
 
         end)
+end
+
+function OpenCommands()
+    MenuData.CloseAll()
+    local elements = {
+        { label = _u("delhorse"), value = 'delhorse', desc = _u("usercommands") },
+        { label = _u("delwagon"), value = 'delwagon', desc = _u("usercommands") },
+        { label = _u("hideui"), value = 'hideui', desc = _u("usercommands") },
+        { label = _u("cancelanimation"), value = 'cancelanim', desc = _u("usercommands") },
+    }
+
+    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+        {
+            title    = _U("MenuTitle"),
+            subtext  = _U("MenuSubTitle"),
+            align    = 'top-left',
+            elements = elements,
+            lastmenu = 'OpenUsersMenu', --Go back
+        },
+        function(data, menu)
+            if data.current == "backup" then
+                _G[data.trigger]()
+            end
+
+            if data.current.value == "delhorse" then
+                DelHorse()
+            elseif data.current.value == "delwagon" then
+                Delwagon()
+            elseif data.current.value == "hideui" then
+                HideUI()
+            elseif data.current.value == "cancelanim" then
+
+                local player = PlayerPedId()
+                ClearPedTasksImmediately(player)
+            end
+        end,
+        function(data, menu)
+            menu.close()
+
+        end)
+end
+
+function DelHorse()
+
+    local player = PlayerPedId()
+    local mount  = GetMount(player)
+    if IsPedOnMount(player) then
+        DeleteEntity(mount)
+
+    else
+        TriggerEvent("vorp:TipRight", Config.Langs.sit, 3000)
+    end
+end
+
+function Delwagon()
+    local wagon = GetVehiclePedIsIn(player, true)
+
+    if IsPedInAnyVehicle(player, true) then
+        wagon = GetVehiclePedIsIn(player, true)
+    end
+    if DoesEntityExist(wagon) then
+        DeleteVehicle(wagon)
+        DeleteEntity(wagon)
+        TriggerEvent('vorp:TipRight', _U("youdeletedWagon"), 3000)
+    else
+        TriggerEvent('vorp:TipRight', _U("youneedtobeseatead"), 3000)
+    end
+
+end
+
+function HideUI()
+    if not hideUI then
+        --ExecuteCommand("togglechat")
+        DisplayRadar(false)
+        DisplayHud(false)
+        TriggerEvent("syn_displayrange", false)
+        TriggerEvent("vorp:showUi", false)
+        hideUI = true
+    else
+        -- ExecuteCommand("togglechat")
+        DisplayRadar(true)
+        DisplayHud(true)
+        TriggerEvent("syn_displayrange", true)
+        TriggerEvent("vorp:showUi", true)
+        hideUI = false
+    end
 end
