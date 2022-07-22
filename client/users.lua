@@ -208,10 +208,10 @@ end
 function OpenCommands()
     MenuData.CloseAll()
     local elements = {
-        { label = _u("delhorse"), value = 'delhorse', desc = _u("usercommands") },
-        { label = _u("delwagon"), value = 'delwagon', desc = _u("usercommands") },
-        { label = _u("hideui"), value = 'hideui', desc = _u("usercommands") },
-        { label = _u("cancelanimation"), value = 'cancelanim', desc = _u("usercommands") },
+        { label = _U("delhorse"), value = 'delhorse', desc = _U("usercommands") },
+        { label = _U("delwagon"), value = 'delwagon', desc = _U("usercommands") },
+        { label = _U("hideui"), value = 'hideui', desc = _U("usercommands") },
+        { label = _U("cancelanimation"), value = 'cancelanim', desc = _U("usercommands") },
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
