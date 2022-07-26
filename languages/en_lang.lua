@@ -339,6 +339,7 @@ Locales["en_lang"] = {
     delwagon                  = "Del wagon",
     hideui                    = "Hide UI",
     cancelanimation           = "Cancel animation",
-    commands                  = "Commands"
+    commands                  = "Commands",
+    object_desc               = " object menu"
 
 }
