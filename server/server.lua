@@ -498,7 +498,7 @@ RegisterServerEvent("vorp_admin:getStaffInfo", function(source)
     local staffgroup = Staff.group
 
     if staffgroup and staffgroup ~= "user" then
-        stafftable[#stafftable + 1] = staffgroup
+        stafftable[#stafftable + 1] = _source
     end
 
 end)
