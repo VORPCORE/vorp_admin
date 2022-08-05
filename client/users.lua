@@ -181,20 +181,21 @@ function RequestStaff()
             lastmenu = 'OpenUsersMenu', --Go back
         },
         function(data, menu)
+            local player = GetPlayerServerId(tonumber(PlayerId()))
             if data.current == "backup" then
                 _G[data.trigger]()
             end
             if data.current.value == "new" then
-                TriggerServerEvent("vorp_admin:requeststaff", "new")
+                TriggerServerEvent("vorp_admin:requeststaff", player,"new")
                 VORP.NotifyRightTip(_U("requestsent"), 4000)
             elseif data.current.value == "bug" then
-                TriggerServerEvent("vorp_admin:requeststaff", "bug")
+                TriggerServerEvent("vorp_admin:requeststaff",player, "bug")
                 VORP.NotifyRightTip(_U("requestsent"), 4000)
             elseif data.current.value == "rules" then
-                TriggerServerEvent("vorp_admin:requeststaff", "rules")
+                TriggerServerEvent("vorp_admin:requeststaff", player,"rules")
                 VORP.NotifyRightTip(_U("requestsent"), 4000)
             elseif data.current.value == "cheating" then
-                TriggerServerEvent("vorp_admin:requeststaff", "cheating")
+                TriggerServerEvent("vorp_admin:requeststaff",player, "cheating")
                 VORP.NotifyRightTip(_U("requestsent"), 4000)
             end
         end,
