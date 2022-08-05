@@ -486,8 +486,9 @@ RegisterServerEvent('vorp_admin:alertstaff', function(source)
     local Character = VorpCore.getUser(_source).getUsedCharacter
     local playername = Character.firstname .. ' ' .. Character.lastname --player char name
 
-    for id, group in pairs(stafftable) do
-        VorpCore.NotifyRightTip(id, _U("player") .. playername .. _U("reportedtodiscord"), 4000)
+    for id, staff in pairs(stafftable) do
+   
+        VorpCore.NotifyRightTip(staff, _U("player") .. playername .. _U("reportedtodiscord"), 4000)
     end
 end)
 
@@ -503,23 +504,21 @@ RegisterServerEvent("vorp_admin:getStaffInfo", function(source)
 
 end)
 
-RegisterNetEvent("vorp_admin:requeststaff", function(type)
+RegisterNetEvent("vorp_admin:requeststaff", function(source,type)
     local _source = source
+    local playerID = _source
     local Character = VorpCore.getUser(_source).getUsedCharacter
     local playername = Character.firstname .. ' ' .. Character.lastname --player char name
-    for id, group in pairs(stafftable) do
+    for id, staff in pairs(stafftable) do
+      
         if type == "new" then
-            VorpCore.NotifyRightTip(id, playername .. " ID: " .. id .. _U("requestingassistance") .. _U("New"),
-                4000)
+            VorpCore.NotifyRightTip(staff, playername .. " ID: " .. playerID .. _U("requestingassistance") .. _U("New"), 4000)
         elseif type == "bug" then
-            VorpCore.NotifyRightTip(id, playername .. " ID: " .. id .. _U("requestingassistance") .. _U("Foundbug")
-                , 4000)
+            VorpCore.NotifyRightTip(staff, playername .. " ID: " .. playerID .. _U("requestingassistance") .. _U("Foundbug"), 4000)
         elseif type == "rules" then
-            VorpCore.NotifyRightTip(id,
-                playername .. " ID: " .. id .. _U("requestingassistance") .. _U("Someonebrokerules"), 4000)
+            VorpCore.NotifyRightTip(staff,playername .. " ID: " .. playerID .. _U("requestingassistance") .. _U("Someonebrokerules"), 4000)
         elseif type == "cheating" then
-            VorpCore.NotifyRightTip(id, playername .. " ID: " ..
-                id .. _U("requestingassistance") .. _U("Someonecheating"), 4000)
+            VorpCore.NotifyRightTip(staff, playername .. " ID: " ..playerID .. _U("requestingassistance") .. _U("Someonecheating"), 4000)
         end
 
     end
