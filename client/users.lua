@@ -13,7 +13,7 @@ function OpenUsersMenu()
         { label = _U("Report"), value = 'report', desc = _U("reportoptions_desc") },
         { label = _U("requeststaff"), value = 'requeststaff', desc = _U("Requeststaff_desc") },
         { label = _U("showMyInfo"), value = 'showinfo', desc = _U("showmyinfo_desc") },
-        { label = _U("commands"), value = 'commands', desc = _U("user commands") },
+        { label = _U("commands"), value = 'commands', desc = _U("usercommands") },
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
@@ -291,7 +291,7 @@ function DelHorse()
         DeleteEntity(mount)
 
     else
-        TriggerEvent("vorp:TipRight", Config.Langs.sit, 3000)
+        TriggerEvent("vorp:TipRight", _U("youneedtobeseatead"), 3000)
     end
 end
 
