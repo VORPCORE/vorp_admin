@@ -197,6 +197,12 @@ function OpenSimpleActionMenu(PlayerInfo)
             info = PlayerInfo.staticID, info2 = PlayerInfo.serverId },
     }
 
+    if Config.BoosterLogs.Fred_Metabolism then
+        table.insert(elements,{ label = _U("FullMeta"), value = 'fullmeta',
+        desc = _U("FullMeta_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+        info = PlayerInfo.serverId })
+    end
+
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = _U("MenuTitle"),
@@ -389,6 +395,20 @@ function OpenSimpleActionMenu(PlayerInfo)
                         TriggerServerEvent("vorp_admin:logs",
                             Config.AdminLogs.Spectate
                             , _U("titleadmin"), _U("usedspectate") .. "\n > " .. PlayerInfo.PlayerName)
+                    end
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                end
+            elseif data.current.value == "fullmeta" then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.FullMetabolism')
+                Wait(100)
+
+                if AdminAllowed then
+                    local target = data.current.info
+                    TriggerServerEvent('vorp_admin:fullmeta', target)
+                    if Config.BoosterLogs.FullMeta then
+                        TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.FullMeta
+                        , _U("titlebooster"), _U("usedfullmetaplayer").. "\n> " .. PlayerInfo.PlayerName)
                     end
                 else
                     TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
