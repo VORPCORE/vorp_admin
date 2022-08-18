@@ -111,6 +111,8 @@ Locales["en_lang"] = {
     inserthashmodel           = "insert hashmodel",
     spawnhorse_desc           = "spawn a horse",
     spawnwagon_desc           = "spawn a wagon",
+    FullMeta                  = "Full Metabolism",
+    FullMeta_desc             = "Full your hunger and thirst",
     ---------------------------------------------------
     -- TELEPORTS
     teleports                 = "Teleports",
@@ -225,7 +227,7 @@ Locales["en_lang"] = {
     createticket              = "create ticket",
     tickectdiscord_desc       = " create a tick to discord",
     showMyInfo                = "Show my info",
-    showmyinfo_desc           = "your winfo will be displayed",
+    showmyinfo_desc           = "your info will be displayed",
     showJobsOnline            = "Jobs Online",
     showjobsonline_desc       = "Show waht jobs are online ",
     --------------------------------------------------------------------------
@@ -280,6 +282,7 @@ Locales["en_lang"] = {
     usedrevive                = "used self REVIVE",
     usedheal                  = "used self HEAL",
     usedinfinitammo           = "used INFINITE AMMO",
+    usedfullmeta              = "used FULL METABOLISM",
     spawn                     = "SPAWNED A: ",
     titleadmin                = "📋` /ADMIN ACTIONS`",
     usedfreeze                = "used freeze on player ",
@@ -298,6 +301,7 @@ Locales["en_lang"] = {
     usedunwhitelist           = "used unwhitelist on player ",
     usedsetgroup              = "used setgroup on player ",
     usedsetjob                = "used setjob on player ",
+    usedfullmetaplayer        = "used full metabolism on player ",
     usedannounce              = "used Announce: ",
     titleteleport             = "📋` /TELEPORTS`",
     usedtpm                   = "used TPM",
