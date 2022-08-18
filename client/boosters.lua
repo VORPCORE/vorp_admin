@@ -213,6 +213,8 @@ function Boost()
                             , _U("titlebooster"), _U("usedheal"))
                     end
                     TriggerEvent('vorp:heal')
+                    TriggerEvent("vorpmetabolism:setValue", "Thirst", 1000)
+                    TriggerEvent("vorpmetabolism:setValue", "Hunger", 1000)
                 else
                     TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
