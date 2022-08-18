@@ -127,6 +127,10 @@ function Boost()
         --{ label = "players id", value = 'showid', desc = "show players id over head", }, todo
     }
 
+    if Config.BoosterLogs.Fred_Metabolism then
+        table.insert(elements,{ label = _U("FullMeta"), value = 'fullmeta', desc = _U("FullMeta_desc") })
+    end
+
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = _U("MenuTitle"),
@@ -303,6 +307,18 @@ function Boost()
                         end
                     end)
                 else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                end
+            elseif data.current.value == "fullmeta" then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.SelfFullMetabolism")
+                Wait(100)
+                if AdminAllowed then
+                    TriggerEvent('fred_meta:consume', 100,100,0,0,0.0,0,0,0,0.0,0.0)
+                        if Config.BoosterLogs.FullMeta then
+                            TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.FullMeta
+                            , _U("titlebooster"), _U("usedfullmeta"))
+                        end
+                else 
                     TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
             end
