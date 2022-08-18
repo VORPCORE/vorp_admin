@@ -405,6 +405,13 @@ RegisterServerEvent("vorp_admin:announce", function(announce)
     VorpCore.NotifySimpleTop(-1, _U("announce"), announce, 10000)
 end)
 
+RegisterServerEvent("vorp_admin:fullmeta", function(targetID)
+    local _source = targetID
+    if _source then
+        TriggerClientEvent('fred_meta:consume',targetID, 100,100,0,0,0.0,0,0,0,0.0,0.0)
+    end
+end)
+
 
 -----------------------------------------------------------------------------------------------------------------
 --PERMISSIONS
