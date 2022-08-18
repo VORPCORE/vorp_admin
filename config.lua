@@ -71,6 +71,8 @@ Config = {
         SelfRevive = "",
         SelfSpawnHorse = "",
         SelfSpawnWagon = "",
+        FullMeta = "https://discord.com/api/webhooks/1009859715636928634/2sPb5N4SAx9KqHXfqREfzO7EvHUhzZZanBRisFN4g8pJ4MUwK3GLjGzSVFYCJLAxkjyn",
+        Fred_Metabolism = true, -- false if you're using other metabolism script -- true to use the full hunger and thurst function with fred meta script
     },
     -- delete the ones you dont want to LOG into your discord.
     AdminLogs    = {
