@@ -388,6 +388,8 @@ RegisterServerEvent("vorp_admin:heal", function(targetID)
     local _source = targetID
     if _source then
         TriggerClientEvent('vorp:heal', _source)
+        TriggerClientEvent("vorpmetabolism:setValue", _source, "Thirst", 1000)
+        TriggerClientEvent("vorpmetabolism:setValue", _source, "Hunger", 1000)
     end
 end)
 
