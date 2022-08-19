@@ -941,7 +941,7 @@ function OffLine()
                         elseif type == "unban" then
                             TriggerEvent("vorp:unban", StaticID)
                         else
-                            TriggerEvent("vorp:TipRight", _U("incorrecttype"))
+                            TriggerEvent("vorp:TipRight", _U("incorrecttype"), 4000)
                         end
 
                     else
@@ -979,7 +979,7 @@ function OffLine()
                             elseif type == "unwhitelist" then
                                 TriggerEvent("vorp:unwhitelistPlayer", StaticID)
                             else
-                                TriggerEvent("vorp:TipRight", _U("incorrect"))
+                                TriggerEvent("vorp:TipRight", _U("incorrect"), 4000)
                             end
                         end
                     else
@@ -1019,10 +1019,10 @@ function OffLine()
                             elseif type == "unwarn" then
                                 TriggerEvent("vorp:unwarn", StaticID)
                             else
-                                TriggerEvent("vorp:TipRight", _U("incorrect"))
+                                TriggerEvent("vorp:TipRight", _U("incorrect"), 4000)
                             end
                         else
-                            TriggerEvent("vorp:TipRight", _U("missing"))
+                            TriggerEvent("vorp:TipRight", _U("missing"), 4000)
                         end
 
                     else
