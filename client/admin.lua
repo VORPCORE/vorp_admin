@@ -986,7 +986,7 @@ function OffLine()
                         TriggerEvent("vorp:TipRight", _U("empty"), 4000)
                     end
                 end)
-            elseif data.current.value == "warns" then
+            elseif data.current.value == "warn" then
                 local myInput = {
                     type = "enableinput", -- dont touch
                     inputType = "textarea",
