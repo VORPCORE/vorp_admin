@@ -974,12 +974,12 @@ function OffLine()
                         end
                         local type, StaticID = tostring(splitstring[1]), tonumber(splitstring[2])
                         if type and StaticID then -- if empty dont run
-                            if type == "whitelist" then
-                                TriggerEvent("vorp:whitelistPlayer", StaticID)
+                             if type == "whitelist" then
+                                TriggerServerEvent("vorp_admin:Whitelistoffline", StaticID, type)
                             elseif type == "unwhitelist" then
-                                TriggerEvent("vorp:unwhitelistPlayer", StaticID)
+                                TriggerServerEvent("vorp_admin:Whitelistoffline", StaticID, type)
                             else
-                                TriggerEvent("vorp:TipRight", _U("incorrect"), 4000)
+                                TriggerEvent("vorp:TipRight", _U("incorrect"))
                             end
                         end
                     else
