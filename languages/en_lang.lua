@@ -153,6 +153,7 @@ Locales["en_lang"] = {
     deletehorse               = "deletehorse",
     deletehorse_desc          = "you must be seteaded",
     deletewagon               = "del wagons",
+    youdeletedWagon          = "You have deleted a wagon",
     deletewagon_desc          = "you must be in drivers seat",
     deletewagonradius         = "delete wagons with a radius",
     deletewagonradius_desc    = "use number between 1 and 100",
