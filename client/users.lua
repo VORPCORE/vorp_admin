@@ -296,6 +296,7 @@ function DelHorse()
 end
 
 function Delwagon()
+    local player = PlayerPedId()
     local wagon = GetVehiclePedIsIn(player, true)
 
     if IsPedInAnyVehicle(player, true) then
