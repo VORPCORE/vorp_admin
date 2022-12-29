@@ -183,7 +183,7 @@ Locales["tr_lang"] = {
     devtools_desc             = "Geliştiriciler için Araçlar",
     ----------------------------------------------------------------
     --DATABASE
-    Playerinventory           = "Oyuncu Envanteri", -Submenu Başlığı
+    Playerinventory           = "Oyuncu Envanteri", --Submenu Başlığı
     give                      = "Menü Ver",
     Give_desc                 = "Oyuncuya bir şeyler ver",
     remove                    = "Menü Kaldır",
