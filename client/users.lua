@@ -31,7 +31,11 @@ function OpenUsersMenu()
             if data.current.value == "scoreboard" then
                 ScoreBoard()
             elseif data.current.value == "report" then
-                Report()
+                if not Config.useQWreports then
+                    Report()
+                else
+                    TriggerEvent("vorp_admin:CreateReport")
+                end
             elseif data.current.value == "requeststaff" then
                 RequestStaff()
             elseif data.current.value == "showinfo" then
