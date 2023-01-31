@@ -54,6 +54,15 @@ function Admin()
                 else
                     TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
+            elseif data.current.value == "view" then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.ViewReports')
+                Wait(100)
+
+                if AdminAllowed then
+                    TriggerEvent("vorp_admin:viewreports")
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                end
 
             end
         end,
