@@ -12,7 +12,7 @@ function Admin()
         { label = _U("playerslist"), value = 'players', desc = _U("playerlist_desc") },
         { label = _U("adminactions"), value = 'actions', desc = _U("adminactions_desc") },
         { label = _U("offLineactions"), value = 'offline', desc = _U("offlineplayers_desc") },
-        { label = "viewreports, value = 'view', desc = "viewreports" },
+        { label = "viewreports", value = 'view', desc = "viewreports" },
     }
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
