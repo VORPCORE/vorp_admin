@@ -5,7 +5,7 @@ Config = {
     Key = 0x3C3DD371, --PGDOWN open menu
 
     CanOpenMenuWhenDead = true, -- if true any staff can open menu when dead, !WARNING! staff can abuse this to get revived
-
+    useQWreports        = true, -- disable this if you are not using qw reports
     ---------------------- NO CLIP ----------------------
     ShowControls = false,
     Controls = {
