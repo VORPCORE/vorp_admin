@@ -26,11 +26,11 @@ AddEventHandler("onClientResourceStart", function(resourceName)
         return
     end
     --FOR TESTS ENABLED THIS
-    AdminAllowed = false
-    local player = GetPlayerServerId(tonumber(PlayerId()))
-    Wait(100)
-    TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenMenu")
-    TriggerServerEvent("vorp_admin:getStaffInfo", player)
+    -- AdminAllowed = false
+    -- local player = GetPlayerServerId(tonumber(PlayerId()))
+    -- Wait(100)
+    ---- TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenMenu")
+    -- TriggerServerEvent("vorp_admin:getStaffInfo", player)
 end)
 
 RegisterNetEvent('vorp:SelectedCharacter', function()
