@@ -67,6 +67,52 @@ AddEventHandler('vorp_admin:GetPlayers', function()
     TriggerClientEvent("vorp_admin:SendPlayers", _source, data)
 end)
 
+VorpCore.addRpcCallback("vorp_admin:Callback:FetchPlayer", function(source, cb, args)
+    local data = {}
+
+    for _, player in pairs(PlayersTable) do
+        if player == args then
+            local playerPed = GetPlayerPed(player)
+            local coords = GetEntityCoords(playerPed)
+            local User = VorpCore.getUser(player)
+            if User then
+                local Character = User.getUsedCharacter --get player info
+                local group = Character.group
+
+                local playername = Character.firstname .. ' ' .. Character.lastname --player char name
+                local job = Character.job --player job
+                local identifier = Character.identifier --player steam
+                local PlayerMoney = Character.money --money
+                local PlayerGold = Character.gold --gold
+                local JobGrade = Character.jobGrade --jobgrade
+                local getid = VORPwl.getEntry(identifier).getId() -- userID this is a static ID used to whitelist or ban
+                local getstatus = VORPwl.getEntry(identifier).getStatus() -- whitelisted returns true or false
+                local warnstatus = User.getPlayerwarnings() --get players warnings
+
+                data[tostring(player)] = {
+                    serverId = player,
+                    x = coords.x,
+                    y = coords.y,
+                    z = coords.z,
+                    name = GetPlayerName(player),
+                    Group = group,
+                    PlayerName = playername,
+                    Job = job,
+                    SteamId = identifier,
+                    ped = playerPed,
+                    Money = PlayerMoney,
+                    Gold = PlayerGold,
+                    Grade = JobGrade,
+                    staticID = tonumber(getid),
+                    WLstatus = tostring(getstatus),
+                    warns = tonumber(warnstatus),
+                }
+                return cb(data)
+            end
+        end
+    end
+    return cb(false)
+end)
 
 -------------------------------------------------------------------------------
 --------------------------------- EVENTS TELEPORTS -----------------------------
@@ -389,7 +435,6 @@ RegisterServerEvent("vorp_admin:Whitelist", function(targetID, staticid, type)
 end)
 
 RegisterServerEvent("vorp_admin:Whitelistoffline", function(staticid, type)
-    local _source = source
     local staticID = staticid
 
     if type == "whiteList" then
