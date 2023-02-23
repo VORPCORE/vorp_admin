@@ -5,7 +5,10 @@ local CanOpen = Config.CanOpenMenuWhenDead
 local Inmenu
 local spectating = false
 local lastcoords
-
+Core = {}
+TriggerEvent("getCore", function(core)
+    Core = core
+end)
 -- get menu
 TriggerEvent("menuapi:getData", function(call)
     MenuData = call
@@ -29,7 +32,7 @@ AddEventHandler("onClientResourceStart", function(resourceName)
     -- AdminAllowed = false
     -- local player = GetPlayerServerId(tonumber(PlayerId()))
     -- Wait(100)
-    ---- TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenMenu")
+    -- TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenMenu")
     -- TriggerServerEvent("vorp_admin:getStaffInfo", player)
 end)
 
