@@ -6,23 +6,32 @@ local Inmenu
 local spectating = false
 local lastcoords
 
-
-
-
 -- get menu
 TriggerEvent("menuapi:getData", function(call)
     MenuData = call
 end)
 
 AddEventHandler("onResourceStop", function(resourceName)
-    if resourceName == GetCurrentResourceName() then
-        local player = PlayerPedId()
-        ClearPedTasksImmediately(player, true, true) -- clear tasks
-        Closem() --close menu
-        AdminAllowed = false
+    if resourceName ~= GetCurrentResourceName() then
+        return
     end
+    local player = PlayerPedId()
+    ClearPedTasksImmediately(player, true, true) -- clear tasks
+    Closem() --close menu
+    AdminAllowed = false
 end)
 
+AddEventHandler("onClientResourceStart", function(resourceName)
+    if resourceName ~= GetCurrentResourceName() then
+        return
+    end
+    --FOR TESTS ENABLED THIS
+    AdminAllowed = false
+    local player = GetPlayerServerId(tonumber(PlayerId()))
+    Wait(100)
+    TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenMenu")
+    TriggerServerEvent("vorp_admin:getStaffInfo", player)
+end)
 
 RegisterNetEvent('vorp:SelectedCharacter', function()
     AdminAllowed = false
@@ -32,43 +41,47 @@ RegisterNetEvent('vorp:SelectedCharacter', function()
     TriggerServerEvent("vorp_admin:getStaffInfo", player)
 end)
 
+local function CanOpenUsersMenu()
+    if Config.UseUsersMenu then
+        TriggerServerEvent("vorp_admin:GetGroup") -- check permission
+        OpenUsersMenu()
+    end
+end
 
+local function OpenAdminMenu()
+    TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenMenu")
+    Wait(100)
+    if AdminAllowed then
+        OpenMenu()
+        return true
+    end
+    return false
+end
 
+--OPEN MENU
 Citizen.CreateThread(function()
     while true do
         local player = PlayerPedId()
         local isDead = IsPedDeadOrDying(player)
         if CanOpen then
             if IsControlJustPressed(0, Key) and not Inmenu then
-                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenMenu")
-                Wait(100)
-                if AdminAllowed then
-                    MenuData.CloseAll()
-                    OpenMenu()
-                else
-                    MenuData.CloseAll()
-                    OpenUsersMenu()
+                if not OpenAdminMenu() then
+                    CanOpenUsersMenu()
                 end
             end
         else
             if IsControlJustPressed(0, Key) and not isDead and not Inmenu then
-                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenMenu")
-                Wait(100)
-                if AdminAllowed then
-                    MenuData.CloseAll()
-                    OpenMenu()
-                else
-                    MenuData.CloseAll()
-                    OpenUsersMenu()
+                if not OpenAdminMenu() then
+                    CanOpenUsersMenu()
                 end
-                TriggerServerEvent("vorp_admin:GetGroup") -- check permission
             end
         end
-        Citizen.Wait(10)
+        Citizen.Wait(0)
     end
 end)
 
 -- perms
+
 RegisterNetEvent("vorp_admin:OpenStaffMenu", function(perm)
     AdminAllowed = perm
 end)
@@ -127,7 +140,6 @@ end)
 
 ------------------------- TELEPORT  EVENTS FROM SERVER  -------------------------------
 RegisterNetEvent("vorp_admin:gotoPlayer", function(targetCoords)
-
     lastLocation = GetEntityCoords(PlayerPedId())
     SetEntityCoords(PlayerPedId(), targetCoords)
 end)
