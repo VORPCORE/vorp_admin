@@ -43,7 +43,7 @@ Config = {
         h = 1, -- Rotation movement speed multiplier
     },
     FrozenPosition      = true, -- frozen on open menu vorp.staff.OpenMenu
-    AllowedGroups = {
+    AllowedGroups       = {
         { group = { "admin" }, command = "vorp.staff.OpenMenu" },
         { group = { "admin" }, command = "vorp.staff.Admin" }, -- groups you want for these permissions
         { group = { "admin" }, command = "vorp.staff.Boosters" },
@@ -108,24 +108,25 @@ Config = {
     -- Users scoreboard
     -- only one can be added
     -- choose what info should show to all users
-    showUsersInfo = "showAll", -- showAll --showJob --showGroup -- showID
-    UseUsersMenu  = true, --leave false if you dont need users menu
+    showUsersInfo       = "showAll", -- showAll --showJob --showGroup -- showID
+    UseUsersMenu        = true, --leave false if you dont need users menu
+    EnablePlayerlist    = true, -- enable scroeboard
     --------------------------------------------------------
     -- WEBHOOKS/LOGS
-    AlertCooldown = 60, -- cooldown for request staff to request again (seconds)
-    webhookColor  = 16711680, --EMBED COLOR RED
-    name          = "VORP", --NAME OF EMBED
-    logo          = "https://via.placeholder.com/30x30", --HEAD LOGO
-    footerLogo    = "https://via.placeholder.com/30x30", --FOOTER LOGO
-    Avatar        = "https://via.placeholder.com/30x30", -- AVATAR LOGO
-    ReportLogs    = {
+    AlertCooldown       = 60, -- cooldown for request staff to request again (seconds)
+    webhookColor        = 16711680, --EMBED COLOR RED
+    name                = "VORP", --NAME OF EMBED
+    logo                = "https://via.placeholder.com/30x30", --HEAD LOGO
+    footerLogo          = "https://via.placeholder.com/30x30", --FOOTER LOGO
+    Avatar              = "https://via.placeholder.com/30x30", -- AVATAR LOGO
+    ReportLogs          = {
         Reports = "", -- for reports
         RequestStaff = "", -- for request staff
         BugReport = "", -- for bug report
         RulesBroken = "", -- for rules broken report
         Cheating = "" -- for cheating report
     },
-    BoosterLogs   = {
+    BoosterLogs         = {
         NoClip = "",
         InfiniteAmmo = "",
         GoldenCores = "",
@@ -135,7 +136,7 @@ Config = {
         SelfSpawnHorse = "",
         SelfSpawnWagon = "",
     },
-    AdminLogs     = {
+    AdminLogs           = {
         --simple actions
         Freezed = "",
         Bring = "",
@@ -157,13 +158,13 @@ Config = {
         Announce = ""
 
     },
-    TeleportLogs  = {
+    TeleportLogs        = {
         Tpm = "",
         Tptocoords = "",
         Tptoplayer = "",
         Bringplayer = "",
     },
-    DatabaseLogs  = {
+    DatabaseLogs        = {
         Giveitem = "",
         Giveweapon = "",
         Givecurrency = "",
