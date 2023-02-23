@@ -4,24 +4,6 @@
 local freeze = false
 local lastLocation = {}
 
-function Inputs(input, button, placeholder, header, type, errormsg, pattern)
-    local myInput = {
-        type = "enableinput", -- dont touch
-        inputType = input,
-        button = button, -- button name
-        placeholder = placeholder, --placeholdername
-        style = "block", --- dont touch
-        attributes = {
-            inputHeader = header, -- header
-            type = type, -- inputype text, number,date.etc if number comment out the pattern
-            pattern = pattern, -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-            title = errormsg, -- if input doesnt match show this message
-            style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
-        }
-    }
-    return myInput
-end
-
 function Admin()
     MenuData.CloseAll()
     local elements = {
@@ -29,6 +11,7 @@ function Admin()
         { label = _U("adminactions"),   value = 'actions', desc = _U("adminactions_desc") },
         { label = _U("offLineactions"), value = 'offline', desc = _U("offlineplayers_desc") },
         { label = "viewreports",        value = 'view',    desc = "viewreports" },
+        { label = "search player",      value = 'search',  desc = "insert server id to find a player info " },
     }
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
@@ -75,6 +58,65 @@ function Admin()
                 else
                     TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end
+            elseif data.current.value == "search" then
+                local myInput = Inputs("input", _U("confirm"), "server id", "SEARCH PLAYER", "number",
+                    " min 10 max 100 chars dont use dot or commas", "[0-9]{10,100}")
+                TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
+                    local id = tonumber(result)
+                    if id and id > 0 then
+                        Core.RpcCall("vorp_admin:Callback:FetchPlayer", function(cb)
+                            if cb then
+                                OpenOnePlayerMenu(cb)
+                            else
+                                TriggerEvent("vorp:TipRight", "user dont exist ", 4000)
+                            end
+                        end, id)
+                    end
+                end)
+            end
+        end,
+        function(menu)
+            menu.close()
+        end)
+end
+
+function OpenOnePlayerMenu(table)
+    MenuData.CloseAll()
+    local elements = {}
+    for k, playersInfo in pairs(table) do
+        elements[#elements + 1] = {
+            label = playersInfo.PlayerName .. "<br> Server id: " .. playersInfo.serverId,
+            value = "players" .. k,
+            desc = _U("SteamName") .. "<span style=color:MediumSeaGreen;> "
+            .. playersInfo.name .. "</span><br>" .. _U("ServerID") .. "<span style=color:MediumSeaGreen;>"
+            .. playersInfo.serverId .. "</span><br>" .. _U("PlayerGroup") .. "<span style=color:MediumSeaGreen;>"
+            .. playersInfo.Group .. "</span><br>" .. _U("PlayerJob") .. "<span style=color:MediumSeaGreen;>"
+            .. playersInfo.Job .. "</span>" .. _U("Grade") .. "<span style=color:MediumSeaGreen;>"
+            .. playersInfo.Grade .. "</span><br>" .. _U("Identifier") .. "<span style=color:MediumSeaGreen;>"
+            .. playersInfo.SteamId .. "</span><br>" .. _U("PlayerMoney") .. "<span style=color:MediumSeaGreen;>"
+            .. playersInfo.Money .. "</span><br>" .. _U("PlayerGold") .. "<span style=color:Gold;>"
+            .. playersInfo.Gold .. "</span><br>" .. _U("PlayerStaticID") .. "<span style=color:Red;>"
+            .. playersInfo.staticID .. "</span><br>" .. _U("PlyaerWhitelist") .. "<span style=color:Gold;>"
+            .. playersInfo.WLstatus .. "</span><br>" .. _U("PlayerWarnings") .. "<span style=color:Gold;>"
+            .. playersInfo.warns .. "</span>",
+            info = playersInfo
+        }
+    end
+    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+        {
+            title      = _U("MenuTitle"),
+            subtext    = _U("MenuSubtitle2"),
+            align      = 'top-left',
+            elements   = elements,
+            lastmenu   = 'Admin',
+            itemHeight = "4vh",
+        },
+        function(data)
+            if data.current == "backup" then
+                _G[data.trigger]()
+            end
+            if data.current.value then
+                OpenSubAdminMenu(data.current.info)
             end
         end,
         function(menu)
@@ -88,9 +130,13 @@ function PlayerList()
     local elements = {}
     local players = GetPlayers()
 
+    table.sort(players, function(a, b)
+        return a.serverId < b.serverId
+    end)
+
     for k, playersInfo in pairs(players) do
         elements[#elements + 1] = {
-            label = playersInfo.PlayerName,
+            label = playersInfo.PlayerName .. "<br> Server id: " .. playersInfo.serverId,
             value = "players" .. k,
             desc = _U("SteamName") .. "<span style=color:MediumSeaGreen;> "
             .. playersInfo.name .. "</span><br>" .. _U("ServerID") .. "<span style=color:MediumSeaGreen;>"
@@ -110,11 +156,12 @@ function PlayerList()
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
-            title    = _U("MenuTitle"),
-            subtext  = _U("MenuSubtitle2"),
-            align    = 'top-left',
-            elements = elements,
-            lastmenu = 'Admin',
+            title      = _U("MenuTitle"),
+            subtext    = _U("MenuSubtitle2"),
+            align      = 'top-left',
+            elements   = elements,
+            lastmenu   = 'Admin',
+            itemHeight = "4vh",
         },
         function(data)
             if data.current == "backup" then
@@ -332,7 +379,7 @@ function OpenSimpleActionMenu(PlayerInfo)
                     local targetGroup = data.current.info2
                     local target = data.current.info3
                     local status = "warn"
-                    local myInput = Inputs("textarea", _U("confirm"), "Reason for Ban", "player was mean", "test",
+                    local myInput = Inputs("textarea", _U("confirm"), "Reason for Ban", "player was mean", "text",
                         " min 10 max 100 chars dont use dot or commas", "[A-Za-z0-9 ]{10,100}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                         local reason = tostring(result)
