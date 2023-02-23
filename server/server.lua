@@ -30,9 +30,10 @@ AddEventHandler('vorp_admin:GetPlayers', function()
         local playerPed = GetPlayerPed(player)
         local coords = GetEntityCoords(playerPed)
         local User = VorpCore.getUser(player)
-        local Character = User.getUsedCharacter --get player info
-        local group = Character.group
-        if Character then
+        if User then
+            local Character = User.getUsedCharacter --get player info
+            local group = Character.group
+
             local playername = Character.firstname .. ' ' .. Character.lastname --player char name
             local job = Character.job --player job
             local identifier = Character.identifier --player steam
@@ -65,6 +66,7 @@ AddEventHandler('vorp_admin:GetPlayers', function()
     end
     TriggerClientEvent("vorp_admin:SendPlayers", _source, data)
 end)
+
 
 -------------------------------------------------------------------------------
 --------------------------------- EVENTS TELEPORTS -----------------------------
