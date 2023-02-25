@@ -5,10 +5,13 @@ local CanOpen = Config.CanOpenMenuWhenDead
 local Inmenu
 local spectating = false
 local lastcoords
-Core = {}
+MenuData = {}
+VORP = {}
+
 TriggerEvent("getCore", function(core)
-    Core = core
+    VORP = core
 end)
+
 -- get menu
 TriggerEvent("menuapi:getData", function(call)
     MenuData = call

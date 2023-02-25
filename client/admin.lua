@@ -64,7 +64,7 @@ function Admin()
                 TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                     local id = tonumber(result)
                     if id and id > 0 then
-                        Core.RpcCall("vorp_admin:Callback:FetchPlayer", function(cb)
+                        VORP.RpcCall("vorp_admin:Callback:FetchPlayer", function(cb)
                             if cb then
                                 OpenOnePlayerMenu(cb)
                             else

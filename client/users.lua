@@ -1,10 +1,7 @@
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------ USERS MENU ------------------------------------------------
-local VORP = {}
+
 local hideUI = false
-TriggerEvent("getCore", function(core)
-    VORP = core
-end)
 
 function OpenUsersMenu()
     MenuData.CloseAll()
