@@ -5,7 +5,7 @@ local god = false
 local goldenCores = false
 local infiniteammo = false
 local NoClipActive = false
-
+local invis = false
 
 function GODmode()
     local player = PlayerPedId()
@@ -117,6 +117,7 @@ function Boost()
         { label = _U("spawnhorse"),   value = 'spawnhorse',   desc = _U("spawnhorse_desc") },
         { label = _U("selfheal"),     value = 'selfheal',     desc = _U("selfheal_desc") },
         { label = _U("selfrevive"),   value = 'selfrevive',   desc = _U("selfrevive_desc") },
+        { label = _U("invis"), value = 'invisibility', desc = _U('invisnotif') },
         --{ label = "players blip map", value = 'playerblip', desc = "show players blip on the map" }, todo
         --{ label = "players id", value = 'showid', desc = "show players id over head", }, todo
     }
@@ -139,6 +140,20 @@ function Boost()
                 Wait(100)
                 if AdminAllowed then
                     GODmode()
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                end
+            elseif data.current.value == "invisibility" then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.Invisibility")
+                Wait(100)
+                if AdminAllowed then
+                    if invis == false then --if invis is false then
+                        SetEntityVisible(PlayerPedId(), false) --sets you invisible
+                        invis = true --changes the variable to true so if you hit the button again it runs the elseif statment below
+                    elseif invis == true then --if invis variable is true then
+                        SetEntityVisible(PlayerPedId(), true) --sets you too visible
+                        invis = false --changes variable back to false so the next time this is ran it sets you back invisible
+                    end
                 else
                     TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
                 end

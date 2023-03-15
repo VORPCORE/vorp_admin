@@ -111,6 +111,7 @@ Locales["tr_lang"] = {
     inserthashmodel           = "Hashmodel ekle",
     spawnhorse_desc           = "Bir At Yüzer",
     spawnwagon_desc           = "Bir vagon doğur",
+    invis = 'görünmezlik',
     ---------------------------------------------------
     -- TELEPORTS
     teleports                 = "Işınlar",
@@ -272,6 +273,7 @@ Locales["tr_lang"] = {
     announce                  = "Duyuru",
     announce_desc             = "Herkese bir duyuru gönder",
     lettersandnumbers         = "Sadece harfler ve sayılar nokta yok virgül vb.",
+    invisnotif = 'görünmez ol',
     ---------------------------------------------------------------------------
     -- webhooks
     titlebooster              = "📋` /BOOSTERS`",

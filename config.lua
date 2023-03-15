@@ -103,6 +103,7 @@ Config = {
         { group = { "admin" }, command = "vorp.staff.TpPlayer" },
         { group = { "admin" }, command = "vorp.staff.BringPlayer" },
         { group = { "admin" }, command = "vorp.staff.ViewReports" },
+        { group = { "admin" }, command = "vorp.staff.Invisibility" },
     },
     -----------------------------------------------------
     -- Users scoreboard
