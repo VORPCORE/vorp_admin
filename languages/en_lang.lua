@@ -111,6 +111,7 @@ Locales["en_lang"] = {
     inserthashmodel           = "insert hashmodel",
     spawnhorse_desc           = "spawn a horse",
     spawnwagon_desc           = "spawn a wagon",
+    invis = 'Invisibility',
     ---------------------------------------------------
     -- TELEPORTS
     teleports                 = "Teleports",
@@ -240,6 +241,7 @@ Locales["en_lang"] = {
     itemgiven                 = "the item was given",
     weapongiven               = "the Weapon was given",
     sent                      = "Sent!!",
+    invisnotif = 'Go Invisible',
     horsegiven                = "you gave a horse to the player",
     kickednotify              = "YOU HAVE BEEN KICKED",
     banned                    = "YOU HAVE BEEN BANNED",

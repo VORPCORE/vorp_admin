@@ -111,6 +111,7 @@ Locales["es_lang"] = {
     inserthashmodel           = "insert hashmodel",
     spawnhorse_desc           = "Spawnear un caballo",
     spawnwagon_desc           = "Spawnear un carro",
+    invis = 'Invisibilidad',
     ---------------------------------------------------
     -- TELEPORTS
     teleports                 = "Teletransportes",
@@ -242,6 +243,7 @@ Locales["es_lang"] = {
     kickednotify1             = "!Por favor sigue las reglas!",
     respawned                 = "VAS A REAPARECER",
     lostall                   = " perderás todos tus artículos",
+    invisnotif = 'Volverse invisible',
     received                  = "Has recibido: ~o~",
     of                        = "~q~ de: ~o~",
     itemlimit                 = "El jugador no puede llevar este artículo, alcanzó el límite",
