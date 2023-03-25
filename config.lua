@@ -100,6 +100,7 @@ Config = {
         { group = { "admin" }, command = "vorp.staff.RemoveAllWeapons" },
         { group = { "admin" }, command = "vorp.staff.WayPoint" },
         { group = { "admin" }, command = "vorp.staff.TpCoords" },
+        { group = { "admin" }, command = "vorp.staff.AutoTpm" },
         { group = { "admin" }, command = "vorp.staff.TpPlayer" },
         { group = { "admin" }, command = "vorp.staff.BringPlayer" },
         { group = { "admin" }, command = "vorp.staff.ViewReports" },

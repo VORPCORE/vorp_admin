@@ -115,6 +115,7 @@ Locales["en_lang"] = {
     ---------------------------------------------------
     -- TELEPORTS
     teleports                 = "Teleports",
+    autotpm                   = "Auto tpm",
     insert                    = "INSERT X Y Z",
     tpm                       = "TPM",
     tptocoords                = "TP to Coords",
@@ -125,6 +126,7 @@ Locales["en_lang"] = {
     teleporttocoords_desc     = "Teleport to location",
     teleportplayer_desc       = "Teleport to the player",
     bringplayer_desc          = "Bring player to you",
+    autotpm_desc              = "Automatically Teleport too Waypoint",
     insertid                  = "Insert player ID",
     sendback                  = "send player back",
     sendback_desc             = "send player back to his/hers last location",
