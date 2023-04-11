@@ -506,6 +506,33 @@ RegisterServerEvent('vorp_admin:opneStaffMenu', function(object)
     end
 end)
 
+-------------------------------------------------------------------------------------------------------------------
+-------------------------- Troll Actions--------------------------------------------------------------------------
+RegisterServerEvent('vorp_admin:ServerTrollKillPlayerHandler')
+AddEventHandler('vorp_admin:ServerTrollKillPlayerHandler', function(playerserverid)
+    TriggerClientEvent('vorp_admin:ClientTrollKillPlayerHandler', playerserverid)
+end)
+
+RegisterServerEvent('vorp_admin:ServerTrollInvisibleHandler')
+AddEventHandler('vorp_admin:ServerTrollInvisibleHandler', function(playerserverid)
+    TriggerClientEvent('vorp_admin:ClientTrollInvisbleHandler', playerserverid)
+end)
+
+RegisterServerEvent('vorp_admin:ServerTrollLightningStrikePlayerHandler')
+AddEventHandler('vorp_admin:ServerTrollLightningStrikePlayerHandler', function(playerserverid)
+    TriggerClientEvent('vorp_admin:ClientTrollLightningStrikePlayerHandler', playerserverid)
+end)
+
+RegisterServerEvent('vorp_admin:ServerTrollSetPlayerOnFireHandler')
+AddEventHandler('vorp_admin:ServerTrollSetPlayerOnFireHandler', function(playerserverid)
+    TriggerClientEvent('vorp_admin:ClientTrollSetPlayerOnFireHandler', playerserverid)
+end)
+
+RegisterServerEvent('vorp_admin:ServerTrollTPToHeavenHandler')
+AddEventHandler('vorp_admin:ServerTrollTPToHeavenHandler', function(playerserverid)
+    TriggerClientEvent('vorp_admin:ClientTrollTPToHeavenHandler', playerserverid)
+end)
+
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------- DISCORD --------------------------------------------------------
 
