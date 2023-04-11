@@ -190,10 +190,15 @@ AddEventHandler('vorp_admin:ClientTrollInvisbleHandler', function()
     end
 end)
 
-RegisterNetEvent('vorp_admin:ClientTrollLightningStrikePlayerHandler')
-AddEventHandler('vorp_admin:ClientTrollLightningStrikePlayerHandler', function()
+RegisterNetEvent('vorp_admin:ClientTrollLightningStrikePlayerCoordsHandler')
+AddEventHandler('vorp_admin:ClientTrollLightningStrikePlayerCoordsHandler', function()
     local pl = GetEntityCoords(PlayerPedId())
-    ForceLightningFlashAtCoords(pl.x, pl.y, pl.z, -1.0)
+    TriggerServerEvent('vorp_admin:ServerTrollLightningStrikePlayerHandler', pl)
+end)
+
+RegisterNetEvent('vorp_admin:ClientTrollLightningStrikePlayerHandler')
+AddEventHandler('vorp_admin:ClientTrollLightningStrikePlayerHandler', function(coords)
+    ForceLightningFlashAtCoords(coords.x, coords.y, coords.z, -1.0)
 end)
 
 RegisterNetEvent('vorp_admin:ClientTrollSetPlayerOnFireHandler')

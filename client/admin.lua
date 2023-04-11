@@ -281,7 +281,7 @@ function OpenTrollActions(PlayerInfo)
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.LightningStrikePlayer')
                 Wait(100)
                 if AdminAllowed then
-                    TriggerServerEvent('vorp_admin:ServerTrollLightningStrikePlayerHandler', data.current.info)
+                    TriggerServerEvent('vorp_admin:ServerTrollLightningStrikePlayerCoordHandler', data.current.info)
                 end
             elseif data.current.value == 'setplayeronfire' then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.SetPlayerOnFire')
