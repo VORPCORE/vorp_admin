@@ -105,6 +105,12 @@ Config = {
         { group = { "admin" }, command = "vorp.staff.BringPlayer" },
         { group = { "admin" }, command = "vorp.staff.ViewReports" },
         { group = { "admin" }, command = "vorp.staff.Invisibility" },
+        { group = { "admin" }, command = "vorp.staff.SetPlayerOnFire" },
+        { group = { "admin" }, command = "vorp.staff.LightningStrikePlayer" },
+        { group = { "admin" }, command = "vorp.staff.TPToHeaven" },
+        { group = { "admin" }, command = "vorp.staff.InvisPlayer" },
+        { group = { "admin" }, command = "vorp.staff.KillPlayer" },
+        { group = { "admin" }, command = "vorp.staff.OpenTrollActions" },
     },
     -----------------------------------------------------
     -- Users scoreboard
