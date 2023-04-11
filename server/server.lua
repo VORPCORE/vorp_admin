@@ -518,13 +518,10 @@ AddEventHandler('vorp_admin:ServerTrollInvisibleHandler', function(playerserveri
     TriggerClientEvent('vorp_admin:ClientTrollInvisbleHandler', playerserverid)
 end)
 
-RegisterServerEvent('vorp_admin:ServerTrollLightningStrikePlayerCoordHandler')
-AddEventHandler('vorp_admin:ServerTrollLightningStrikePlayerCoordHandler', function(playerserverid)
-    TriggerClientEvent('vorp_admin:ClientTrollLightningStrikePlayerCoordsHandler', playerserverid)
-end)
-
 RegisterServerEvent('vorp_admin:ServerTrollLightningStrikePlayerHandler')
-AddEventHandler('vorp_admin:ServerTrollLightningStrikePlayerHandler', function(coords)
+AddEventHandler('vorp_admin:ServerTrollLightningStrikePlayerHandler', function(playerserverid)
+    local playerPed = GetPlayerPed(playerserverid)
+    local coords = GetEntityCoords(playerPed)
     TriggerClientEvent('vorp_admin:ClientTrollLightningStrikePlayerHandler', -1, coords)
 end)
 
