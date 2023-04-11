@@ -266,57 +266,34 @@ function OpenTrollActions(PlayerInfo)
                 _G[data.trigger]()
             end
             if data.current.value == 'killplayer' then
-                local target = PlayerPedId(data.current.info)
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.KillPlayer')
                 Wait(100)
                 if AdminAllowed then
-                    if target then
-                        SetEntityHealth(target, 0, 0)
-                    end
+                    TriggerServerEvent('vorp_admin:ServerTrollKillPlayerHandler', data.current.info)
                 end
             elseif data.current.value == 'invisplayer' then
-                local target = PlayerPedId(data.current.info)
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.InvisPlayer')
                 Wait(100)
                 if AdminAllowed then
-                    if target then
-                        if IsEntityVisible(target) then
-                            SetEntityVisible(target, false)
-                        else
-                            SetEntityVisible(target, true)
-                        end
-                    end
+                    TriggerServerEvent('vorp_admin:ServerTrollInvisibleHandler', data.current.info)
                 end
             elseif data.current.value == 'lightningstrikeplayer' then
-                local target = PlayerPedId(data.current.info)
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.LightningStrikePlayer')
                 Wait(100)
                 if AdminAllowed then
-                    if target then
-                        local pl = GetEntityCoords(target)
-                        ForceLightningFlashAtCoords(pl.x, pl.y, pl.z, -1.0)
-                    end
+                    TriggerServerEvent('vorp_admin:ServerTrollLightningStrikePlayerHandler', data.current.info)
                 end
             elseif data.current.value == 'setplayeronfire' then
-                local target = PlayerPedId(data.current.info)
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.SetPlayerOnFire')
                 Wait(100)
                 if AdminAllowed then
-                    if target then
-                        local model = 'p_campfire02xb'
-                        RequestModel(model)
-                        local object = CreateObject(model, 0, 0, 0, false, false, false)
-                        AttachEntityToEntity(object, target, 41, 1000, 1000, 10000, 0, 0, 0, false, false, true, false, 1000, false, false, false)
-                        Citizen.Wait(5000)
-                        DeleteObject(object)
-                    end
+                    TriggerServerEvent('vorp_admin:ServerTrollSetPlayerOnFireHandler', data.current.info)
                 end
             elseif data.current.value == 'tptoheaven' then
-                local target = PlayerPedId(data.current.info)
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.TPToHeaven')
-                Wait(100)
-                local pl = GetEntityCoords(target)
-                SetEntityCoords(target, pl.x, pl.y, pl.z + 200)
+                if AdminAllowed then
+                    TriggerServerEvent('vorp_admin:ServerTrollTPToHeavenHandler', data.current.info)
+                end
             end
         end,
         function(menu)
