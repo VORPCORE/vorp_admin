@@ -34,6 +34,20 @@ Locales["es_lang"] = {
     PlyaerWhitelist           = "Lista blanca: ",
     PlayerWarnings            = "Advertencias: ",
     ------------------------------------------------
+    -- submenu TROLL ACTIONS
+    TrollActions              = "Acciones de troleo",
+    KillPlayer                = 'Matar jugador',
+    InvisPlayer               = 'Hacer invisible al jugador',
+    LightningStrikePlayer             = 'Jugador de rayos',
+    SetPlayerOnFire           = 'Prender fuego al jugador',
+    TPToHeaven                = 'teletransportar al jugador al cielo',
+    --Descriptions of above
+    killplayer_desc          = 'Matar jugador?',
+    InvisPlayer_desc         = 'Hacer invisible al jugador?',
+    LightningStrikePlayer_desc       = 'Jugador de rayos?',
+    SetPlayerOnFire_desc      = 'Prender fuego al jugador?',
+    TPToHeaven_desc           = 'teletransportar al jugador al cielo?',
+    ------------------------------------------------
     -- submenu ADMIN ACTIONS
     MenuSubtitle2             = "Conectados",
     kick_p                    = "Echar",

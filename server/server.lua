@@ -506,6 +506,30 @@ RegisterServerEvent('vorp_admin:opneStaffMenu', function(object)
     end
 end)
 
+-------------------------------------------------------------------------------------------------------------------
+-------------------------- Troll Actions--------------------------------------------------------------------------
+RegisterServerEvent('vorp_admin:ServerTrollKillPlayerHandler', function(playerserverid)
+    TriggerClientEvent('vorp_admin:ClientTrollKillPlayerHandler', playerserverid)
+end)
+
+RegisterServerEvent('vorp_admin:ServerTrollInvisibleHandler', function(playerserverid)
+    TriggerClientEvent('vorp_admin:ClientTrollInvisbleHandler', playerserverid)
+end)
+
+RegisterServerEvent('vorp_admin:ServerTrollLightningStrikePlayerHandler', function(playerserverid)
+    local playerPed = GetPlayerPed(playerserverid)
+    local coords = GetEntityCoords(playerPed)
+    TriggerClientEvent('vorp_admin:ClientTrollLightningStrikePlayerHandler', -1, coords)
+end)
+
+RegisterServerEvent('vorp_admin:ServerTrollSetPlayerOnFireHandler', function(playerserverid)
+    TriggerClientEvent('vorp_admin:ClientTrollSetPlayerOnFireHandler', playerserverid)
+end)
+
+RegisterServerEvent('vorp_admin:ServerTrollTPToHeavenHandler', function(playerserverid)
+    TriggerClientEvent('vorp_admin:ClientTrollTPToHeavenHandler', playerserverid)
+end)
+
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------- DISCORD --------------------------------------------------------
 

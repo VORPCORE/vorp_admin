@@ -34,6 +34,20 @@ Locales["tr_lang"] = {
     PlyaerWhitelist           = "Oyuncu beyaz liste:",
     PlayerWarnings            = "Oyuncu uyarıları:",
     ------------------------------------------------
+    -- submenu TROLL ACTIONS
+    TrollActions              = "trol eylemleri",
+    KillPlayer                = 'oyuncuyu öldür',
+    InvisPlayer               = 'oyuncuyu görünmez yap',
+    LightningStrikePlayer             = 'yıldırım çarpması oyuncusu',
+    SetPlayerOnFire           = 'oyuncuyu ateşe vermek',
+    TPToHeaven                = 'oyuncuyu cennete ışınla',
+    --Descriptions of above
+    killplayer_desc          = 'oyuncuyu öldür?',
+    InvisPlayer_desc         = 'oyuncuyu görünmez yap?',
+    LightningStrikePlayer_desc       = 'yıldırım çarpması oyuncusu?',
+    SetPlayerOnFire_desc      = 'oyuncuyu ateşe vermek?',
+    TPToHeaven_desc           = 'oyuncuyu cennete ışınla?',
+    ------------------------------------------------
     -- alt menü yönetici eylemleri
     MenuSubtitle2             = "Çevrimiçi Oyuncular",
     kick_p                    = "Tekme atmak",

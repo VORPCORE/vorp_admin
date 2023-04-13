@@ -188,6 +188,7 @@ function OpenSubAdminMenu(Player)
     local elements = {
         { label = _U("SimpleAction"),   value = 'simpleaction',   desc = _U("SimpleAction") },
         { label = _U("AdvancedAction"), value = 'advancedaction', desc = _U("AdvancedAction") },
+        { label = _U("TrollActions"), value = 'trollactions', desc = _U('TrollActions') },
     }
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
@@ -216,6 +217,82 @@ function OpenSubAdminMenu(Player)
                     OpenAdvancedActions(Player)
                 else
                     TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                end
+            elseif data.current.value == 'trollactions' then
+                TriggerServerEvent('vorp_admin:opneStaffMenu', 'vorp.staff.OpenTrollActions')
+                Wait(100)
+                if AdminAllowed then
+                    OpenTrollActions(Player)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                end
+            end
+        end,
+        function(menu)
+            menu.close()
+        end)
+end
+
+function OpenTrollActions(PlayerInfo)
+    MenuData.CloseAll()
+    local elements = {
+        { label = _U('KillPlayer'), value = 'killplayer',
+            desc = _U('killplayer_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            info = PlayerInfo.serverId },
+        { label = _U("InvisPlayer"), value = 'invisplayer',
+            desc = _U('InvisPlayer_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            info = PlayerInfo.serverId },
+        { label = _U('LightningStrikePlayer'), value = 'lightningstrikeplayer',
+            desc = _U('LightningStrikePlayer_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            info = PlayerInfo.serverId },
+        { label = _U('SetPlayerOnFire'), value = 'setplayeronfire',
+            desc = _U('SetPlayerOnFire_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            info = PlayerInfo.serverId },
+        { label = _U('TPToHeaven'), value = 'tptoheaven',
+            desc = _U('TPToHeaven_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            info = PlayerInfo.serverId },
+    }
+    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+        {
+            title    = _U("MenuTitle"),
+            subtext  = "SubMenu",
+            align    = 'top-left',
+            elements = elements,
+            lastmenu = 'PlayerList', --Go back
+        },
+        
+        function(data)
+            if data.current == "backup" then
+                _G[data.trigger]()
+            end
+            if data.current.value == 'killplayer' then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.KillPlayer')
+                Wait(100)
+                if AdminAllowed then
+                    TriggerServerEvent('vorp_admin:ServerTrollKillPlayerHandler', data.current.info)
+                end
+            elseif data.current.value == 'invisplayer' then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.InvisPlayer')
+                Wait(100)
+                if AdminAllowed then
+                    TriggerServerEvent('vorp_admin:ServerTrollInvisibleHandler', data.current.info)
+                end
+            elseif data.current.value == 'lightningstrikeplayer' then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.LightningStrikePlayer')
+                Wait(100)
+                if AdminAllowed then
+                    TriggerServerEvent('vorp_admin:ServerTrollLightningStrikePlayerHandler', data.current.info)
+                end
+            elseif data.current.value == 'setplayeronfire' then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.SetPlayerOnFire')
+                Wait(100)
+                if AdminAllowed then
+                    TriggerServerEvent('vorp_admin:ServerTrollSetPlayerOnFireHandler', data.current.info)
+                end
+            elseif data.current.value == 'tptoheaven' then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.TPToHeaven')
+                if AdminAllowed then
+                    TriggerServerEvent('vorp_admin:ServerTrollTPToHeavenHandler', data.current.info)
                 end
             end
         end,
