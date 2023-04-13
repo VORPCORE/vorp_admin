@@ -176,13 +176,11 @@ RegisterNetEvent("vorp_admin:getplayerInventory", function(inventorydata)
 end)
 
 --------------------------Troll Actions Events------------------------------
-RegisterNetEvent('vorp_admin:ClientTrollKillPlayerHandler')
-AddEventHandler('vorp_admin:ClientTrollKillPlayerHandler', function()
+RegisterNetEvent('vorp_admin:ClientTrollKillPlayerHandler', function()
     SetEntityHealth(PlayerPedId(), 0, 0)
 end)
 
-RegisterNetEvent('vorp_admin:ClientTrollInvisbleHandler')
-AddEventHandler('vorp_admin:ClientTrollInvisbleHandler', function()
+RegisterNetEvent('vorp_admin:ClientTrollInvisbleHandler', function()
     if IsEntityVisible(PlayerPedId()) then
         SetEntityVisible(PlayerPedId(), false)
     else
@@ -190,13 +188,11 @@ AddEventHandler('vorp_admin:ClientTrollInvisbleHandler', function()
     end
 end)
 
-RegisterNetEvent('vorp_admin:ClientTrollLightningStrikePlayerHandler')
-AddEventHandler('vorp_admin:ClientTrollLightningStrikePlayerHandler', function(coords)
+RegisterNetEvent('vorp_admin:ClientTrollLightningStrikePlayerHandler', function(coords)
     ForceLightningFlashAtCoords(coords.x, coords.y, coords.z, -1.0)
 end)
 
-RegisterNetEvent('vorp_admin:ClientTrollSetPlayerOnFireHandler')
-AddEventHandler('vorp_admin:ClientTrollSetPlayerOnFireHandler', function()
+RegisterNetEvent('vorp_admin:ClientTrollSetPlayerOnFireHandler', function()
     local model = 'p_campfire02xb'
     RequestModel(model)
     local object = CreateObject(model, 0, 0, 0, false, false, false)
@@ -205,8 +201,7 @@ AddEventHandler('vorp_admin:ClientTrollSetPlayerOnFireHandler', function()
     DeleteObject(object)
 end)
 
-RegisterNetEvent('vorp_admin:ClientTrollTPToHeavenHandler')
-AddEventHandler('vorp_admin:ClientTrollTPToHeavenHandler', function()
+RegisterNetEvent('vorp_admin:ClientTrollTPToHeavenHandler', function()
     local pl = GetEntityCoords(PlayerPedId())
     SetEntityCoords(PlayerPedId(), pl.x, pl.y, pl.z + 200)
 end)
