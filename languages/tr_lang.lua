@@ -41,12 +41,20 @@ Locales["tr_lang"] = {
     LightningStrikePlayer             = 'yıldırım çarpması oyuncusu',
     SetPlayerOnFire           = 'oyuncuyu ateşe vermek',
     TPToHeaven                = 'oyuncuyu cennete ışınla',
+    RagdollPlayer             = 'Ragdoll oyuncusu ',
+    DrainPlayerStam           = 'oyuncu dayanıklılığını boşaltmak ',
+    CuffPlayer                = 'kelepçe oyuncusu ',
+    TempHighPlayer            = 'sıcaklık yüksek ',
     --Descriptions of above
     killplayer_desc          = 'oyuncuyu öldür?',
     InvisPlayer_desc         = 'oyuncuyu görünmez yap?',
     LightningStrikePlayer_desc       = 'yıldırım çarpması oyuncusu?',
     SetPlayerOnFire_desc      = 'oyuncuyu ateşe vermek?',
     TPToHeaven_desc           = 'oyuncuyu cennete ışınla?',
+    RagdollPlayer_desc        = 'Ragdoll oyuncu? ',
+    DrainPlayerStam_desc          = 'oyuncuların dayanıklılığını tüketmek? ',
+    CuffPlayer_desc           = 'kelepçe oyuncusu? ',
+    TempHighPlayer_desc       = 'oynatıcıyı geçici olarak yüksek yapmak? ',
     ------------------------------------------------
     -- alt menü yönetici eylemleri
     MenuSubtitle2             = "Çevrimiçi Oyuncular",

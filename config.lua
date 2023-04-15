@@ -110,6 +110,10 @@ Config = {
         { group = { "admin" }, command = "vorp.staff.TPToHeaven" },
         { group = { "admin" }, command = "vorp.staff.InvisPlayer" },
         { group = { "admin" }, command = "vorp.staff.KillPlayer" },
+        { group = { "admin" }, command = "vorp.staff.RagdollPlayer" },
+        { group = { "admin" }, command = "vorp.staff.DrainPlayerStam" },
+        { group = { "admin" }, command = "vorp.staff.CuffPlayer" },
+        { group = { "admin" }, command = "vorp.staff.PlayerTempHigh" },
         { group = { "admin" }, command = "vorp.staff.OpenTrollActions" },
     },
     -----------------------------------------------------
