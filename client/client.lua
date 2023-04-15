@@ -205,3 +205,25 @@ RegisterNetEvent('vorp_admin:ClientTrollTPToHeavenHandler', function()
     local pl = GetEntityCoords(PlayerPedId())
     SetEntityCoords(PlayerPedId(), pl.x, pl.y, pl.z + 200)
 end)
+
+RegisterNetEvent('vorp_admin:ClientTrollRagdollPlayerHandler', function()
+    SetPedToRagdoll(PlayerPedId(), 5000, 5000, 0, 0, 0, 0)
+end)
+
+RegisterNetEvent('vorp_admin:ClientDrainPlayerStamHandler', function()
+    Citizen.InvokeNative(0xC3D4B754C0E86B9E, PlayerPedId(), -1000.0)
+end)
+
+RegisterNetEvent('vorp_admin:ClientHandcuffPlayerHandler', function()
+    if not IsPedCuffed(PlayerPedId()) then
+        SetEnableHandcuffs(PlayerPedId(), true)
+    else
+        SetEnableHandcuffs(PlayerPedId(), false)
+    end
+end)
+
+RegisterNetEvent('vorp_admin:ClientTempHighPlayerHandler', function()
+    AnimpostfxPlay('MP_BountyLagrasSwamp')
+    Wait(15000)
+    AnimpostfxStop('MP_BountyLagrasSwamp')
+end)
