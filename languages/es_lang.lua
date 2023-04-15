@@ -41,12 +41,20 @@ Locales["es_lang"] = {
     LightningStrikePlayer             = 'Jugador de rayos',
     SetPlayerOnFire           = 'Prender fuego al jugador',
     TPToHeaven                = 'teletransportar al jugador al cielo',
+    RagdollPlayer             = 'Jugador de ragdoll ',
+    DrainPlayerStam           = 'drenar la resistencia del jugador ',
+    CuffPlayer                = 'Jugador de esposas ',
+    TempHighPlayer            = 'temperatura alta ',
     --Descriptions of above
     killplayer_desc          = 'Matar jugador?',
     InvisPlayer_desc         = 'Hacer invisible al jugador?',
     LightningStrikePlayer_desc       = 'Jugador de rayos?',
     SetPlayerOnFire_desc      = 'Prender fuego al jugador?',
     TPToHeaven_desc           = 'teletransportar al jugador al cielo?',
+    RagdollPlayer_desc        = 'muñeco de trapo el jugador? ',
+    DrainPlayerStam_desc          = '¿Drenar la resistencia de los jugadores? ',
+    CuffPlayer_desc           = 'Jugador de esposas? ',
+    TempHighPlayer_desc       = 'Hacer que el jugador temporalmente alto? ',
     ------------------------------------------------
     -- submenu ADMIN ACTIONS
     MenuSubtitle2             = "Conectados",

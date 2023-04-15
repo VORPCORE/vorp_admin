@@ -251,6 +251,18 @@ function OpenTrollActions(PlayerInfo)
         { label = _U('TPToHeaven'), value = 'tptoheaven',
             desc = _U('TPToHeaven_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId },
+        { label = _U('RagdollPlayer'), value = 'ragdollplayer',
+            desc = _U('RagdollPlayer_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            info = PlayerInfo.serverId },
+        { label = _U('DrainPlayerStam'), value = 'drainplayerstam',
+            desc = _U('DrainPlayerStam_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            info = PlayerInfo.serverId },
+        { label = _U('CuffPlayer'), value = 'cuffplayer',
+            desc = _U('CuffPlayer_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            info = PlayerInfo.serverId },
+        { label = _U('TempHighPlayer'), value = 'temphighplayer',
+            desc = _U('TempHighPlayer_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            info = PlayerInfo.serverId },
     }
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
@@ -291,8 +303,33 @@ function OpenTrollActions(PlayerInfo)
                 end
             elseif data.current.value == 'tptoheaven' then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.TPToHeaven')
+                Wait(100)
                 if AdminAllowed then
                     TriggerServerEvent('vorp_admin:ServerTrollTPToHeavenHandler', data.current.info)
+                end
+            elseif data.current.value == 'ragdollplayer' then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.RagdollPlayer')
+                Wait(100)
+                if AdminAllowed then
+                    TriggerServerEvent('vorp_admin:ServerTrollRagdollPlayerHandler', data.current.info)
+                end
+            elseif data.current.value == 'drainplayerstam' then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.DrainPlayerStam')
+                Wait(100)
+                if AdminAllowed then
+                    TriggerServerEvent('vorp_admin:ServerDrainPlayerStamHandler', data.current.info)
+                end
+            elseif data.current.value == 'cuffplayer' then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.CuffPlayer')
+                Wait(100)
+                if AdminAllowed then
+                    TriggerServerEvent('vorp_admin:ServerHandcuffPlayerHandler', data.current.info)
+                end
+            elseif data.current.value == 'temphighplayer' then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.PlayerTempHigh')
+                Wait(100)
+                if AdminAllowed then
+                    TriggerServerEvent('vorp_admin:ServerTempHighPlayerHandler', data.current.info)
                 end
             end
         end,

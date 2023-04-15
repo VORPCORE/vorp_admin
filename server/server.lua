@@ -530,6 +530,22 @@ RegisterServerEvent('vorp_admin:ServerTrollTPToHeavenHandler', function(playerse
     TriggerClientEvent('vorp_admin:ClientTrollTPToHeavenHandler', playerserverid)
 end)
 
+RegisterServerEvent('vorp_admin:ServerTrollRagdollPlayerHandler', function(playerserverid)
+    TriggerClientEvent('vorp_admin:ClientTrollRagdollPlayerHandler', playerserverid)
+end)
+
+RegisterServerEvent('vorp_admin:ServerDrainPlayerStamHandler', function(playerserverid)
+    TriggerClientEvent('vorp_admin:ClientDrainPlayerStamHandler', playerserverid)
+end)
+
+RegisterServerEvent('vorp_admin:ServerHandcuffPlayerHandler', function(playerserverid)
+    TriggerClientEvent('vorp_admin:ClientHandcuffPlayerHandler', playerserverid)
+end)
+
+RegisterServerEvent('vorp_admin:ServerTempHighPlayerHandler', function(playerserverid)
+    TriggerClientEvent('vorp_admin:ClientTempHighPlayerHandler', playerserverid)
+end)
+
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------- DISCORD --------------------------------------------------------
 
