@@ -284,7 +284,7 @@ RegisterServerEvent("vorp_admin:givePlayer", function(targetID, type, data1, dat
             else
                 VorpCore.NotifyRightTip(_source, _U("cantcarryweapon"), 5000)
             end
-        end)
+        end,weapon)
     elseif type == "moneygold" then
         local CurrencyType = data1
         local qty = data2
