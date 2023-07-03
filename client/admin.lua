@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 -------------------------------------------------------------------------------------------------
 --------------------------------- ADMIN ACTIONS -------------------------------------------------
 -- administration category
@@ -64,7 +65,7 @@ function Admin()
                 TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                     local id = tonumber(result)
                     if id and id > 0 then
-                        VORP.RpcCall("vorp_admin:Callback:FetchPlayer", function(cb)
+                        VORP.RpcCall("vorp_admin:Callback:getplayersinfo", function(cb)
                             if cb then
                                 OpenOnePlayerMenu(cb)
                             else
@@ -88,17 +89,17 @@ function OpenOnePlayerMenu(table)
             label = playersInfo.PlayerName .. "<br> Server id: " .. playersInfo.serverId,
             value = "players" .. k,
             desc = _U("SteamName") .. "<span style=color:MediumSeaGreen;> "
-            .. playersInfo.name .. "</span><br>" .. _U("ServerID") .. "<span style=color:MediumSeaGreen;>"
-            .. playersInfo.serverId .. "</span><br>" .. _U("PlayerGroup") .. "<span style=color:MediumSeaGreen;>"
-            .. playersInfo.Group .. "</span><br>" .. _U("PlayerJob") .. "<span style=color:MediumSeaGreen;>"
-            .. playersInfo.Job .. "</span>" .. _U("Grade") .. "<span style=color:MediumSeaGreen;>"
-            .. playersInfo.Grade .. "</span><br>" .. _U("Identifier") .. "<span style=color:MediumSeaGreen;>"
-            .. playersInfo.SteamId .. "</span><br>" .. _U("PlayerMoney") .. "<span style=color:MediumSeaGreen;>"
-            .. playersInfo.Money .. "</span><br>" .. _U("PlayerGold") .. "<span style=color:Gold;>"
-            .. playersInfo.Gold .. "</span><br>" .. _U("PlayerStaticID") .. "<span style=color:Red;>"
-            .. playersInfo.staticID .. "</span><br>" .. _U("PlyaerWhitelist") .. "<span style=color:Gold;>"
-            .. playersInfo.WLstatus .. "</span><br>" .. _U("PlayerWarnings") .. "<span style=color:Gold;>"
-            .. playersInfo.warns .. "</span>",
+                .. playersInfo.name .. "</span><br>" .. _U("ServerID") .. "<span style=color:MediumSeaGreen;>"
+                .. playersInfo.serverId .. "</span><br>" .. _U("PlayerGroup") .. "<span style=color:MediumSeaGreen;>"
+                .. playersInfo.Group .. "</span><br>" .. _U("PlayerJob") .. "<span style=color:MediumSeaGreen;>"
+                .. playersInfo.Job .. "</span>" .. _U("Grade") .. "<span style=color:MediumSeaGreen;>"
+                .. playersInfo.Grade .. "</span><br>" .. _U("Identifier") .. "<span style=color:MediumSeaGreen;>"
+                .. playersInfo.SteamId .. "</span><br>" .. _U("PlayerMoney") .. "<span style=color:MediumSeaGreen;>"
+                .. playersInfo.Money .. "</span><br>" .. _U("PlayerGold") .. "<span style=color:Gold;>"
+                .. playersInfo.Gold .. "</span><br>" .. _U("PlayerStaticID") .. "<span style=color:Red;>"
+                .. playersInfo.staticID .. "</span><br>" .. _U("PlyaerWhitelist") .. "<span style=color:Gold;>"
+                .. playersInfo.WLstatus .. "</span><br>" .. _U("PlayerWarnings") .. "<span style=color:Gold;>"
+                .. playersInfo.warns .. "</span>",
             info = playersInfo
         }
     end
@@ -124,63 +125,73 @@ function OpenOnePlayerMenu(table)
         end)
 end
 
---TODO added to langs
 function PlayerList()
     MenuData.CloseAll()
     local elements = {}
-    local players = GetPlayers()
+    VORP.RpcCall("vorp_admin:Callback:getplayersinfo", function(result)
+        if not result then
+            return
+        end
+        local players = result
+        local sortedPlayers = {} -- Create a new table to store the sorted player list
 
-    table.sort(players, function(a, b)
-        return a.serverId < b.serverId
-    end)
+        for playerid, playersInfo in pairs(players) do
+            sortedPlayers[#sortedPlayers + 1] = playersInfo
+        end
 
-    for k, playersInfo in pairs(players) do
-        elements[#elements + 1] = {
-            label = playersInfo.PlayerName .. "<br> Server id: " .. playersInfo.serverId,
-            value = "players" .. k,
-            desc = _U("SteamName") .. "<span style=color:MediumSeaGreen;> "
-            .. playersInfo.name .. "</span><br>" .. _U("ServerID") .. "<span style=color:MediumSeaGreen;>"
-            .. playersInfo.serverId .. "</span><br>" .. _U("PlayerGroup") .. "<span style=color:MediumSeaGreen;>"
-            .. playersInfo.Group .. "</span><br>" .. _U("PlayerJob") .. "<span style=color:MediumSeaGreen;>"
-            .. playersInfo.Job .. "</span>" .. _U("Grade") .. "<span style=color:MediumSeaGreen;>"
-            .. playersInfo.Grade .. "</span><br>" .. _U("Identifier") .. "<span style=color:MediumSeaGreen;>"
-            .. playersInfo.SteamId .. "</span><br>" .. _U("PlayerMoney") .. "<span style=color:MediumSeaGreen;>"
-            .. playersInfo.Money .. "</span><br>" .. _U("PlayerGold") .. "<span style=color:Gold;>"
-            .. playersInfo.Gold .. "</span><br>" .. _U("PlayerStaticID") .. "<span style=color:Red;>"
-            .. playersInfo.staticID .. "</span><br>" .. _U("PlyaerWhitelist") .. "<span style=color:Gold;>"
-            .. playersInfo.WLstatus .. "</span><br>" .. _U("PlayerWarnings") .. "<span style=color:Gold;>"
-            .. playersInfo.warns .. "</span>",
-            info = playersInfo
-        }
-    end
-
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
-        {
-            title      = _U("MenuTitle"),
-            subtext    = _U("MenuSubtitle2"),
-            align      = 'top-left',
-            elements   = elements,
-            lastmenu   = 'Admin',
-            itemHeight = "4vh",
-        },
-        function(data)
-            if data.current == "backup" then
-                _G[data.trigger]()
-            end
-            if data.current.value then
-                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.PlayersListSubmenu')
-                Wait(100)
-                if AdminAllowed then
-                    local player = data.current.info
-                    OpenSubAdminMenu(player)
-                else
-                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
-                end
-            end
-        end,
-        function(menu)
-            menu.close()
+        -- Sort players by serverId in ascending order
+        table.sort(sortedPlayers, function(a, b)
+            return a.serverId < b.serverId
         end)
+
+        for _, playersInfo in ipairs(sortedPlayers) do
+            elements[#elements + 1] = {
+                label = playersInfo.PlayerName .. "<br> Server id: " .. playersInfo.serverId,
+                value = "players" .. playersInfo.serverId,
+                desc = _U("SteamName") .. "<span style=color:MediumSeaGreen;> "
+                    .. playersInfo.name .. "</span><br>" .. _U("ServerID") .. "<span style=color:MediumSeaGreen;>"
+                    .. playersInfo.serverId .. "</span><br>" .. _U("PlayerGroup") .. "<span style=color:MediumSeaGreen;>"
+                    .. playersInfo.Group .. "</span><br>" .. _U("PlayerJob") .. "<span style=color:MediumSeaGreen;>"
+                    .. playersInfo.Job .. "</span>" .. _U("Grade") .. "<span style=color:MediumSeaGreen;>"
+                    .. playersInfo.Grade .. "</span><br>" .. _U("Identifier") .. "<span style=color:MediumSeaGreen;>"
+                    .. playersInfo.SteamId .. "</span><br>" .. _U("PlayerMoney") .. "<span style=color:MediumSeaGreen;>"
+                    .. playersInfo.Money .. "</span><br>" .. _U("PlayerGold") .. "<span style=color:Gold;>"
+                    .. playersInfo.Gold .. "</span><br>" .. _U("PlayerStaticID") .. "<span style=color:Red;>"
+                    .. playersInfo.staticID .. "</span><br>" .. _U("PlyaerWhitelist") .. "<span style=color:Gold;>"
+                    .. playersInfo.WLstatus .. "</span><br>" .. _U("PlayerWarnings") .. "<span style=color:Gold;>"
+                    .. playersInfo.warns .. "</span>",
+                info = playersInfo
+            }
+        end
+
+        MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+            {
+                title      = _U("MenuTitle"),
+                subtext    = _U("MenuSubtitle2"),
+                align      = 'top-left',
+                elements   = elements,
+                lastmenu   = 'Admin',
+                itemHeight = "4vh",
+            },
+            function(data)
+                if data.current == "backup" then
+                    _G[data.trigger]()
+                end
+                if data.current.value then
+                    TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.PlayersListSubmenu')
+                    Wait(100)
+                    if AdminAllowed then
+                        local player = data.current.info
+                        OpenSubAdminMenu(player)
+                    else
+                        TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                    end
+                end
+            end,
+            function(menu)
+                menu.close()
+            end)
+    end)
 end
 
 function OpenSubAdminMenu(Player)
@@ -188,7 +199,7 @@ function OpenSubAdminMenu(Player)
     local elements = {
         { label = _U("SimpleAction"),   value = 'simpleaction',   desc = _U("SimpleAction") },
         { label = _U("AdvancedAction"), value = 'advancedaction', desc = _U("AdvancedAction") },
-        { label = _U("TrollActions"), value = 'trollactions', desc = _U('TrollActions') },
+        { label = _U("TrollActions"),   value = 'trollactions',   desc = _U('TrollActions') },
     }
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
@@ -236,33 +247,64 @@ end
 function OpenTrollActions(PlayerInfo)
     MenuData.CloseAll()
     local elements = {
-        { label = _U('KillPlayer'), value = 'killplayer',
+        {
+            label = _U('KillPlayer'),
+            value = 'killplayer',
             desc = _U('killplayer_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U("InvisPlayer"), value = 'invisplayer',
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U("InvisPlayer"),
+            value = 'invisplayer',
             desc = _U('InvisPlayer_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U('LightningStrikePlayer'), value = 'lightningstrikeplayer',
-            desc = _U('LightningStrikePlayer_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U('SetPlayerOnFire'), value = 'setplayeronfire',
-            desc = _U('SetPlayerOnFire_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U('TPToHeaven'), value = 'tptoheaven',
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U('LightningStrikePlayer'),
+            value = 'lightningstrikeplayer',
+            desc = _U('LightningStrikePlayer_desc') ..
+                "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U('SetPlayerOnFire'),
+            value = 'setplayeronfire',
+            desc = _U('SetPlayerOnFire_desc') ..
+                "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U('TPToHeaven'),
+            value = 'tptoheaven',
             desc = _U('TPToHeaven_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U('RagdollPlayer'), value = 'ragdollplayer',
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U('RagdollPlayer'),
+            value = 'ragdollplayer',
             desc = _U('RagdollPlayer_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U('DrainPlayerStam'), value = 'drainplayerstam',
-            desc = _U('DrainPlayerStam_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U('CuffPlayer'), value = 'cuffplayer',
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U('DrainPlayerStam'),
+            value = 'drainplayerstam',
+            desc = _U('DrainPlayerStam_desc') ..
+                "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U('CuffPlayer'),
+            value = 'cuffplayer',
             desc = _U('CuffPlayer_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U('TempHighPlayer'), value = 'temphighplayer',
-            desc = _U('TempHighPlayer_desc') .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U('TempHighPlayer'),
+            value = 'temphighplayer',
+            desc = _U('TempHighPlayer_desc') ..
+                "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            info = PlayerInfo.serverId
+        },
     }
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
@@ -272,7 +314,7 @@ function OpenTrollActions(PlayerInfo)
             elements = elements,
             lastmenu = 'PlayerList', --Go back
         },
-        
+
         function(data)
             if data.current == "backup" then
                 _G[data.trigger]()
@@ -341,36 +383,69 @@ end
 function OpenSimpleActionMenu(PlayerInfo)
     MenuData.CloseAll()
     local elements = {
-        { label = _U("spectate_p"), value = 'spectate',
+        {
+            label = _U("spectate_p"),
+            value = 'spectate',
             desc = _U("spectate_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U("freeze_p"), value = 'freeze',
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U("freeze_p"),
+            value = 'freeze',
             desc = _U("freeze_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U("revive_p"), value = 'revive',
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U("revive_p"),
+            value = 'revive',
             desc = _U("revive_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U("heal_p"), value = 'heal',
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U("heal_p"),
+            value = 'heal',
             desc = _U("heal_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U("goto_p"), value = 'goto',
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U("goto_p"),
+            value = 'goto',
             desc = _U("goto_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U("goback_p"), value = 'goback',
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U("goback_p"),
+            value = 'goback',
             desc = _U("goback_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U("bring_p"), value = 'bring',
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U("bring_p"),
+            value = 'bring',
             desc = _U("bring_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U("sendback"), value = 'sendback',
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U("sendback"),
+            value = 'sendback',
             desc = _U("sendback_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.serverId },
-        { label = _U("warn_p"), value = 'warn',
+            info = PlayerInfo.serverId
+        },
+        {
+            label = _U("warn_p"),
+            value = 'warn',
             desc = _U("warn_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.staticID, info2 = PlayerInfo.Group, info3 = PlayerInfo.serverId },
-        { label = _U("unwarn_p"), value = 'unwarn',
+            info = PlayerInfo.staticID,
+            info2 = PlayerInfo.Group,
+            info3 = PlayerInfo.serverId
+        },
+        {
+            label = _U("unwarn_p"),
+            value = 'unwarn',
             desc = _U("unwarn_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
-            info = PlayerInfo.staticID, info2 = PlayerInfo.serverId },
+            info = PlayerInfo.staticID,
+            info2 = PlayerInfo.serverId
+        },
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
@@ -558,30 +633,59 @@ end
 function OpenAdvancedActions(Player)
     MenuData.CloseAll()
     local elements = {
-        { label = _U("kick_p"), value = 'kick',
+        {
+            label = _U("kick_p"),
+            value = 'kick',
             desc = _U("kick_desc") .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
-            info = Player.Group, info2 = Player.serverId },
-        { label = _U("ban_p"), value = 'ban',
+            info = Player.Group,
+            info2 = Player.serverId
+        },
+        {
+            label = _U("ban_p"),
+            value = 'ban',
             desc = _U("ban_desc") .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
-            info = Player.staticID, info2 = Player.Group, info3 = Player.serverId },
-        { label = _U("unban_p"), value = 'unban',
+            info = Player.staticID,
+            info2 = Player.Group,
+            info3 = Player.serverId
+        },
+        {
+            label = _U("unban_p"),
+            value = 'unban',
             desc = _U("unban_desc") .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
-            info = Player.staticID },
-        { label = _U("respawn_p"), value = 'respawn',
+            info = Player.staticID
+        },
+        {
+            label = _U("respawn_p"),
+            value = 'respawn',
             desc = _U("respawn_desc") .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
-            info = Player.serverId },
-        { label = _U("whitelist_p"), value = 'whitelist',
+            info = Player.serverId
+        },
+        {
+            label = _U("whitelist_p"),
+            value = 'whitelist',
             desc = _U("whitelist_desc") .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
-            info = Player.serverId, info2 = Player.staticID },
-        { label = _U("unwhitelist_p"), value = 'unwhitelist',
+            info = Player.serverId,
+            info2 = Player.staticID
+        },
+        {
+            label = _U("unwhitelist_p"),
+            value = 'unwhitelist',
             desc = _U("unwarn_desc") .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
-            info = Player.serverId, info2 = Player.staticID },
-        { label = _U("setjob_p"), value = 'setjob',
+            info = Player.serverId,
+            info2 = Player.staticID
+        },
+        {
+            label = _U("setjob_p"),
+            value = 'setjob',
             desc = _U("setjob_desc") .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
-            info = Player.serverId },
-        { label = _U("setgroup_p"), value = 'setgroup',
+            info = Player.serverId
+        },
+        {
+            label = _U("setgroup_p"),
+            value = 'setgroup',
             desc = _U("setgroup_desc") .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
-            info = Player.serverId },
+            info = Player.serverId
+        },
     }
 
 
@@ -633,7 +737,7 @@ function OpenAdvancedActions(Player)
                                 if Config.AdminLogs.Kick then
                                     TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Kick
                                         , _U("titleadmin"), _U("usedkick") .. "\n > " .. Player.PlayerName ..
-                                    "\n: " .. reason)
+                                        "\n: " .. reason)
                                 end
                             end
                         else
@@ -664,7 +768,7 @@ function OpenAdvancedActions(Player)
                                 if Config.AdminLogs.Ban then
                                     TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Ban
                                         , _U("titleadmin"), _U("usedban") .. "\n > " .. Player.PlayerName ..
-                                    "\n: " .. time)
+                                        "\n: " .. time)
                                 end
                             end
                         else
@@ -684,7 +788,7 @@ function OpenAdvancedActions(Player)
                     if Config.AdminLogs.Unban then
                         TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Unban
                             , _U("titleadmin"), _U("usedunban") .. "\n > " .. Player.PlayerName ..
-                        "\n: " .. staticID)
+                            "\n: " .. staticID)
                     end
                 else
                     TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
@@ -719,7 +823,7 @@ function OpenAdvancedActions(Player)
                     if Config.AdminLogs.Unwhitelist then
                         TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Unwhitelist
                             , _U("titleadmin"), _U("usedunwhitelist") .. "\n > " .. Player.PlayerName ..
-                        "\n: " .. staticID)
+                            "\n: " .. staticID)
                     end
                 else
                     TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
@@ -740,7 +844,7 @@ function OpenAdvancedActions(Player)
                             if Config.AdminLogs.Setgroup then
                                 TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Setgroup
                                     , _U("titleadmin"), _U("usedsetgroup") .. "\n > " .. Player.PlayerName ..
-                                "\ngroup: " .. result)
+                                    "\ngroup: " .. result)
                             end
                         else
                             TriggerEvent("vorp:TipRight", _U("empty"), 4000)
@@ -772,7 +876,7 @@ function OpenAdvancedActions(Player)
                                 if Config.AdminLogs.Setjob then
                                     TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Setjob
                                         , _U("titleadmin"), _U("usedsetjob") .. "\n > " .. Player.PlayerName ..
-                                    "\njob:  " .. jobname .. " \ngrade: " .. jobgrade)
+                                        "\njob:  " .. jobname .. " \ngrade: " .. jobgrade)
                                 end
                             end
                         else
@@ -881,7 +985,7 @@ function Actions()
                             TriggerServerEvent("vorp_admin:announce", announce)
                             if Config.AdminLogs.Announce then
                                 TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Announce
-                                    , _U("titleadmin"), _U("usedannounce") .. "\n > " .. announce)
+                                , _U("titleadmin"), _U("usedannounce") .. "\n > " .. announce)
                             end
                         else
                             TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
@@ -937,10 +1041,16 @@ end
 function OffLine()
     MenuData.CloseAll()
     local elements = {
-        { label = _U("banunban"), value = 'bans',
-            desc = _U("banunban_desc") },
-        { label = _U("whiteunwhite"), value = 'whites',
-            desc = _U("whiteunwhite_desc") },
+        {
+            label = _U("banunban"),
+            value = 'bans',
+            desc = _U("banunban_desc")
+        },
+        {
+            label = _U("whiteunwhite"),
+            value = 'whites',
+            desc = _U("whiteunwhite_desc")
+        },
         { label = _U("warnunwarn"), value = 'warn', desc = _U("warn_desc") },
 
     }
