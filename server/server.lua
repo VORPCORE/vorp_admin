@@ -600,7 +600,7 @@ AddEventHandler('playerDropped', function()
         end
     end
     for key, value in pairs(PlayersTable) do
-        if value == _source then
+        if key == _source then
             stafftable[key] = nil
         end
     end
