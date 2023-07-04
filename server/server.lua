@@ -22,6 +22,7 @@ VorpCore.addRpcCallback("vorp_admin:Callback:getplayersinfo", function(source, c
         if PlayersTable[args] then
             return cb(PlayersTable)
         end
+        return cb(PlayersTable)
     end
     return cb(false)
 end)
