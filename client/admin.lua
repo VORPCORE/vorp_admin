@@ -71,7 +71,7 @@ function Admin()
                             else
                                 TriggerEvent("vorp:TipRight", "user dont exist ", 4000)
                             end
-                        end, id)
+                        end, { search = "search", id = id })
                     end
                 end)
             end
