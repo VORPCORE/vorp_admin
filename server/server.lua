@@ -19,13 +19,18 @@ local VORPInv = exports.vorp_inventory:vorp_inventoryApi()
 ------------------------------------- EVENTS -------------------------------------------------------
 VorpCore.addRpcCallback("vorp_admin:Callback:getplayersinfo", function(source, cb, args)
     if next(PlayersTable) then
-        if PlayersTable[args] then
-            return cb(PlayersTable)
+        if args.search == "search" then -- is for unique player
+            if PlayersTable[args.id] then
+                return cb(PlayersTable[args.id])
+            else
+                return cb(false)
+            end
         end
         return cb(PlayersTable)
     end
     return cb(false)
 end)
+
 
 
 -------------------------------------------------------------------------------

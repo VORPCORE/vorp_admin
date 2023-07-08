@@ -81,13 +81,12 @@ function Admin()
         end)
 end
 
-function OpenOnePlayerMenu(table)
+function OpenOnePlayerMenu(playersInfo)
     MenuData.CloseAll()
-    local elements = {}
-    for k, playersInfo in pairs(table) do
-        elements[#elements + 1] = {
+    local elements = {
+        {
             label = playersInfo.PlayerName .. "<br> Server id: " .. playersInfo.serverId,
-            value = "players" .. k,
+            value = "players" .. playersInfo.serverId,
             desc = _U("SteamName") .. "<span style=color:MediumSeaGreen;> "
                 .. playersInfo.name .. "</span><br>" .. _U("ServerID") .. "<span style=color:MediumSeaGreen;>"
                 .. playersInfo.serverId .. "</span><br>" .. _U("PlayerGroup") .. "<span style=color:MediumSeaGreen;>"
@@ -102,7 +101,7 @@ function OpenOnePlayerMenu(table)
                 .. playersInfo.warns .. "</span>",
             info = playersInfo
         }
-    end
+    }
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title      = _U("MenuTitle"),
@@ -191,7 +190,7 @@ function PlayerList()
             function(menu)
                 menu.close()
             end)
-    end)
+    end, { search = "all" })
 end
 
 function OpenSubAdminMenu(Player)
