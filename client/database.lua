@@ -53,7 +53,7 @@ function DataBase()
             function(menu)
                 menu.close()
             end)
-    end)
+    end, { search = "all" })
 end
 
 function DatabasePlayers(PlayerData)
