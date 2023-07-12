@@ -70,7 +70,10 @@ function OpenDevTools()
                             ped = joaat(ped)
                         end
 
-                        local npc = Createped(ped, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
+                        local npc = CreatePed(ped, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
+                        while not DoesEntityExist(ped) do
+                            Wait(100)
+                        end
                         Citizen.InvokeNative(0x77FF8D35EEC6BBC4, npc, 1, 0)
                         Wait(2000)
                         SetModelAsNoLongerNeeded(ped)
