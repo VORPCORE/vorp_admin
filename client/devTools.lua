@@ -77,6 +77,7 @@ function OpenDevTools()
                         Citizen.InvokeNative(0x77FF8D35EEC6BBC4, npc, 1, 0)
                         Wait(2000)
                         SetModelAsNoLongerNeeded(ped)
+                        SetEntityAsNoLongerNeeded(npc)
                     else
                         TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
                     end
@@ -150,12 +151,16 @@ function OpenDevTools()
                             wagon = joaat(wagon)
                         end
 
-                        local Wagon = CreateVehicle(wagon, playerCoords.x, playerCoords.y, playerCoords.z, true, true,
+                        local Wagon = CreateVehicle(wagon, playerCoords.x, playerCoords.y, playerCoords.z, 0, true, true,
                             true)
+                        while not DoesEntityExist(Wagon) do
+                            Wait(100)
+                        end
                         Citizen.InvokeNative(0x77FF8D35EEC6BBC4, Wagon, 1, 0)
                         SetPedIntoVehicle(player, Wagon, -1)
                         Wait(2000)
-                        SetModelAsNoLongerNeeded(ped)
+                        SetModelAsNoLongerNeeded(wagon)
+                        SetEntityAsNoLongerNeeded(Wagon)
                     else
                         TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
                     end
