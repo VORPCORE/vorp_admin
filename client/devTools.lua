@@ -70,14 +70,13 @@ function OpenDevTools()
                             ped = joaat(ped)
                         end
 
-                        local npc = CreatePed(ped, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
-                        while not DoesEntityExist(ped) do
+                        local npc = CreatePed(ped, playerCoords.x, playerCoords.y, playerCoords.z, 0, true, true, true)
+                        while not DoesEntityExist(npc) do
                             Wait(100)
                         end
                         Citizen.InvokeNative(0x77FF8D35EEC6BBC4, npc, 1, 0)
                         Wait(2000)
                         SetModelAsNoLongerNeeded(ped)
-                      
                     else
                         TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
                     end
@@ -101,7 +100,6 @@ function OpenDevTools()
             end
 
             if data.current.value == "imap" then
-                print("imap")
                 ExecuteCommand("imapview")
             end
 
