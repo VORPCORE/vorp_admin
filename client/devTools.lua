@@ -67,7 +67,7 @@ function OpenDevTools()
                         LoadModel(ped)
 
                         if type(ped) == "string" then
-                            ped = joaat(wagon)
+                            ped = joaat(ped)
                         end
 
                         local npc = Createped(ped, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
