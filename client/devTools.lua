@@ -62,7 +62,7 @@ function OpenDevTools()
 
                 TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                     local ped = result
-                    local playerCoords = GetEntityCoords(player)
+                    local playerCoords = GetEntityCoords(PlayerPedId())
                     if ped ~= "" then
                         LoadModel(ped)
 
@@ -77,6 +77,7 @@ function OpenDevTools()
                         Citizen.InvokeNative(0x77FF8D35EEC6BBC4, npc, 1, 0)
                         Wait(2000)
                         SetModelAsNoLongerNeeded(ped)
+                      
                     else
                         TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
                     end
