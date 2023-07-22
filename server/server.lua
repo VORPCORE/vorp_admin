@@ -163,7 +163,9 @@ end)
 RegisterServerEvent("vorp_admin:givePlayer", function(targetID, type, data1, data2, data3)
     local _source = source
     local Character = VorpCore.getUser(targetID).getUsedCharacter
-
+    if not data2 then
+        return VorpCore.NotifyRightTip(_source, "item and AMOUNT", 5000)
+    end
     if not Character then
         return
     end
