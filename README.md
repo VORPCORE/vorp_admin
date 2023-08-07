@@ -12,7 +12,7 @@ https://user-images.githubusercontent.com/87246847/176929940-9557248d-670d-4dca-
 
 
 ### FEATURES
-* ***Built in Ace permissions*** *does not use databse*
+* ***Built in Ace permissions*** *and databse*
 * ***owners have all perms by default***
 * ***permissions for all actions***
 * ***administration tools***
