@@ -38,9 +38,7 @@ theres also  a menu for users
 ### DEPENDENCIES
 ##### you need all these updated to lattest verions or it wont work 
 * [vorp_inputs](https://github.com/VORPCORE/vorp_inputs-lua) ***Lua***
-* [vorp_inventory](https://github.com/VORPCORE/vorp_inventory-lua)  
-* [vorp_core](https://github.com/VORPCORE/vorp-core-lua)
-* [menuapi](https://github.com/outsider31000/menuapi)
+* [vorp_menu](https://github.com/VORPCORE/vorp_menu)
 
 #### LlICENSE
 * this resource its protected by its license
