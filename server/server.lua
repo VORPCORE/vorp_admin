@@ -15,22 +15,67 @@ end)
 
 local VORPInv = exports.vorp_inventory:vorp_inventoryApi()
 
+local function getUserData(User, _source)
+    local Character = User.getUsedCharacter --get player info
+    local group = Character.group
+
+    local playername = (Character.firstname or "no name") .. ' ' .. (Character.lastname or "noname") --player char name
+    local job = Character.job                                                                        --player job
+    local identifier = Character.identifier                                                          --player steam
+    local PlayerMoney = Character.money                                                              --money
+    local PlayerGold = Character.gold                                                                --gold
+    local JobGrade = Character.jobGrade                                                              --jobgrade
+    local getid = VORPwl.getEntry(identifier).getId()                                                -- userID this is a static ID used to whitelist or ban
+    local getstatus = VORPwl.getEntry(identifier).getStatus()                                        -- whitelisted returns true or false
+    local warnstatus = User.getPlayerwarnings()                                                      --get players warnings
+
+    local data = {
+        serverId = _source,
+        name = GetPlayerName(_source),
+        Group = group,
+        PlayerName = playername,
+        Job = job,
+        SteamId = identifier,
+        Money = PlayerMoney,
+        Gold = PlayerGold,
+        Grade = JobGrade,
+        staticID = tonumber(getid),
+        WLstatus = tostring(getstatus),
+        warns = tonumber(warnstatus),
+    }
+    -- update table
+    return data
+end
+
 ----------------------------------------------------------------------------------------------------
 ------------------------------------- EVENTS -------------------------------------------------------
 VorpCore.addRpcCallback("vorp_admin:Callback:getplayersinfo", function(source, cb, args)
     if next(PlayersTable) then
         if args.search == "search" then -- is for unique player
             if PlayersTable[args.id] then
-                return cb(PlayersTable[args.id])
+                local User = VorpCore.getUser(args.id)
+                if User then
+                    local data = getUserData(User, args.id)
+                    PlayersTable[args.id] = data
+                    return cb(PlayersTable[args.id])
+                end
+                return cb(false)
             else
                 return cb(false)
+            end
+        end
+
+        for id, v in pairs(PlayersTable) do
+            local User = VorpCore.getUser(id)
+            if User then
+                local data = getUserData(User, id)
+                PlayersTable[id] = data
             end
         end
         return cb(PlayersTable)
     end
     return cb(false)
 end)
-
 
 
 -------------------------------------------------------------------------------
@@ -533,7 +578,7 @@ RegisterServerEvent('vorp_admin:alertstaff', function(source)
     end
 end)
 
--- check if staff is available
+
 RegisterServerEvent("vorp_admin:getStaffInfo", function(source)
     local _source = source
     local Staff = VorpCore.getUser(_source).getUsedCharacter
@@ -544,35 +589,7 @@ RegisterServerEvent("vorp_admin:getStaffInfo", function(source)
     if staffgroup and staffgroup ~= "user" or staffgroup1 and staffgroup1 ~= "user" then
         stafftable[#stafftable + 1] = _source
     end
-
-
-    local Character = User.getUsedCharacter --get player info
-    local group = Character.group
-
-    local playername = Character.firstname .. ' ' .. Character.lastname --player char name
-    local job = Character.job                                           --player job
-    local identifier = Character.identifier                             --player steam
-    local PlayerMoney = Character.money                                 --money
-    local PlayerGold = Character.gold                                   --gold
-    local JobGrade = Character.jobGrade                                 --jobgrade
-    local getid = VORPwl.getEntry(identifier).getId()                   -- userID this is a static ID used to whitelist or ban
-    local getstatus = VORPwl.getEntry(identifier).getStatus()           -- whitelisted returns true or false
-    local warnstatus = User.getPlayerwarnings()                         --get players warnings
-
-    local data = {
-        serverId = _source,
-        name = GetPlayerName(_source),
-        Group = group,
-        PlayerName = playername,
-        Job = job,
-        SteamId = identifier,
-        Money = PlayerMoney,
-        Gold = PlayerGold,
-        Grade = JobGrade,
-        staticID = tonumber(getid),
-        WLstatus = tostring(getstatus),
-        warns = tonumber(warnstatus),
-    }
+    local data = getUserData(User, _source)
     PlayersTable[_source] = data
 end)
 

@@ -105,7 +105,6 @@ function OpenDevTools()
             end
 
             if data.current.value == "scenario" then
-                print("scenario", active)
                 if not active then
                     active = true
                 else
