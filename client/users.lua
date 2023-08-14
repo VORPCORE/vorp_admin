@@ -109,7 +109,7 @@ function ScoreBoard()
             function(data, menu)
                 menu.close()
             end)
-    end)
+    end,{ search = "all" })
 end
 
 function Report()
