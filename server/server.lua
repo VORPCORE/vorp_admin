@@ -208,9 +208,8 @@ end)
 RegisterServerEvent("vorp_admin:givePlayer", function(targetID, type, data1, data2, data3)
     local _source = source
     local Character = VorpCore.getUser(targetID).getUsedCharacter
-    if not data2 then
-        return VorpCore.NotifyRightTip(_source, "item and AMOUNT", 5000)
-    end
+
+
     if not Character then
         return
     end
@@ -218,6 +217,9 @@ RegisterServerEvent("vorp_admin:givePlayer", function(targetID, type, data1, dat
     if type == "item" then
         local item = data1
         local qty = data2
+        if not data2 then
+            return VorpCore.NotifyRightTip(_source, "item and AMOUNT", 5000)
+        end
         local itemCheck = VORPInv.getDBItem(targetID, item)             --check items exist in DB
         if itemCheck then
             local canCarry = VORPInv.canCarryItems(targetID, qty)       --can carry inv space
@@ -250,7 +252,7 @@ RegisterServerEvent("vorp_admin:givePlayer", function(targetID, type, data1, dat
             else
                 VorpCore.NotifyRightTip(_source, _U("cantcarryweapon"), 5000)
             end
-        end)
+        end, weapon)
     elseif type == "moneygold" then
         local CurrencyType = data1
         local qty = data2
