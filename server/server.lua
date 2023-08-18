@@ -583,11 +583,11 @@ RegisterServerEvent("vorp_admin:getStaffInfo", function(source)
     local _source = source
     local Staff = VorpCore.getUser(_source).getUsedCharacter
     local User = VorpCore.getUser(_source)
-    local staffgroup1 = User.group
+    local staffgroup1 = User.getGroup
     local staffgroup = Staff.group
 
     if staffgroup and staffgroup ~= "user" or staffgroup1 and staffgroup1 ~= "user" then
-        stafftable[#stafftable + 1] = _source
+        stafftable[_source] = _source
     end
     local data = getUserData(User, _source)
     PlayersTable[_source] = data
@@ -615,17 +615,15 @@ RegisterNetEvent("vorp_admin:requeststaff", function(source, type)
     end
 end)
 
--- remove staff from table
+
 AddEventHandler('playerDropped', function()
     local _source = source
-    for index, value in pairs(stafftable) do
-        if value == _source then
-            stafftable[index] = nil
+    if _source then
+        if stafftable[_source] then
+            stafftable[_source] = nil
         end
-    end
-    for key, value in pairs(PlayersTable) do
-        if key == _source then
-            PlayersTable[key] = nil
+        if PlayersTable[_source] then
+            PlayersTable[_source] = nil
         end
     end
 end)
