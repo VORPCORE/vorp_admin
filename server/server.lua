@@ -1,33 +1,47 @@
 ---@diagnostic disable: undefined-global
-----------------------------------------------------------------------------------------------------
-------------------------------------- SERVER EXPORTS ------------------------------------------------------
-local VorpCore = {}
+
+-- has updated inventory
+local hasResourceStarted = GetResourceState("vorp_inventory") == "started"
+if not hasResourceStarted then
+    print("vorp_inventory not started ensure vorp inventory is started before vorp_admin")
+    return
+end
+
+local resourceVersion = GetResourceMetadata("vorp_inventory", "version", 0)
+if tonumber(resourceVersion) < 2.9 then
+    print("vorp_inventory is not up to date this resource will stop")
+    StopResource("vorp_admin")
+    return
+end
+
+local Core = {}
 local VORPwl = {}
 local stafftable = {}
 local PlayersTable = {}
+
 TriggerEvent("getCore", function(core)
-    VorpCore = core
+    Core = core
 end)
 
 TriggerEvent("getWhitelistTables", function(cb)
     VORPwl = cb
 end)
 
-local VORPInv = exports.vorp_inventory:vorp_inventoryApi()
+local ServerRPC = exports.vorp_core:ServerRpcCall() --[[@as ServerRPC]]
 
 local function getUserData(User, _source)
-    local Character = User.getUsedCharacter --get player info
+    local Character = User.getUsedCharacter
     local group = Character.group
 
-    local playername = (Character.firstname or "no name") .. ' ' .. (Character.lastname or "noname") --player char name
-    local job = Character.job                                                                        --player job
-    local identifier = Character.identifier                                                          --player steam
-    local PlayerMoney = Character.money                                                              --money
-    local PlayerGold = Character.gold                                                                --gold
-    local JobGrade = Character.jobGrade                                                              --jobgrade
-    local getid = VORPwl.getEntry(identifier).getId()                                                -- userID this is a static ID used to whitelist or ban
-    local getstatus = VORPwl.getEntry(identifier).getStatus()                                        -- whitelisted returns true or false
-    local warnstatus = User.getPlayerwarnings()                                                      --get players warnings
+    local playername = (Character.firstname or "no name") .. ' ' .. (Character.lastname or "noname")
+    local job = Character.job
+    local identifier = Character.identifier
+    local PlayerMoney = Character.money
+    local PlayerGold = Character.gold
+    local JobGrade = Character.jobGrade
+    local getid = VORPwl.getEntry(identifier).getId()
+    local getstatus = VORPwl.getEntry(identifier).getStatus()
+    local warnstatus = User.getPlayerwarnings()
 
     local data = {
         serverId = _source,
@@ -43,17 +57,15 @@ local function getUserData(User, _source)
         WLstatus = tostring(getstatus),
         warns = tonumber(warnstatus),
     }
-    -- update table
     return data
 end
 
-----------------------------------------------------------------------------------------------------
-------------------------------------- EVENTS -------------------------------------------------------
-VorpCore.addRpcCallback("vorp_admin:Callback:getplayersinfo", function(source, cb, args)
+-- Register CallBack
+ServerRPC.Callback.Register("vorp_admin:Callback:getplayersinfo", function(source, cb, args)
     if next(PlayersTable) then
         if args.search == "search" then -- is for unique player
             if PlayersTable[args.id] then
-                local User = VorpCore.getUser(args.id)
+                local User = Core.getUser(args.id)
                 if User then
                     local data = getUserData(User, args.id)
                     PlayersTable[args.id] = data
@@ -66,7 +78,7 @@ VorpCore.addRpcCallback("vorp_admin:Callback:getplayersinfo", function(source, c
         end
 
         for id, v in pairs(PlayersTable) do
-            local User = VorpCore.getUser(id)
+            local User = Core.getUser(id)
             if User then
                 local data = getUserData(User, id)
                 PlayersTable[id] = data
@@ -77,17 +89,16 @@ VorpCore.addRpcCallback("vorp_admin:Callback:getplayersinfo", function(source, c
     return cb(false)
 end)
 
-
 -------------------------------------------------------------------------------
 --------------------------------- EVENTS TELEPORTS -----------------------------
 --TP TO
 RegisterServerEvent("vorp_admin:TpToPlayer", function(targetID)
     local _source = source
-    if VorpCore.getUser(targetID) then
+    if Core.getUser(targetID) then
         local targetCoords = GetEntityCoords(GetPlayerPed(targetID))
         TriggerClientEvent('vorp_admin:gotoPlayer', _source, targetCoords)
     else
-        VorpCore.NotifyRightTip(_source, "user dont exist", 8000)
+        Core.NotifyRightTip(_source, "user dont exist", 8000)
     end
 end)
 
@@ -102,21 +113,21 @@ end)
 RegisterServerEvent("vorp_admin:freeze", function(targetID, freeze)
     local _source = targetID
     local state = freeze
-    if VorpCore.getUser(targetID) then
+    if Core.getUser(targetID) then
         TriggerClientEvent("vorp_admin:Freezeplayer", _source, state)
     end
 end)
 ---------------------------------------------------------------
 --BRING
 RegisterServerEvent("vorp_admin:Bring", function(targetID, adminCoords)
-    if VorpCore.getUser(targetID) then
+    if Core.getUser(targetID) then
         TriggerClientEvent("vorp_admin:Bring", targetID, adminCoords)
     end
 end)
 
 --TPBACK
 RegisterServerEvent("vorp_admin:TeleportPlayerBack", function(targetID)
-    if VorpCore.getUser(targetID) then
+    if Core.getUser(targetID) then
         TriggerClientEvent('vorp_admin:TeleportPlayerBack', targetID)
     end
 end)
@@ -127,7 +138,7 @@ end)
 --KICK
 RegisterServerEvent("vorp_admin:kick", function(targetID, reason)
     local _source = targetID
-    if VorpCore.getUser(targetID) then
+    if Core.getUser(targetID) then
         TriggerClientEvent('vorp:updatemissioNotify', _source, _U("kickednotify"), _U("notify"), 8000)
         Wait(8000)
         DropPlayer(_source, reason)
@@ -140,10 +151,10 @@ RegisterServerEvent("vorp_admin:warns", function(targetID, status, staticid, msg
     local staticID = staticid
     local stats = status
     local reason = msg
-    if VorpCore.getUser(targetID) then
+    if Core.getUser(targetID) then
         if stats == "warn" then
             TriggerClientEvent("vorp:warn", _source, staticID)
-            VorpCore.NotifyRightTip(_source, reason, 8000)
+            Core.NotifyRightTip(_source, reason, 8000)
         elseif stats == "unwarn" then
             TriggerClientEvent("vorp:unwarn", _source, staticID)
         end
@@ -151,13 +162,12 @@ RegisterServerEvent("vorp_admin:warns", function(targetID, status, staticid, msg
 end)
 
 --BAN
--- todo add a reason
 RegisterServerEvent("vorp_admin:BanPlayer", function(targetID, staticid, time)
     local _source = targetID
     local targetStaticId = tonumber(staticid)
     local datetime = os.time(os.date("!*t"))
     local banTime
-    if VorpCore.getUser(targetID) then
+    if Core.getUser(targetID) then
         if time:sub(-1) == 'd' then
             banTime = tonumber(time:sub(1, -2))
             banTime = banTime * 24
@@ -181,125 +191,171 @@ RegisterServerEvent("vorp_admin:BanPlayer", function(targetID, staticid, time)
 
         TriggerClientEvent('vorp:updatemissioNotify', _source, _U("banned"),
             _U("notify"), 8000)
-        Wait(8000)
-        TriggerClientEvent("vorp:ban", _source, targetStaticId, datetime)
+        SetTimeout(8000, function()
+            TriggerClientEvent("vorp:ban", _source, targetStaticId, datetime)
+        end)
     end
 end)
 
 --RESPAWN
 RegisterServerEvent("vorp_admin:respawnPlayer", function(targetID)
-    if VorpCore.getUser(targetID) then
-        TriggerEvent("vorp:PlayerForceRespawn", targetID)
-        TriggerClientEvent("vorp:PlayerForceRespawn", targetID)
-        VORPInv.CloseInv(targetID)
-        TriggerClientEvent('vorp:updatemissioNotify', targetID, _U("respawned"),
-            _U("lostall"), 8000)
-        Wait(8000)
+    if not Core.getUser(targetID) then
+        return
+    end
+    TriggerEvent("vorp:PlayerForceRespawn", targetID)
+    TriggerClientEvent("vorp:PlayerForceRespawn", targetID)
+    exports.vorp_inventory:closeInventory(source)
+    exports.vorp_inventory:closeInventory(targetID)
+    TriggerClientEvent('vorp:updatemissioNotify', targetID, _U("respawned"), _U("lostall"), 8000)
+    SetTimeout(8000, function()
         TriggerClientEvent("vorp_core:respawnPlayer", targetID) --remove player
         TriggerClientEvent("vorp_admin:respawn", targetID)      --add effects
-    end
+    end)
 end)
+
 
 
 --------------------------------------------------------------------
 --------------------------------------------------------------------
 -- DATABASE GIVE ITEM
 
-RegisterServerEvent("vorp_admin:givePlayer", function(targetID, type, data1, data2, data3)
+RegisterServerEvent("vorp_admin:givePlayer", function(targetID, action, data1, data2, data3)
     local _source = source
-    local Character = VorpCore.getUser(targetID).getUsedCharacter
-    if not data2 then
-        return VorpCore.NotifyRightTip(_source, "item and AMOUNT", 5000)
-    end
-    if not Character then
+    local user = Core.getUser(targetID)
+    if not user then
         return
     end
 
-    if type == "item" then
+    local Character = user.getUsedCharacter
+
+    if action == "item" then
         local item = data1
         local qty = data2
-        local itemCheck = VORPInv.getDBItem(targetID, item)             --check items exist in DB
-        if itemCheck then
-            local canCarry = VORPInv.canCarryItems(targetID, qty)       --can carry inv space
-            local canCarry2 = VORPInv.canCarryItem(targetID, item, qty) --cancarry item limit
-            local itemLabel = itemCheck.label
-            if canCarry then
-                if canCarry2 then
-                    VORPInv.addItem(targetID, item, qty)
-                    VorpCore.NotifyRightTip(targetID,
-                        _U("received") .. qty .. _U("of") .. itemLabel .. "~q~"
-                        , 5000)
-                    VorpCore.NotifyRightTip(_source, _U("itemgiven"), 4000)
-                else
-                    VorpCore.NotifyRightTip(_source, _U("itemlimit"), 5000)
-                end
-            else
-                VorpCore.NotifyRightTip(_source, _U("inventoryfull"), 5000)
-            end
-        else
-            VorpCore.NotifyRightTip(_source, _U("doesnotexist"), 5000)
+        local itemCheck = exports.vorp_inventory:getItemDB(item)
+        local canCarryItem = exports.vorp_inventory:canCarryItem(targetID, item, qty)
+        local canCarryInv = exports.vorp_inventory:canCarryItems(targetID, qty)
+
+        if not qty then
+            return Core.NotifyRightTip(_source, "INVALID add: ITEM and AMOUNT", 5000)
         end
-    elseif type == "weapon" then
+
+        if not itemCheck then
+            return Core.NotifyRightTip(_source, _U("doesnotexist"), 5000)
+        end
+
+        if not canCarryInv then
+            return Core.NotifyRightTip(_source, _U("inventoryfull"), 5000)
+        end
+
+        if not canCarryItem then
+            return Core.NotifyRightTip(_source, _U("itemlimit"), 5000)
+        end
+
+        exports.vorp_inventory:addItem(targetID, item, qty)
+
+        Core.NotifyRightTip(targetID, _U("received") .. qty .. _U("of") .. itemCheck.label .. "~q~", 5000)
+        Core.NotifyRightTip(_source, _U("itemgiven"), 4000)
+        return
+    end
+
+    if action == "weapon" then
         local weapon = data1
-        VORPInv.canCarryWeapons(targetID, 1, function(cb) --can carry weapons
-            local canCarry = cb
-            if canCarry then
-                VORPInv.createWeapon(targetID, weapon)
-                VorpCore.NotifyRightTip(targetID, _U("receivedweapon"), 5000)
-                VorpCore.NotifyRightTip(_source, _U("weapongiven"), 4000)
-            else
-                VorpCore.NotifyRightTip(_source, _U("cantcarryweapon"), 5000)
-            end
-        end)
-    elseif type == "moneygold" then
+        local canCarryWeapons = exports.vorp_inventory:canCarryWeapons(targetID, 1, nil, weapon)
+
+        if not canCarryWeapons then
+            return Core.NotifyRightTip(_source, _U("cantcarryweapon"), 5000)
+        end
+
+        exports.vorp_inventory:createWeapon(targetID, weapon)
+
+        Core.NotifyRightTip(targetID, _U("receivedweapon"), 5000)
+        Core.NotifyRightTip(_source, _U("weapongiven"), 4000)
+        return
+    end
+
+    if action == "moneygold" then
         local CurrencyType = data1
         local qty = data2
-        if qty then
-            Character.addCurrency(tonumber(CurrencyType), tonumber(qty))
-            if CurrencyType == 0 then
-                VorpCore.NotifyRightTip(targetID, _U("received") .. qty .. _U("money"), 5000)
-            elseif CurrencyType == 1 then
-                VorpCore.NotifyRightTip(targetID, _U("received") .. qty .. _U("gold"), 5000)
-            end
-            VorpCore.NotifyRightTip(_source, _U("sent"), 4000)
-        else
-            VorpCore.NotifyRightTip(_source, _U("addquantity"), 4000)
+
+        if not qty then
+            return Core.NotifyRightTip(_source, _U("addquantity"), 5000)
         end
-    elseif type == "horse" then
+
+        Character.addCurrency(tonumber(CurrencyType), tonumber(qty))
+        if CurrencyType == 0 then
+            Core.NotifyRightTip(targetID, _U("received") .. qty .. _U("money"), 5000)
+        elseif CurrencyType == 1 then
+            Core.NotifyRightTip(targetID, _U("received") .. qty .. _U("gold"), 5000)
+        elseif CurrencyType == 2 then
+            Core.NotifyRightTip(targetID, _U("received") .. qty .. " of roll ", 5000)
+        end
+        Core.NotifyRightTip(_source, _U("sent"), 4000)
+
+        return
+    end
+
+    if action == "horse" then
         local identifier = Character.identifier
         local charid = Character.charIdentifier
         local hash = data1
         local name = data2
         local sex = data3
-        exports.oxmysql:execute(
-            "INSERT INTO horses ( `identifier`, `charid`, `name`, `model`, `sex`) VALUES ( @identifier, @charid, @name, @model, @sex)"
-            , {
-                ['identifier'] = identifier,
-                ['charid'] = charid,
-                ['name'] = tostring(name),
-                ['model'] = hash,
-                ['sex'] = sex
-            })
+        if not Config.VorpStable then
+            MySQL.insert(
+                "INSERT INTO horses ( `identifier`, `charid`, `name`, `model`, `sex`) VALUES ( @identifier, @charid, @name, @model, @sex)"
+                , {
+                    identifier = identifier,
+                    charid = charid,
+                    name = tostring(name),
+                    model = hash,
+                    sex = sex
+                })
+        else
+            MySQL.insert(
+                "INSERT INTO stables ( `identifier`, `charidentifier`, `name`, `modelname`,`type`,`inventory` ) VALUES ( @identifier, @charid, @name, @modelname, @type, @inventory)"
+                , {
+                    identifier = identifier,
+                    charid = charid,
+                    name = tostring(name),
+                    modelname = hash,
+                    type = "horse",
+                    inventory = json.encode({})
+                })
+        end
+        Core.NotifyRightTip(targetID, _U("horsereceived"), 5000)
+        Core.NotifyRightTip(_source, _U("horsegiven"), 4000)
+        return
+    end
 
-        VorpCore.NotifyRightTip(targetID,
-            _U("horsereceived"), 5000)
-        VorpCore.NotifyRightTip(_source, _U("horsegiven"), 4000)
-    elseif type == "wagon" then
+    if action == "wagon" then
         local identifier = Character.identifier
         local charid = Character.charIdentifier
         local hash = data1
         local name = data2
-        exports.oxmysql:execute(
-            "INSERT INTO wagons ( `identifier`, `charid`, `name`, `model`) VALUES ( @identifier, @charid, @name, @model)"
-            , {
-                ['identifier'] = identifier,
-                ['charid'] = charid,
-                ['name'] = tostring(name),
-                ['model'] = hash
-            })
-        VorpCore.NotifyRightTip(targetID,
-            _U("wagonreceived"), 5000)
-        VorpCore.NotifyRightTip(_source, _U("givenwagon"), 4000)
+
+        if not Config.VorpStable then
+            MySQL.insert(
+                "INSERT INTO wagons ( `identifier`, `charid`, `name`, `model`) VALUES ( @identifier, @charid, @name, @model)"
+                , {
+                    identifier = identifier,
+                    charid = charid,
+                    name = tostring(name),
+                    model = hash
+                })
+        else
+            MySQL.insert(
+                "INSERT INTO stables ( `identifier`, `charidentifier`, `name`, `modelname`,`type`,`inventory` ) VALUES ( @identifier, @charid, @name, @modelname, @type, @inventory)"
+                , {
+                    identifier = identifier,
+                    charid = charid,
+                    name = tostring(name),
+                    modelname = hash,
+                    type = "wagon",
+                    inventory = json.encode({})
+                })
+        end
+        Core.NotifyRightTip(targetID, _U("wagonreceived"), 5000)
+        Core.NotifyRightTip(_source, _U("givenwagon"), 4000)
     end
 end)
 
@@ -309,60 +365,69 @@ end)
 RegisterServerEvent("vorp_admin:ClearAllItems", function(type, targetID)
     local _source = source
 
-    if not VorpCore.getUser(targetID) then
+    if not Core.getUser(targetID) then
         return
     end
+    exports.vorp_inventory:closeInventory(targetID)
 
     if type == "items" then
-        local inv = VORPInv.getUserInventory(targetID) --getcharinventory
-        for key, inventoryItems in pairs(inv) do
-            VORPInv.CloseInv(targetID)
-            VORPInv.subItem(targetID, inventoryItems.name, inventoryItems.count)
+        local inv = exports.vorp_inventory:getUserInventoryItems(targetID)
+        if not inv then
+            return print("empty inventory ")
         end
-        VorpCore.NotifyRightTip(_source, _U("itemswiped"), 4000)
-        VorpCore.NotifyRightTip(targetID, _U("itemwipe"), 5000)
-    elseif type == "weapons" then
-        local weaponsPlayer = VORPInv.getUserWeapons(targetID) --getloadoutcharweapons
+
+        for key, inventoryItems in pairs(inv) do
+            Wait(10)
+            exports.vorp_inventory:subItem(targetID, inventoryItems.name, inventoryItems.count)
+        end
+        Core.NotifyRightTip(_source, _U("itemswiped"), 4000)
+        Core.NotifyRightTip(targetID, _U("itemwipe"), 5000)
+    end
+
+    if type == "weapons" then
+        local weaponsPlayer = exports.vorp_inventory:getUserInventoryWeapons(targetID)
         for key, value in pairs(weaponsPlayer) do
             local id = value.id
-            VORPInv.subWeapon(targetID, id)
-            exports.oxmysql:execute("DELETE FROM loadout WHERE id=@id", { ['id'] = id })
+            exports.vorp_inventory:subWeapon(targetID, id)
+            exports.vorp_inventory:deleteWeapon(targetID, id)
             TriggerClientEvent('syn_weapons:removeallammo', targetID)  -- syn script
             TriggerClientEvent('vorp_weapons:removeallammo', targetID) -- vorp
         end
-        VorpCore.NotifyRightTip(_source, _U("weaponswiped"), 4000)
-        VorpCore.NotifyRightTip(targetID, _U("weaponwipe"), 5000)
+        Core.NotifyRightTip(_source, _U("weaponswiped"), 4000)
+        Core.NotifyRightTip(targetID, _U("weaponwipe"), 5000)
     end
 end)
 
 --GET ITEMS FROM INVENTORY
 RegisterServerEvent("vorp_admin:checkInventory", function(targetID)
     local _source = source
-    if VorpCore.getUser(targetID) then
-        local inv = VORPInv.getUserInventory(targetID) --getcharinventory
-        TriggerClientEvent("vorp_admin:getplayerInventory", _source, inv)
+    if not Core.getUser(targetID) then
+        return
     end
+    local inv = exports.vorp_inventory:getUserInventoryItems(targetID)
+    TriggerClientEvent("vorp_admin:getplayerInventory", _source, inv)
 end)
+
 --REMOVE CURRENCY
 RegisterServerEvent("vorp_admin:ClearCurrency", function(targetID, type)
     local _source = source
 
-    local Character = VorpCore.getUser(targetID).getUsedCharacter
+    local Character = Core.getUser(targetID)
     if not Character then
         return
     end
 
-    local money = Character.money
-    local gold = Character.gold
+    local money = Character.getUsedCharacter.money
+    local gold = Character.getUsedCharacter.gold
 
     if type == "money" then
         Character.removeCurrency(0, money)
-        VorpCore.NotifyRightTip(_source, _U("moneyremoved"), 4000)
-        VorpCore.NotifyRightTip(targetID, _U("moneyremovedfromyou"), 4000)
+        Core.NotifyRightTip(_source, _U("moneyremoved"), 4000)
+        Core.NotifyRightTip(targetID, _U("moneyremovedfromyou"), 4000)
     else
         Character.removeCurrency(1, gold)
-        VorpCore.NotifyRightTip(_source, _U("goldremoved"), 4000)
-        VorpCore.NotifyRightTip(targetID, _U("goldremovedfromyou"), 4000)
+        Core.NotifyRightTip(_source, _U("goldremoved"), 4000)
+        Core.NotifyRightTip(targetID, _U("goldremovedfromyou"), 4000)
     end
 end)
 
@@ -372,22 +437,30 @@ end)
 RegisterServerEvent("vorp_admin:setGroup", function(targetID, newgroup)
     local _source = targetID
     local NewPlayerGroup = newgroup
-    if VorpCore.getUser(_source) then
-        TriggerEvent("vorp:setGroup", _source, NewPlayerGroup)
-        VorpCore.NotifyRightTip(_source, _U("groupgiven") .. NewPlayerGroup, 5000)
+    local user = Core.getUser(_source)
+    if not user then
+        return
     end
+    local character = user.getUsedCharacter
+    character.setGroup(NewPlayerGroup)
+    user.setGroup(NewPlayerGroup)
+    TriggerEvent("vorp:setGroup", _source, NewPlayerGroup)
+    Core.NotifyRightTip(_source, _U("groupgiven") .. NewPlayerGroup, 5000)
 end)
 -- JOB
 RegisterServerEvent("vorp_admin:setJob", function(targetID, newjob, newgrade)
     local _source = targetID
-    local NewPlayerJoB = newjob
-    local NewPlayerGrade = newgrade
-    if VorpCore.getUser(_source) then
-        TriggerEvent("vorp:setJob", _source, NewPlayerJoB, NewPlayerGrade) -- it doesnt update players need to relog
-        VorpCore.NotifyRightTip(_source, _U("jobgiven") .. NewPlayerJoB, 5000)
-        Wait(500)
-        VorpCore.NotifyRightTip(_source, _U("gradegiven") .. NewPlayerGrade, 5000)
+
+    TriggerEvent("vorp:setJob", _source, newjob, newgrade)
+    local user = Core.getUser(_source)
+    if not user then
+        return
     end
+    local character = user.getUsedCharacter
+    character.setJob(newjob)
+    character.setJobGrade(newgrade)
+    Core.NotifyRightTip(_source, _U("jobgiven") .. newjob, 5000)
+    Core.NotifyRightTip(_source, _U("gradegiven") .. newgrade, 5000)
 end)
 
 -- WHITELIST
@@ -413,7 +486,7 @@ end)
 --REVIVE
 RegisterServerEvent("vorp_admin:revive", function(targetID)
     local _source = targetID
-    if VorpCore.getUser(_source) then
+    if Core.getUser(_source) then
         TriggerClientEvent('vorp:resurrectPlayer', _source)
     end
 end)
@@ -421,7 +494,7 @@ end)
 --HEAL
 RegisterServerEvent("vorp_admin:heal", function(targetID)
     local _source = targetID
-    if VorpCore.getUser(_source) then
+    if Core.getUser(_source) then
         TriggerClientEvent('vorp:heal', _source)
     end
 end)
@@ -435,7 +508,7 @@ end)
 
 
 RegisterServerEvent("vorp_admin:announce", function(announce)
-    VorpCore.NotifySimpleTop(-1, _U("announce"), announce, 10000)
+    Core.NotifySimpleTop(-1, _U("announce"), announce, 10000)
 end)
 
 
@@ -443,8 +516,8 @@ end)
 local function CheckTable(group, group1, object)
     for key, value in ipairs(Config.AllowedGroups) do
         for k, v in ipairs(value.group) do
-            if v == group or v == group1 then   -- group characters or users
-                if value.command == object then -- if its right command
+            if v == group or v == group1 then
+                if value.command == object then
                     return true
                 end
             end
@@ -458,8 +531,8 @@ end
 RegisterServerEvent('vorp_admin:opneStaffMenu', function(object)
     local _source = source
     local ace = IsPlayerAceAllowed(_source, object) -- this feature allows to have discord role permissions
-    local Character = VorpCore.getUser(_source).getUsedCharacter
-    local User = VorpCore.getUser(_source)
+    local Character = Core.getUser(_source).getUsedCharacter
+    local User = Core.getUser(_source)
     local group = Character.group
     local group1 = User.getGroup
     if ace or CheckTable(group, group1, object) then
@@ -470,6 +543,7 @@ RegisterServerEvent('vorp_admin:opneStaffMenu', function(object)
         TriggerClientEvent('vorp_admin:OpenStaffMenu', _source, Perm)
     end
 end)
+
 
 -------------------------------------------------------------------------------------------------------------------
 -------------------------- Troll Actions--------------------------------------------------------------------------
@@ -514,32 +588,6 @@ end)
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------- DISCORD --------------------------------------------------------
 
-function Discord(webhook, title, message)
-    PerformHttpRequest(webhook, function(err, text, headers)
-    end, 'POST', json.encode({
-        embeds = {
-            {
-                ["color"] = Config.webhookColor,
-                ["author"] = {
-                    ["name"] = Config.name,
-                    ["icon_url"] = Config.logo
-                },
-                ["title"] = title,
-                ["description"] = message,
-                ["footer"] = {
-                    ["text"] = "VORPcore" .. " • " .. os.date("%x %X %p"),
-                    ["icon_url"] = Config.footerLogo,
-
-                },
-            },
-
-        },
-        avatar_url = Config.Avatar
-    }), {
-        ['Content-Type'] = 'application/json'
-    })
-end
-
 function GetIdentity(source, identity)
     for k, v in pairs(GetPlayerIdentifiers(source)) do
         if string.sub(v, 1, string.len(identity .. ":")) == identity .. ":" then
@@ -550,7 +598,7 @@ end
 
 RegisterServerEvent('vorp_admin:logs', function(webhook, title, description)
     local _source = source
-    local Identifier = GetPlayerIdentifier(_source)
+    local Identifier = GetPlayerIdentifier(_source, 1)
     local discordIdentity = GetIdentity(_source, "discord")
     local discordId = string.sub(discordIdentity, 9)
     local ip = GetPlayerEndpoint(_source)
@@ -563,31 +611,33 @@ RegisterServerEvent('vorp_admin:logs', function(webhook, title, description)
         "` \n**Discord:** <@" ..
         discordId ..
         ">**\nIP: **`" .. ip .. "`\n `" .. description .. "`"
-
-    Discord(webhook, title, message)
+    Core.AddWebhook(title, webhook, message, Config.webhookColor, Config.name, Config.logo, Config.footerLogo,
+        Config.Avatar)
 end)
+
+
 
 -- alert staff of report
 RegisterServerEvent('vorp_admin:alertstaff', function(source)
     local _source = source
-    local Character = VorpCore.getUser(_source).getUsedCharacter
+    local Character = Core.getUser(_source).getUsedCharacter
     local playername = Character.firstname .. ' ' .. Character.lastname --player char name
 
     for _, staff in pairs(stafftable) do
-        VorpCore.NotifyRightTip(staff, _U("player") .. playername .. _U("reportedtodiscord"), 4000)
+        Core.NotifyRightTip(staff, _U("player") .. playername .. _U("reportedtodiscord"), 4000)
     end
 end)
 
 
 RegisterServerEvent("vorp_admin:getStaffInfo", function(source)
     local _source = source
-    local Staff = VorpCore.getUser(_source).getUsedCharacter
-    local User = VorpCore.getUser(_source)
-    local staffgroup1 = User.group
+    local Staff = Core.getUser(_source).getUsedCharacter
+    local User = Core.getUser(_source)
+    local staffgroup1 = User.getGroup
     local staffgroup = Staff.group
 
     if staffgroup and staffgroup ~= "user" or staffgroup1 and staffgroup1 ~= "user" then
-        stafftable[#stafftable + 1] = _source
+        stafftable[_source] = _source
     end
     local data = getUserData(User, _source)
     PlayersTable[_source] = data
@@ -596,36 +646,35 @@ end)
 RegisterNetEvent("vorp_admin:requeststaff", function(source, type)
     local _source = source
     local playerID = _source
-    local Character = VorpCore.getUser(_source).getUsedCharacter
+    local Character = Core.getUser(_source).getUsedCharacter
     local playername = Character.firstname .. ' ' .. Character.lastname --player char name
     for id, staff in pairs(stafftable) do
         if type == "new" then
-            VorpCore.NotifyRightTip(staff, playername .. " ID: " .. playerID .. _U("requestingassistance") .. _U("New"),
+            Core.NotifyRightTip(staff, playername .. " ID: " .. playerID .. _U("requestingassistance") .. _U("New"),
                 4000)
         elseif type == "bug" then
-            VorpCore.NotifyRightTip(staff,
+            Core.NotifyRightTip(staff,
                 playername .. " ID: " .. playerID .. _U("requestingassistance") .. _U("Foundbug"), 4000)
         elseif type == "rules" then
-            VorpCore.NotifyRightTip(staff,
+            Core.NotifyRightTip(staff,
                 playername .. " ID: " .. playerID .. _U("requestingassistance") .. _U("Someonebrokerules"), 4000)
         elseif type == "cheating" then
-            VorpCore.NotifyRightTip(staff,
+            Core.NotifyRightTip(staff,
                 playername .. " ID: " .. playerID .. _U("requestingassistance") .. _U("Someonecheating"), 4000)
         end
     end
 end)
 
--- remove staff from table
+
 AddEventHandler('playerDropped', function()
     local _source = source
-    for index, value in pairs(stafftable) do
-        if value == _source then
-            stafftable[index] = nil
+    if _source then
+        if stafftable[_source] then
+            stafftable[_source] = nil
         end
-    end
-    for key, value in pairs(PlayersTable) do
-        if key == _source then
-            PlayersTable[key] = nil
+        if PlayersTable[_source] then
+            PlayersTable[_source] = nil
         end
     end
 end)
+
