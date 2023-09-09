@@ -633,8 +633,8 @@ end)
 RegisterServerEvent("vorp_admin:getStaffInfo", function(source)
     local _source = source
 
-    local Staff = VorpCore.getUser(_source).getUsedCharacter
-    local User = VorpCore.getUser(_source)
+    local Staff = Core.getUser(_source).getUsedCharacter
+    local User = Core.getUser(_source)
     local staffgroup1 = User.getGroup
     local staffgroup = Staff.group
 
