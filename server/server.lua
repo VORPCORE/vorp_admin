@@ -260,6 +260,7 @@ RegisterServerEvent("vorp_admin:givePlayer", function(targetID, action, data1, d
 
     if action == "weapon" then
         local weapon = data1
+
         local canCarryWeapons = exports.vorp_inventory:canCarryWeapons(targetID, 1, nil, weapon)
 
         if not canCarryWeapons then
@@ -631,8 +632,9 @@ end)
 
 RegisterServerEvent("vorp_admin:getStaffInfo", function(source)
     local _source = source
-    local Staff = Core.getUser(_source).getUsedCharacter
-    local User = Core.getUser(_source)
+
+    local Staff = VorpCore.getUser(_source).getUsedCharacter
+    local User = VorpCore.getUser(_source)
     local staffgroup1 = User.getGroup
     local staffgroup = Staff.group
 
@@ -677,4 +679,3 @@ AddEventHandler('playerDropped', function()
         end
     end
 end)
-
