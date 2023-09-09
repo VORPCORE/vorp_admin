@@ -3,7 +3,7 @@
 function DataBase()
     MenuData.CloseAll()
     local elements = {}
-    VORP.RpcCall("vorp_admin:Callback:getplayersinfo", function(result)
+    ClientRPC.Callback.TriggerAsync("vorp_admin:Callback:getplayersinfo", function(result)
         if not result then
             return
         end
@@ -183,6 +183,9 @@ function GivePlayers(PlayerData)
                                 splitString[#splitString + 1] = i
                             end
                             local itemName, itemQuantity = tostring(splitString[1]), tonumber(splitString[2])
+                            if not itemQuantity then
+                                itemQuantity = 1
+                            end
                             TriggerServerEvent("vorp_admin:givePlayer", targetID, type, itemName, itemQuantity)
                             if Config.DatabaseLogs.Giveitem then
                                 TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Giveitem, _U("titledatabase"),

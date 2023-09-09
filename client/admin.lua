@@ -29,7 +29,6 @@ function Admin()
             if data.current.value == "players" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.PlayersList')
                 Wait(100)
-
                 if AdminAllowed then
                     PlayerList()
                 else
@@ -65,7 +64,7 @@ function Admin()
                 TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                     local id = tonumber(result)
                     if id and id > 0 then
-                        VORP.RpcCall("vorp_admin:Callback:getplayersinfo", function(cb)
+                        ClientRPC.Callback.TriggerAsync("vorp_admin:Callback:getplayersinfo", function(cb)
                             if cb then
                                 OpenOnePlayerMenu(cb)
                             else
@@ -127,70 +126,73 @@ end
 function PlayerList()
     MenuData.CloseAll()
     local elements = {}
-    VORP.RpcCall("vorp_admin:Callback:getplayersinfo", function(result)
-        if not result then
-            return
-        end
-        local players = result
-        local sortedPlayers = {} -- Create a new table to store the sorted player list
+    local cbname = "vorp_admin:Callback:getplayersinfo"
 
-        for playerid, playersInfo in pairs(players) do
-            sortedPlayers[#sortedPlayers + 1] = playersInfo
-        end
+    local result = ClientRPC.Callback.TriggerAwait(cbname, { search = "all" }) 
+    if not result then
+        return
+    end
 
-        -- Sort players by serverId in ascending order
-        table.sort(sortedPlayers, function(a, b)
-            return a.serverId < b.serverId
+    local players = result
+    local sortedPlayers = {} -- Create a new table to store the sorted player list
+
+    for playerid, playersInfo in pairs(players) do
+        sortedPlayers[#sortedPlayers + 1] = playersInfo
+    end
+
+    -- Sort players by serverId in ascending order
+    table.sort(sortedPlayers, function(a, b)
+        return a.serverId < b.serverId
+    end)
+
+    for _, playersInfo in ipairs(sortedPlayers) do
+        elements[#elements + 1] = {
+            label = playersInfo.PlayerName .. "<br> Server id: " .. playersInfo.serverId,
+            value = "players" .. playersInfo.serverId,
+            desc = _U("SteamName") .. "<span style=color:MediumSeaGreen;> "
+                .. playersInfo.name .. "</span><br>" .. _U("ServerID") .. "<span style=color:MediumSeaGreen;>"
+                .. playersInfo.serverId .. "</span><br>" .. _U("PlayerGroup") .. "<span style=color:MediumSeaGreen;>"
+                .. playersInfo.Group .. "</span><br>" .. _U("PlayerJob") .. "<span style=color:MediumSeaGreen;>"
+                .. playersInfo.Job .. "</span>" .. _U("Grade") .. "<span style=color:MediumSeaGreen;>"
+                .. playersInfo.Grade .. "</span><br>" .. _U("Identifier") .. "<span style=color:MediumSeaGreen;>"
+                .. playersInfo.SteamId .. "</span><br>" .. _U("PlayerMoney") .. "<span style=color:MediumSeaGreen;>"
+                .. playersInfo.Money .. "</span><br>" .. _U("PlayerGold") .. "<span style=color:Gold;>"
+                .. playersInfo.Gold .. "</span><br>" .. _U("PlayerStaticID") .. "<span style=color:Red;>"
+                .. playersInfo.staticID .. "</span><br>" .. _U("PlyaerWhitelist") .. "<span style=color:Gold;>"
+                .. playersInfo.WLstatus .. "</span><br>" .. _U("PlayerWarnings") .. "<span style=color:Gold;>"
+                .. playersInfo.warns .. "</span>",
+            info = playersInfo
+        }
+    end
+
+    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+        {
+            title      = _U("MenuTitle"),
+            subtext    = _U("MenuSubtitle2"),
+            align      = 'top-left',
+            elements   = elements,
+            lastmenu   = 'Admin',
+            itemHeight = "4vh",
+        },
+        function(data)
+            if data.current == "backup" then
+                _G[data.trigger]()
+            end
+            if data.current.value then
+                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.PlayersListSubmenu')
+                Wait(100)
+                if AdminAllowed then
+                    local player = data.current.info
+                    OpenSubAdminMenu(player)
+                else
+                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                end
+            end
+        end,
+        function(menu)
+            menu.close()
         end)
-
-        for _, playersInfo in ipairs(sortedPlayers) do
-            elements[#elements + 1] = {
-                label = playersInfo.PlayerName .. "<br> Server id: " .. playersInfo.serverId,
-                value = "players" .. playersInfo.serverId,
-                desc = _U("SteamName") .. "<span style=color:MediumSeaGreen;> "
-                    .. playersInfo.name .. "</span><br>" .. _U("ServerID") .. "<span style=color:MediumSeaGreen;>"
-                    .. playersInfo.serverId .. "</span><br>" .. _U("PlayerGroup") .. "<span style=color:MediumSeaGreen;>"
-                    .. playersInfo.Group .. "</span><br>" .. _U("PlayerJob") .. "<span style=color:MediumSeaGreen;>"
-                    .. playersInfo.Job .. "</span>" .. _U("Grade") .. "<span style=color:MediumSeaGreen;>"
-                    .. playersInfo.Grade .. "</span><br>" .. _U("Identifier") .. "<span style=color:MediumSeaGreen;>"
-                    .. playersInfo.SteamId .. "</span><br>" .. _U("PlayerMoney") .. "<span style=color:MediumSeaGreen;>"
-                    .. playersInfo.Money .. "</span><br>" .. _U("PlayerGold") .. "<span style=color:Gold;>"
-                    .. playersInfo.Gold .. "</span><br>" .. _U("PlayerStaticID") .. "<span style=color:Red;>"
-                    .. playersInfo.staticID .. "</span><br>" .. _U("PlyaerWhitelist") .. "<span style=color:Gold;>"
-                    .. playersInfo.WLstatus .. "</span><br>" .. _U("PlayerWarnings") .. "<span style=color:Gold;>"
-                    .. playersInfo.warns .. "</span>",
-                info = playersInfo
-            }
-        end
-
-        MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
-            {
-                title      = _U("MenuTitle"),
-                subtext    = _U("MenuSubtitle2"),
-                align      = 'top-left',
-                elements   = elements,
-                lastmenu   = 'Admin',
-                itemHeight = "4vh",
-            },
-            function(data)
-                if data.current == "backup" then
-                    _G[data.trigger]()
-                end
-                if data.current.value then
-                    TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.PlayersListSubmenu')
-                    Wait(100)
-                    if AdminAllowed then
-                        local player = data.current.info
-                        OpenSubAdminMenu(player)
-                    else
-                        TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
-                    end
-                end
-            end,
-            function(menu)
-                menu.close()
-            end)
-    end, { search = "all" })
+    --end, { search = "all" })
 end
 
 function OpenSubAdminMenu(Player)
