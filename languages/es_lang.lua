@@ -367,14 +367,6 @@ Locales["es_lang"] = {
     hideui                    = "Esconder HUD",
     cancelanimation           = "Cancelar animación",
     commands                  = "Comandos",
-    object_desc               = " menú de objeto",
-    ---------------------------------------------------------------------------
-    -- Noclip Prompts
-    promptbackward            = "ATRAS",
-    promptforward             = "DELANTE",
-    promptspeed               = "VELOCIDAD",
-    promptdown                = "ABAJO",
-    promptup                  = "ARRIBA",
-    promptcancel              = "CANCELAR",
+    object_desc               = " menú de objeto"
 
 }
