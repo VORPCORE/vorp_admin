@@ -371,14 +371,6 @@ Locales["tr_lang"] = {
     hideui                    = "Kullanım",
     cancelanimation           = "Animasyonu İptal Et",
     commands                  = "Komutlar",
-    object_desc               = "Nesne Menüsü",
-    ---------------------------------------------------------------------------
-    -- Noclip Prompts
-    promptbackward            = "GERI",
-    promptforward             = "ÖN",
-    promptspeed               = "HIZ",
-    promptdown                = "AŞAĞI",
-    promptup                  = "YUKARI",
-    promptcancel              = "İPTAL",
+    object_desc               = "Nesne Menüsü"
 
 }
