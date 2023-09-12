@@ -344,7 +344,7 @@ local PromptGroup = GetRandomIntInRange(0, 0xffffff)
 
 --PROMPTS
 CreateThread(function()
-    local str = "DOWN"
+    local str = _U("promptdown")
     Prompt1 = PromptRegisterBegin()
     PromptSetControlAction(Prompt1, Config.Controls.goDown)
     str = CreateVarString(10, 'LITERAL_STRING', str)
@@ -356,7 +356,7 @@ CreateThread(function()
     Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt1, true)
     PromptRegisterEnd(Prompt1)
 
-    local str = "SPEED"
+    local str = _U("promptspeed")
     Prompt2 = PromptRegisterBegin()
     PromptSetControlAction(Prompt2, Config.Controls.changeSpeed) -- shift
     str = CreateVarString(10, 'LITERAL_STRING', str)
@@ -368,7 +368,7 @@ CreateThread(function()
     Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt2, true)
     PromptRegisterEnd(Prompt2)
 
-    local str = "FOWARD"
+    local str = _U("promptforward")
     Prompt3 = PromptRegisterBegin()
     PromptSetControlAction(Prompt3, Config.Controls.goForward)
     str = CreateVarString(10, 'LITERAL_STRING', str)
@@ -380,7 +380,7 @@ CreateThread(function()
     Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt3, true)
     PromptRegisterEnd(Prompt3)
 
-    local str = "BACKWARD"
+    local str = _U("promptbackward")
     Prompt4 = PromptRegisterBegin()
     PromptSetControlAction(Prompt4, Config.Controls.goBackward)
     str = CreateVarString(10, 'LITERAL_STRING', str)
@@ -392,7 +392,7 @@ CreateThread(function()
     Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt4, true)
     PromptRegisterEnd(Prompt4)
 
-    local str = "UP"
+    local str = _U("promptup")
     Prompt5 = PromptRegisterBegin()
     PromptSetControlAction(Prompt5, Config.Controls.goUp)
     str = CreateVarString(10, 'LITERAL_STRING', str)
@@ -405,7 +405,7 @@ CreateThread(function()
     PromptRegisterEnd(Prompt5)
 
 
-    local str = "Cancel"
+    local str = _U("promptcancel")
     Prompt6 = PromptRegisterBegin()
     PromptSetControlAction(Prompt6, Config.Controls.Cancel)
     str = CreateVarString(10, 'LITERAL_STRING', str)
