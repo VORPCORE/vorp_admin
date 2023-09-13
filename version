@@ -1,3 +1,9 @@
+<2.4>
+- NEW VERSION 2.4 security and fixes to events.
+- double check for permissions due to RedM cheat menus 
+- secured heal event 
+- secured revive event
+- fixed ban and unban events and secure them for offline actions
 <2.3>
 - NEW VERSION 2.3 Refactor server side 
 - refactor using new exports for new version inventory
