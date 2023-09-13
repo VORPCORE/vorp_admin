@@ -1,23 +1,24 @@
 ---@diagnostic disable: undefined-global
-
--- has updated inventory
-local hasResourceStarted = GetResourceState("vorp_inventory") == "started"
-if not hasResourceStarted then
-    print("vorp_inventory not started ensure vorp inventory is started before vorp_admin")
-    return
-end
-
-local resourceVersion = GetResourceMetadata("vorp_inventory", "version", 0)
-if tonumber(resourceVersion) < 2.9 then
-    print("vorp_inventory is not up to date this resource will stop")
-    StopResource("vorp_admin")
-    return
-end
-
 local Core = {}
 local VORPwl = {}
 local stafftable = {}
 local PlayersTable = {}
+
+-- has updated inventory
+local hasResourceStarted = GetResourceState("vorp_inventory") == "started"
+local hasvorpcorestarted = GetResourceState("vorp_core") == "started"
+if not hasResourceStarted or not hasvorpcorestarted then
+    print("vorp_inventory or vorp_core is not started this resource will stop")
+    return
+end
+
+local resourceVersion = GetResourceMetadata("vorp_inventory", "version", 0)
+local coreVersion = GetResourceMetadata("vorp_core", "version", 0)
+if tonumber(resourceVersion) < 2.9 or tonumber(coreVersion) < 2.3 then
+    print("vorp_inventory or vorp core is not up to date this resource will stop")
+    StopResource("vorp_admin")
+    return
+end
 
 TriggerEvent("getCore", function(core)
     Core = core
