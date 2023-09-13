@@ -338,18 +338,17 @@ end
 
 local Prompt1
 local Prompt2
-local Prompt3
 local Prompt4
-local Prompt5
 local Prompt6
 local PromptGroup = GetRandomIntInRange(0, 0xffffff)
 
 
 --PROMPTS
 CreateThread(function()
-    local str = _U("promptdown")
+    local str = _U("promptdown") .. "/" .. _U("promptup")
     Prompt1 = PromptRegisterBegin()
     PromptSetControlAction(Prompt1, Config.Controls.goDown)
+    PromptSetControlAction(Prompt1, Config.Controls.goUp)
     str = CreateVarString(10, 'LITERAL_STRING', str)
     PromptSetText(Prompt1, str)
     PromptSetEnabled(Prompt1, 1)
@@ -371,21 +370,10 @@ CreateThread(function()
     Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt2, true)
     PromptRegisterEnd(Prompt2)
 
-    local str = _U("promptforward")
-    Prompt3 = PromptRegisterBegin()
-    PromptSetControlAction(Prompt3, Config.Controls.goForward)
-    str = CreateVarString(10, 'LITERAL_STRING', str)
-    PromptSetText(Prompt3, str)
-    PromptSetEnabled(Prompt3, 1)
-    PromptSetVisible(Prompt3, 1)
-    PromptSetStandardMode(Prompt3, 1)
-    PromptSetGroup(Prompt3, PromptGroup)
-    Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt3, true)
-    PromptRegisterEnd(Prompt3)
-
-    local str = _U("promptbackward")
+    local str = _U("promptbackward") .. "/" .. _U("promptforward")
     Prompt4 = PromptRegisterBegin()
     PromptSetControlAction(Prompt4, Config.Controls.goBackward)
+    PromptSetControlAction(Prompt4, Config.Controls.goForward)
     str = CreateVarString(10, 'LITERAL_STRING', str)
     PromptSetText(Prompt4, str)
     PromptSetEnabled(Prompt4, 1)
@@ -394,19 +382,6 @@ CreateThread(function()
     PromptSetGroup(Prompt4, PromptGroup)
     Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt4, true)
     PromptRegisterEnd(Prompt4)
-
-    local str = _U("promptup")
-    Prompt5 = PromptRegisterBegin()
-    PromptSetControlAction(Prompt5, Config.Controls.goUp)
-    str = CreateVarString(10, 'LITERAL_STRING', str)
-    PromptSetText(Prompt5, str)
-    PromptSetEnabled(Prompt5, 1)
-    PromptSetVisible(Prompt5, 1)
-    PromptSetStandardMode(Prompt5, 1)
-    PromptSetGroup(Prompt5, PromptGroup)
-    Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt5, true)
-    PromptRegisterEnd(Prompt5)
-
 
     local str = _U("promptcancel")
     Prompt6 = PromptRegisterBegin()
@@ -420,6 +395,7 @@ CreateThread(function()
     Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt6, true)
     PromptRegisterEnd(Prompt6)
 end)
+
 
 
 Citizen.CreateThread(function()
