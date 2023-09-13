@@ -225,7 +225,7 @@ function GivePlayers(PlayerData)
                         if result ~= "" then
                             local weaponName = result
                             local type = "weapon"
-                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, weaponName, nil,
+                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, weaponName, nil, nil,
                                 "vorp.staff.GiveWeapons")
                             if Config.DatabaseLogs.Giveweapon then
                                 TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Giveweapon, _U("titledatabase")
