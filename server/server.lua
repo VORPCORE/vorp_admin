@@ -89,12 +89,43 @@ ServerRPC.Callback.Register("vorp_admin:Callback:getplayersinfo", function(sourc
     return cb(false)
 end)
 
+
+local function CheckTable(group, group1, object)
+    for key, value in ipairs(Config.AllowedGroups) do
+        for k, v in ipairs(value.group) do
+            if v == group or v == group1 then
+                if value.command == object then
+                    return true
+                end
+            end
+        end
+    end
+    return false
+end
+
+local function AllowedToExecuteAction(source, command)
+    local User = Core.getUser(source)
+    local Character = User.getUsedCharacter
+    local group = Character.group
+    local group1 = User.getGroup
+
+    if IsPlayerAceAllowed(source, command) or CheckTable(group, group1, command) then
+        return true
+    end
+
+    return false
+end
+
 -------------------------------------------------------------------------------
 --------------------------------- EVENTS TELEPORTS -----------------------------
 --TP TO
-RegisterServerEvent("vorp_admin:TpToPlayer", function(targetID)
+RegisterServerEvent("vorp_admin:TpToPlayer", function(targetID, command)
     local _source = source
     if Core.getUser(targetID) then
+        if not AllowedToExecuteAction(_source, command) then
+            return
+        end
+
         local targetCoords = GetEntityCoords(GetPlayerPed(targetID))
         TriggerClientEvent('vorp_admin:gotoPlayer', _source, targetCoords)
     else
@@ -103,31 +134,48 @@ RegisterServerEvent("vorp_admin:TpToPlayer", function(targetID)
 end)
 
 --SENDBACK
-RegisterServerEvent("vorp_admin:sendAdminBack", function()
+RegisterServerEvent("vorp_admin:sendAdminBack", function(command)
     local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
     TriggerClientEvent('vorp_admin:sendAdminBack', _source)
 end)
 
 
 --FREEZE
-RegisterServerEvent("vorp_admin:freeze", function(targetID, freeze)
-    local _source = targetID
+RegisterServerEvent("vorp_admin:freeze", function(targetID, freeze, command)
+    local _source = source
+    local _target = targetID
     local state = freeze
-    if Core.getUser(targetID) then
-        TriggerClientEvent("vorp_admin:Freezeplayer", _source, state)
+    if Core.getUser(_target) then
+        if not AllowedToExecuteAction(_source, command) then
+            return
+        end
+
+        TriggerClientEvent("vorp_admin:Freezeplayer", target, state)
     end
 end)
 ---------------------------------------------------------------
 --BRING
-RegisterServerEvent("vorp_admin:Bring", function(targetID, adminCoords)
+RegisterServerEvent("vorp_admin:Bring", function(targetID, adminCoords, command)
+    local _
+    source = source
     if Core.getUser(targetID) then
+        if not AllowedToExecuteAction(_source, command) then
+            return
+        end
         TriggerClientEvent("vorp_admin:Bring", targetID, adminCoords)
     end
 end)
 
 --TPBACK
-RegisterServerEvent("vorp_admin:TeleportPlayerBack", function(targetID)
+RegisterServerEvent("vorp_admin:TeleportPlayerBack", function(targetID, command)
+    local _source = source
     if Core.getUser(targetID) then
+        if not AllowedToExecuteAction(_source, command) then
+            return
+        end
         TriggerClientEvent('vorp_admin:TeleportPlayerBack', targetID)
     end
 end)
@@ -136,38 +184,53 @@ end)
 ---------------------------- ADVANCED ADMIN ACTIONS ---------------------------------------
 
 --KICK
-RegisterServerEvent("vorp_admin:kick", function(targetID, reason)
-    local _source = targetID
+RegisterServerEvent("vorp_admin:kick", function(targetID, reason, command)
+    local _source = source
+    local _target = targetID
     if Core.getUser(targetID) then
-        TriggerClientEvent('vorp:updatemissioNotify', _source, _U("kickednotify"), _U("notify"), 8000)
-        Wait(8000)
-        DropPlayer(_source, reason)
+        if not AllowedToExecuteAction(_source, command) then
+            return
+        end
+        TriggerClientEvent('vorp:updatemissioNotify', _target, _U("kickednotify"), _U("notify"), 5000)
+
+        SetTimeout(5000, function()
+            DropPlayer(_target, reason)
+        end)
     end
 end)
 
 --UNWARN WARN
-RegisterServerEvent("vorp_admin:warns", function(targetID, status, staticid, msg)
-    local _source = targetID
+RegisterServerEvent("vorp_admin:warns", function(targetID, status, staticid, msg, command)
+    local _source = source
+    local _target = targetID
     local staticID = staticid
     local stats = status
     local reason = msg
-    if Core.getUser(targetID) then
+    if Core.getUser(_target) then
+        if not AllowedToExecuteAction(_source, command) then
+            return
+        end
+
         if stats == "warn" then
-            TriggerClientEvent("vorp:warn", _source, staticID)
-            Core.NotifyRightTip(_source, reason, 8000)
+            TriggerClientEvent("vorp:warn", _target, staticID)
+            Core.NotifyRightTip(_target, reason, 8000)
         elseif stats == "unwarn" then
-            TriggerClientEvent("vorp:unwarn", _source, staticID)
+            TriggerClientEvent("vorp:unwarn", _target, staticID)
         end
     end
 end)
 
 --BAN
-RegisterServerEvent("vorp_admin:BanPlayer", function(targetID, staticid, time)
-    local _source = targetID
+RegisterServerEvent("vorp_admin:BanPlayer", function(targetID, staticid, time, command)
+    local _source = source
+    local _target = targetID
     local targetStaticId = tonumber(staticid)
     local datetime = os.time(os.date("!*t"))
     local banTime
-    if Core.getUser(targetID) then
+    if Core.getUser(_target) then
+        if not AllowedToExecuteAction(_source, command) then
+            return
+        end
         if time:sub(-1) == 'd' then
             banTime = tonumber(time:sub(1, -2))
             banTime = banTime * 24
@@ -189,19 +252,25 @@ RegisterServerEvent("vorp_admin:BanPlayer", function(targetID, staticid, time)
             datetime = datetime + banTime * 3600
         end
 
-        TriggerClientEvent('vorp:updatemissioNotify', _source, _U("banned"),
+        TriggerClientEvent('vorp:updatemissioNotify', _target, _U("banned"),
             _U("notify"), 8000)
         SetTimeout(8000, function()
-            TriggerClientEvent("vorp:ban", _source, targetStaticId, datetime)
+            TriggerEvent("vorpbans:addtodb", false, targetStaticId, datetime)
         end)
     end
 end)
 
 --RESPAWN
-RegisterServerEvent("vorp_admin:respawnPlayer", function(targetID)
+RegisterServerEvent("vorp_admin:respawnPlayer", function(targetID, command)
+    local _source = source
     if not Core.getUser(targetID) then
         return
     end
+
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
+
     TriggerEvent("vorp:PlayerForceRespawn", targetID)
     TriggerClientEvent("vorp:PlayerForceRespawn", targetID)
     exports.vorp_inventory:closeInventory(source)
@@ -219,13 +288,15 @@ end)
 --------------------------------------------------------------------
 -- DATABASE GIVE ITEM
 
-RegisterServerEvent("vorp_admin:givePlayer", function(targetID, action, data1, data2, data3)
+RegisterServerEvent("vorp_admin:givePlayer", function(targetID, action, data1, data2, data3, command)
     local _source = source
     local user = Core.getUser(targetID)
     if not user then
         return
     end
-
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
     local Character = user.getUsedCharacter
 
     if action == "item" then
@@ -363,12 +434,17 @@ end)
 
 --REMOVE DB
 
-RegisterServerEvent("vorp_admin:ClearAllItems", function(type, targetID)
+RegisterServerEvent("vorp_admin:ClearAllItems", function(type, targetID, command)
     local _source = source
 
     if not Core.getUser(targetID) then
         return
     end
+
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
+
     exports.vorp_inventory:closeInventory(targetID)
 
     if type == "items" then
@@ -400,9 +476,12 @@ RegisterServerEvent("vorp_admin:ClearAllItems", function(type, targetID)
 end)
 
 --GET ITEMS FROM INVENTORY
-RegisterServerEvent("vorp_admin:checkInventory", function(targetID)
+RegisterServerEvent("vorp_admin:checkInventory", function(targetID, command)
     local _source = source
     if not Core.getUser(targetID) then
+        return
+    end
+    if not AllowedToExecuteAction(_source, command) then
         return
     end
     local inv = exports.vorp_inventory:getUserInventoryItems(targetID)
@@ -410,11 +489,15 @@ RegisterServerEvent("vorp_admin:checkInventory", function(targetID)
 end)
 
 --REMOVE CURRENCY
-RegisterServerEvent("vorp_admin:ClearCurrency", function(targetID, type)
+RegisterServerEvent("vorp_admin:ClearCurrency", function(targetID, type, command)
     local _source = source
 
     local Character = Core.getUser(targetID)
     if not Character then
+        return
+    end
+
+    if not AllowedToExecuteAction(_source, command) then
         return
     end
 
@@ -435,37 +518,52 @@ end)
 -----------------------------------------------------------------------------------------------------------------
 --ADMINACTIONS
 --GROUP
-RegisterServerEvent("vorp_admin:setGroup", function(targetID, newgroup)
-    local _source = targetID
+RegisterServerEvent("vorp_admin:setGroup", function(targetID, newgroup, command)
+    local _source = source
+    local _target = targetID
     local NewPlayerGroup = newgroup
-    local user = Core.getUser(_source)
+    local user = Core.getUser(_target)
     if not user then
         return
     end
+
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
+
     local character = user.getUsedCharacter
     character.setGroup(NewPlayerGroup)
     user.setGroup(NewPlayerGroup)
-    TriggerEvent("vorp:setGroup", _source, NewPlayerGroup)
-    Core.NotifyRightTip(_source, _U("groupgiven") .. NewPlayerGroup, 5000)
+    TriggerEvent("vorp:setGroup", _target, NewPlayerGroup)
+    Core.NotifyRightTip(_target, _U("groupgiven") .. NewPlayerGroup, 5000)
 end)
 -- JOB
-RegisterServerEvent("vorp_admin:setJob", function(targetID, newjob, newgrade)
-    local _source = targetID
+RegisterServerEvent("vorp_admin:setJob", function(targetID, newjob, newgrade, command)
+    local _source = source
+    local _target = targetID
 
-    TriggerEvent("vorp:setJob", _source, newjob, newgrade)
-    local user = Core.getUser(_source)
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
+
+    local user = Core.getUser(_target)
     if not user then
         return
     end
+
     local character = user.getUsedCharacter
     character.setJob(newjob)
     character.setJobGrade(newgrade)
-    Core.NotifyRightTip(_source, _U("jobgiven") .. newjob, 5000)
-    Core.NotifyRightTip(_source, _U("gradegiven") .. newgrade, 5000)
+    Core.NotifyRightTip(_target, _U("jobgiven") .. newjob, 5000)
+    Core.NotifyRightTip(_target, _U("gradegiven") .. newgrade, 5000)
 end)
 
 -- WHITELIST
-RegisterServerEvent("vorp_admin:Whitelist", function(targetID, staticid, type)
+RegisterServerEvent("vorp_admin:Whitelist", function(targetID, staticid, type, command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
     local staticID = staticid
     if type == "addWhiteList" then
         TriggerEvent("vorp:whitelistPlayer", staticID)
@@ -474,9 +572,13 @@ RegisterServerEvent("vorp_admin:Whitelist", function(targetID, staticid, type)
     end
 end)
 
-RegisterServerEvent("vorp_admin:Whitelistoffline", function(staticid, type)
+RegisterServerEvent("vorp_admin:Whitelistoffline", function(staticid, type, command)
+    local _source = source
     local staticID = staticid
 
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
     if type == "whiteList" then
         TriggerEvent("vorp:whitelistPlayer", staticID)
     else
@@ -485,47 +587,97 @@ RegisterServerEvent("vorp_admin:Whitelistoffline", function(staticid, type)
 end)
 
 --REVIVE
-RegisterServerEvent("vorp_admin:revive", function(targetID)
-    local _source = targetID
-    if Core.getUser(_source) then
-        TriggerClientEvent('vorp:resurrectPlayer', _source)
+RegisterServerEvent("vorp_admin:revive", function(targetID, command)
+    local _source = source
+    local _target = targetID
+
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
+
+    if Core.getUser(_target) then
+        TriggerClientEvent('vorp:resurrectPlayer', _target)
     end
 end)
 
 --HEAL
-RegisterServerEvent("vorp_admin:heal", function(targetID)
-    local _source = targetID
-    if Core.getUser(_source) then
-        TriggerClientEvent('vorp:heal', _source)
+RegisterServerEvent("vorp_admin:heal", function(targetID, command)
+    local _source = source
+    local _target = targetID
+
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
+
+    if Core.getUser(_target) then
+        TriggerClientEvent('vorp:heal', _target)
     end
 end)
 
 --SPECTATE
-RegisterServerEvent("vorp_admin:spectate", function(targetID)
+RegisterServerEvent("vorp_admin:spectate", function(targetID, command)
     local _source = source
+
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
     local targetCoords = GetEntityCoords(GetPlayerPed(targetID))
     TriggerClientEvent("vorp_sdmin:spectatePlayer", _source, targetID, targetCoords)
 end)
 
 
-RegisterServerEvent("vorp_admin:announce", function(announce)
+RegisterServerEvent("vorp_admin:announce", function(announce, command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
+
     Core.NotifySimpleTop(-1, _U("announce"), announce, 10000)
 end)
 
-
-
-local function CheckTable(group, group1, object)
-    for key, value in ipairs(Config.AllowedGroups) do
-        for k, v in ipairs(value.group) do
-            if v == group or v == group1 then
-                if value.command == object then
-                    return true
-                end
-            end
-        end
+RegisterNetEvent('vorp_admin:HealSelf', function(command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
     end
-    return false
-end
+    TriggerClientEvent('vorp:heal', _source)
+end)
+
+RegisterNetEvent('vorp_admin:ReviveSelf', function(command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
+    TriggerClientEvent('vorp:resurrectPlayer', _source)
+end)
+
+RegisterNetEvent("vorp_admin:Unban", function(staticid, command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
+
+    TriggerEvent("vorpbans:addtodb", false, staticid, 0)
+end)
+
+RegisterNetEvent("vorp_admin:BanOffline", function(staticid, time, command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
+
+    TriggerEvent("vorpbans:addtodb", false, staticid, time)
+end)
+
+RegisterNetEvent('vorp:teleportWayPoint', function(command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
+    TriggerClientEvent('vorp:teleportWayPoint', _source)
+end)
+
+
 -----------------------------------------------------------------------------------------------------------------
 --PERMISSIONS
 --OPEN MAIN MENU
@@ -548,41 +700,77 @@ end)
 
 -------------------------------------------------------------------------------------------------------------------
 -------------------------- Troll Actions--------------------------------------------------------------------------
-RegisterServerEvent('vorp_admin:ServerTrollKillPlayerHandler', function(playerserverid)
+RegisterServerEvent('vorp_admin:ServerTrollKillPlayerHandler', function(playerserverid, command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
     TriggerClientEvent('vorp_admin:ClientTrollKillPlayerHandler', playerserverid)
 end)
 
-RegisterServerEvent('vorp_admin:ServerTrollInvisibleHandler', function(playerserverid)
+RegisterServerEvent('vorp_admin:ServerTrollInvisibleHandler', function(playerserverid, command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
     TriggerClientEvent('vorp_admin:ClientTrollInvisbleHandler', playerserverid)
 end)
 
-RegisterServerEvent('vorp_admin:ServerTrollLightningStrikePlayerHandler', function(playerserverid)
+RegisterServerEvent('vorp_admin:ServerTrollLightningStrikePlayerHandler', function(playerserverid, command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
     local playerPed = GetPlayerPed(playerserverid)
     local coords = GetEntityCoords(playerPed)
     TriggerClientEvent('vorp_admin:ClientTrollLightningStrikePlayerHandler', -1, coords)
 end)
 
-RegisterServerEvent('vorp_admin:ServerTrollSetPlayerOnFireHandler', function(playerserverid)
+RegisterServerEvent('vorp_admin:ServerTrollSetPlayerOnFireHandler', function(playerserverid, command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
     TriggerClientEvent('vorp_admin:ClientTrollSetPlayerOnFireHandler', playerserverid)
 end)
 
-RegisterServerEvent('vorp_admin:ServerTrollTPToHeavenHandler', function(playerserverid)
+RegisterServerEvent('vorp_admin:ServerTrollTPToHeavenHandler', function(playerserverid, command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
     TriggerClientEvent('vorp_admin:ClientTrollTPToHeavenHandler', playerserverid)
 end)
 
-RegisterServerEvent('vorp_admin:ServerTrollRagdollPlayerHandler', function(playerserverid)
+RegisterServerEvent('vorp_admin:ServerTrollRagdollPlayerHandler', function(playerserverid, command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
     TriggerClientEvent('vorp_admin:ClientTrollRagdollPlayerHandler', playerserverid)
 end)
 
-RegisterServerEvent('vorp_admin:ServerDrainPlayerStamHandler', function(playerserverid)
+RegisterServerEvent('vorp_admin:ServerDrainPlayerStamHandler', function(playerserverid, command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
     TriggerClientEvent('vorp_admin:ClientDrainPlayerStamHandler', playerserverid)
 end)
 
-RegisterServerEvent('vorp_admin:ServerHandcuffPlayerHandler', function(playerserverid)
+RegisterServerEvent('vorp_admin:ServerHandcuffPlayerHandler', function(playerserverid, command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
     TriggerClientEvent('vorp_admin:ClientHandcuffPlayerHandler', playerserverid)
 end)
 
-RegisterServerEvent('vorp_admin:ServerTempHighPlayerHandler', function(playerserverid)
+RegisterServerEvent('vorp_admin:ServerTempHighPlayerHandler', function(playerserverid, command)
+    local _source = source
+    if not AllowedToExecuteAction(_source, command) then
+        return
+    end
     TriggerClientEvent('vorp_admin:ClientTempHighPlayerHandler', playerserverid)
 end)
 
@@ -599,6 +787,7 @@ end
 
 RegisterServerEvent('vorp_admin:logs', function(webhook, title, description)
     local _source = source
+
     local Identifier = GetPlayerIdentifier(_source, 1)
     local discordIdentity = GetIdentity(_source, "discord")
     local discordId = string.sub(discordIdentity, 9)

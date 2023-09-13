@@ -107,7 +107,11 @@ function Boost()
     MenuData.CloseAll()
 
     local elements = {
-        { label = _U("godMode"),      value = 'god',          desc = _U("godMode_desc") },
+        {
+            label = _U("godMode"),
+            value = 'god',
+            desc = _U("godMode_desc")
+        },
         {
             label = _U("noclipMode"),
             value = 'noclip',
@@ -202,12 +206,11 @@ function Boost()
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.SelfRevive")
                 Wait(100)
                 if AdminAllowed then
-                    TriggerEvent('vorp:resurrectPlayer')
+                    TriggerServerEvent('vorp_admin:ReviveSelf', "vorp.staff.SelfRevive")
 
                     if Config.BoosterLogs.SelfRevive then
-                        TriggerServerEvent("vorp_admin:logs",
-                            Config.BoosterLogs.SelfRevive
-                            , _U("titlebooster"), _U("usedrevive"))
+                        TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfRevive, _U("titlebooster"),
+                            _U("usedrevive"))
                     end
                 else
                     TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
@@ -221,7 +224,7 @@ function Boost()
                             Config.BoosterLogs.SelfHeal
                             , _U("titlebooster"), _U("usedheal"))
                     end
-                    TriggerEvent('vorp:heal')
+                    TriggerServerEvent('vorp_admin:HealSelf', "vorp.staff.SelfHeal")
                     Config.Heal.Players()
                     local horse = GetMount(PlayerPedId())
                     if horse ~= 0 then
