@@ -273,7 +273,6 @@ RegisterServerEvent("vorp_admin:respawnPlayer", function(targetID, command)
 
     TriggerEvent("vorp:PlayerForceRespawn", targetID)
     TriggerClientEvent("vorp:PlayerForceRespawn", targetID)
-    exports.vorp_inventory:closeInventory(source)
     exports.vorp_inventory:closeInventory(targetID)
     TriggerClientEvent('vorp:updatemissioNotify', targetID, _U("respawned"), _U("lostall"), 8000)
     SetTimeout(8000, function()
