@@ -160,8 +160,7 @@ end)
 ---------------------------------------------------------------
 --BRING
 RegisterServerEvent("vorp_admin:Bring", function(targetID, adminCoords, command)
-    local _
-    source = source
+    local _source = source
     if Core.getUser(targetID) then
         if not AllowedToExecuteAction(_source, command) then
             return
