@@ -301,13 +301,14 @@ RegisterServerEvent("vorp_admin:givePlayer", function(targetID, action, data1, d
     if action == "item" then
         local item = data1
         local qty = data2
+
+        if not qty or not item then
+            return Core.NotifyRightTip(_source, "INVALID add: ITEM and AMOUNT", 5000)
+        end
+
         local itemCheck = exports.vorp_inventory:getItemDB(item)
         local canCarryItem = exports.vorp_inventory:canCarryItem(targetID, item, qty)
         local canCarryInv = exports.vorp_inventory:canCarryItems(targetID, qty)
-
-        if not qty then
-            return Core.NotifyRightTip(_source, "INVALID add: ITEM and AMOUNT", 5000)
-        end
 
         if not itemCheck then
             return Core.NotifyRightTip(_source, _U("doesnotexist"), 5000)
