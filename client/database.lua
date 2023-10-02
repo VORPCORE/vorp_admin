@@ -182,16 +182,17 @@ function GivePlayers(PlayerData)
                             for i in string.gmatch(result, "%S+") do
                                 splitString[#splitString + 1] = i
                             end
-
                             local itemName, itemQuantity = tostring(splitString[1]), tonumber(splitString[2])
                             if not itemQuantity then
                                 itemQuantity = 1
                             end
-                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, itemName, itemQuantity, nil, "vorp.staff.Giveitems")
-
+                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, itemName, itemQuantity, nil,
+                                "vorp.staff.Giveitems")
                             if Config.DatabaseLogs.Giveitem then
                                 TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Giveitem, _U("titledatabase"),
-                                    _U("usedgiveitem") .. "\nPlayer: " ..  PlayerData.PlayerName .. "\nitem: " .. itemName .. "\nQTY: " .. itemQuantity)
+                                    _U("usedgiveitem") ..
+                                    "\nPlayer: " ..
+                                    PlayerData.PlayerName .. "\nitem: " .. itemName .. "\nQTY: " .. itemQuantity)
                             end
                         else
                             TriggerEvent("vorp:TipRight", _U("empty"), 4000)
