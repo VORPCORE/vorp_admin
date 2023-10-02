@@ -307,8 +307,8 @@ RegisterServerEvent("vorp_admin:givePlayer", function(targetID, action, data1, d
         end
 
         local itemCheck = exports.vorp_inventory:getItemDB(item)
-        local canCarryItem = exports.vorp_inventory:canCarryItem(targetID, item, qty)
-        local canCarryInv = exports.vorp_inventory:canCarryItems(targetID, qty)
+        local canCarryItem = exports.vorp_inventory:canCarryItem(targetID, qty)
+        local canCarryInv = exports.vorp_inventory:canCarryItems(targetID, item, qty)
 
         if not itemCheck then
             return Core.NotifyRightTip(_source, _U("doesnotexist"), 5000)
