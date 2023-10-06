@@ -83,6 +83,7 @@ Config = {
         { group = { "admin" }, command = "vorp.staff.GetCoords" },
         { group = { "admin" }, command = "vorp.staff.Announce" },
         { group = { "admin" }, command = "vorp.staff.Godmode" },
+        { group = { "admin" }, command = "vorp.staff.InfiniteAmmo" },
         { group = { "admin" }, command = "vorp.staff.Noclip" },
         { group = { "admin" }, command = "vorp.staff.Golden" },
         { group = { "admin" }, command = "vorp.staff.SpawnWagon" },
