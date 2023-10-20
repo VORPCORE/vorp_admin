@@ -1,7 +1,7 @@
 Config = {
     --add your language
     DevMode             = false, -- leave false
-    useAdminCommand     = true,
+    useAdminCommand     = true,  -- can open menu with adim command below
     commandAdmin        = "adminMenu",
     defaultlang         = "en_lang",
     Key                 = 0x3C3DD371, --PGDOWN open menu

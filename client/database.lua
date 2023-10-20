@@ -23,7 +23,7 @@ function DataBase()
                     .. PlayersData.SteamId .. "</span><br>" .. _U("PlayerMoney") .. "<span style=color:MediumSeaGreen;>"
                     .. PlayersData.Money .. "</span><br>" .. _U("PlayerGold") .. "<span style=color:Gold;>"
                     .. PlayersData.Gold .. "</span><br>" .. _U("PlayerStaticID") .. "<span style=color:Red;>"
-                    .. PlayersData.Gold .. "</span>",
+                    .. PlayersData.staticID .. "</span>",
                 PlayerData = PlayersData
             }
         end
