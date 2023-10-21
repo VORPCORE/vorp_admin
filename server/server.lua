@@ -95,9 +95,7 @@ local function CheckTable(group, group1, object)
     for key, value in ipairs(Config.AllowedGroups) do
         for k, v in ipairs(value.group) do
             if v == group or v == group1 then
-                if value.command == object then
-                    return true
-                end
+                return true
             end
         end
     end
@@ -492,8 +490,8 @@ end)
 RegisterServerEvent("vorp_admin:ClearCurrency", function(targetID, type, command)
     local _source = source
 
-    local Character = Core.getUser(targetID)
-    if not Character then
+    local User = Core.getUser(targetID)
+    if not User then
         return
     end
 
@@ -501,8 +499,9 @@ RegisterServerEvent("vorp_admin:ClearCurrency", function(targetID, type, command
         return
     end
 
-    local money = Character.getUsedCharacter.money
-    local gold = Character.getUsedCharacter.gold
+    local Character = User.getUsedCharacter
+    local money = User.getUsedCharacter.money
+    local gold = User.getUsedCharacter.gold
 
     if type == "money" then
         Character.removeCurrency(0, money)
