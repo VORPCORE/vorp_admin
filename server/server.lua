@@ -1,10 +1,10 @@
 ---@diagnostic disable: undefined-global
-local Core = {}
+
 local VORPwl = {}
 local stafftable = {}
 local PlayersTable = {}
 
--- has updated inventory
+-------------------------- ONLY WORKS WITH UPDATES --------------------------------
 local hasResourceStarted = GetResourceState("vorp_inventory") == "started"
 local hasvorpcorestarted = GetResourceState("vorp_core") == "started"
 if not hasResourceStarted or not hasvorpcorestarted then
@@ -12,23 +12,23 @@ if not hasResourceStarted or not hasvorpcorestarted then
     return
 end
 
-local resourceVersion = GetResourceMetadata("vorp_inventory", "version", 0)
+local invVersion = GetResourceMetadata("vorp_inventory", "version", 0)
 local coreVersion = GetResourceMetadata("vorp_core", "version", 0)
-if tonumber(resourceVersion) < 2.9 or tonumber(coreVersion) < 2.3 then
+if tonumber(invVersion) < 2.9 or tonumber(coreVersion) < 2.3 then
     print("vorp_inventory or vorp core is not up to date this resource will stop")
     StopResource("vorp_admin")
     return
 end
+----------------------------------------------------------------------------------
 
-TriggerEvent("getCore", function(core)
-    Core = core
-end)
+local Core = exports.vorp_core:GetCore()
+local ServerRPC = Core
 
 TriggerEvent("getWhitelistTables", function(cb)
     VORPwl = cb
 end)
 
-local ServerRPC = exports.vorp_core:ServerRpcCall() --[[@as ServerRPC]]
+
 
 local function getUserData(User, _source)
     local Character = User.getUsedCharacter

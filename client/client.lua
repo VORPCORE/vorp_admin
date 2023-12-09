@@ -3,19 +3,17 @@ local CanOpen = Config.CanOpenMenuWhenDead
 local Inmenu
 local spectating = false
 local lastcoords
+
 MenuData = {}
-VORP = {}
-
-TriggerEvent("getCore", function(core)
-    VORP = core
-end)
-
--- get menu
 TriggerEvent("menuapi:getData", function(call)
     MenuData = call
 end)
 
-ClientRPC = exports.vorp_core:ClientRpcCall() --[[@as ClientRPC]]
+VORP = exports.vorp_core:GetCore()
+ClientRPC = VORP
+
+
+
 
 AddEventHandler("onResourceStop", function(resourceName)
     if resourceName ~= GetCurrentResourceName() then
@@ -105,12 +103,9 @@ Citizen.CreateThread(function()
     end
 end)
 
--- perms
-
 RegisterNetEvent("vorp_admin:OpenStaffMenu", function(perm)
     AdminAllowed = perm
 end)
-
 
 ----- EVENTS
 RegisterNetEvent("vorp_admin:Freezeplayer")
