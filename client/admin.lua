@@ -867,8 +867,8 @@ function OpenAdvancedActions(Player)
 
                 if AdminAllowed then
                     local target = data.current.info
-                    local myInput = Inputs("input", _U("confirm"), "jobname and grade", "Set Group", "text",
-                        " min 3 max 20 no . no , no - no _", "[A-Za-z0-9 ]{3,20}")
+                    local myInput = Inputs("input", _U("confirm"), "jobname grade joblabel", "Set Job", "text",
+                        " min 3 max 20 no symbols", "[A-Za-z0-9 ]{3,20}")
 
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
@@ -878,13 +878,15 @@ function OpenAdvancedActions(Player)
                             for i in string.gmatch(result, "%S+") do
                                 splitstring[#splitstring + 1] = i
                             end
-                            local jobname, jobgrade = tostring(splitstring[1]), tonumber(splitstring[2])
-                            if jobname and jobgrade then
-                                TriggerServerEvent("vorp_admin:setJob", target, jobname, jobgrade, 'vorp.staff.Setjob')
+                            local jobname, jobgrade, joblabel = tostring(splitstring[1]), tonumber(splitstring[2])
+                            if jobname and jobgrade and joblabel then
+                                TriggerServerEvent("vorp_admin:setJob", target, jobname, jobgrade,
+                                    joblabel, 'vorp.staff.Setjob')
                                 if Config.AdminLogs.Setjob then
-                                    TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Setjob
-                                        , _U("titleadmin"), _U("usedsetjob") .. "\n > " .. Player.PlayerName ..
-                                        "\njob:  " .. jobname .. " \ngrade: " .. jobgrade)
+                                    TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Setjob, _U("titleadmin"),
+                                        _U("usedsetjob") ..
+                                        "\n > " ..
+                                        Player.PlayerName .. "\njob:  " .. jobname .. " \ngrade: " .. jobgrade)
                                 end
                             end
                         else

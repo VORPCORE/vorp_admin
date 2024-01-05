@@ -537,7 +537,7 @@ RegisterServerEvent("vorp_admin:setGroup", function(targetID, newgroup, command)
     Core.NotifyRightTip(_target, _U("groupgiven") .. NewPlayerGroup, 5000)
 end)
 -- JOB
-RegisterServerEvent("vorp_admin:setJob", function(targetID, newjob, newgrade, command)
+RegisterServerEvent("vorp_admin:setJob", function(targetID, newjob, newgrade, newJobLabel, command)
     local _source = source
     local _target = targetID
 
@@ -547,14 +547,16 @@ RegisterServerEvent("vorp_admin:setJob", function(targetID, newjob, newgrade, co
 
     local user = Core.getUser(_target)
     if not user then
-        return
+        return print("user not found")
     end
-
     local character = user.getUsedCharacter
     character.setJob(newjob)
     character.setJobGrade(newgrade)
+    character.setJobLabel(newJobLabel)
+
     Core.NotifyRightTip(_target, _U("jobgiven") .. newjob, 5000)
     Core.NotifyRightTip(_target, _U("gradegiven") .. newgrade, 5000)
+    Core.NotifyRightTip(_target, "Job Label: " .. newJobLabel, 5000)
 end)
 
 -- WHITELIST
