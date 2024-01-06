@@ -135,42 +135,26 @@ end
 
 function CopyToClipboard(dataType)
     local ped = PlayerPedId()
-    if dataType == 'v2' then
-        local coords = GetEntityCoords(ped)
-        local x = Round(coords.x, 2)
-        local y = Round(coords.y, 2)
-        local z = Round(coords.z, 2)
+    local coords = GetEntityCoords(ped)
+    local x, y, z = Round(coords.x, 2), Round(coords.y, 2), Round(coords.z, 2)
 
-        SendNUIMessage({
-            string = string.format('{x = %s, y = %s, z = %s}', x, y, z)
-        })
+    if dataType == 'v2' then
+        local copiedText = string.format('{x = %s, y = %s, z = %s}', x, y, z)
+        SendNUIMessage({ string = copiedText })
         TriggerEvent('vorp:TipRight', _U("copied"), 3000)
     elseif dataType == 'v3' then
-        local coords = GetEntityCoords(ped)
-        local x = Round(coords.x, 2)
-        local y = Round(coords.y, 2)
-        local z = Round(coords.z, 2)
-        SendNUIMessage({
-            string = string.format('vector3(%s, %s, %s)', x, y, z)
-        })
+        local copiedText = string.format('vector3(%s, %s, %s)', x, y, z)
+        SendNUIMessage({ string = copiedText })
         TriggerEvent('vorp:TipRight', _U("copied"), 3000)
     elseif dataType == 'v4' then
-        local coords = GetEntityCoords(ped)
-        local x = Round(coords.x, 2)
-        local y = Round(coords.y, 2)
-        local z = Round(coords.z, 2)
         local heading = GetEntityHeading(ped)
         local h = Round(heading, 2)
-        SendNUIMessage({
-            string = string.format('vector4(%s, %s, %s, %s)', x, y, z, h)
-        })
+        local copiedText = string.format('vector4(%s, %s, %s, %s)', x, y, z, h)
+        SendNUIMessage({ string = copiedText })
         TriggerEvent('vorp:TipRight', _U("copied"), 3000)
     elseif dataType == 'heading' then
-        local heading = GetEntityHeading(ped)
-        local h = Round(heading, 2)
-        SendNUIMessage({
-            string = h
-        })
+        local heading = Round(GetEntityHeading(ped), 2)
+        SendNUIMessage({ string = heading })
         TriggerEvent('vorp:TipRight', _U("copied"), 3000)
     end
 end
