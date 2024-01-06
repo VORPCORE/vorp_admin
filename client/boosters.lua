@@ -106,23 +106,23 @@ function Boost()
     MenuData.CloseAll()
 
     local elements = {
-        { label = _U("godMode"),      value = 'god',          desc = _U("godMode_desc") },
-        { label = _U("noclipMode"),   value = 'noclip',       desc = "<span>" .. _U("move") .. "</span><br><span>" .. _U("speedMode") .. "</span><br>" .. _U("Cammode") .. "" },
-        { label = _U("goldenCores"),  value = 'goldcores',    desc = _U("goldCores_desc") },
-        { label = _U("infiniteammo"), value = 'infiniteammo', desc = _U("infammo_desc") },
-        { label = _U("spawnwagon"),   value = 'spawnwagon',   desc = _U("spawnwagon_desc") },
-        { label = _U("spawnhorse"),   value = 'spawnhorse',   desc = _U("spawnhorse_desc") },
-        { label = _U("selfheal"),     value = 'selfheal',     desc = _U("selfheal_desc") },
-        { label = _U("selfrevive"),   value = 'selfrevive',   desc = _U("selfrevive_desc") },
-        { label = _U("invis"),        value = 'invisibility', desc = _U('invisnotif') },
+        { label = T.Menus.MainBoostOptions.selfGodMode,         value = 'god',          desc = T.Menus.MainBoostOptions.selfGodMode_desc },
+        { label = T.Menus.MainBoostOptions.selfNoClip,          value = 'noclip',       desc = "<span>" .. T.Menus.MainBoostOptions.selfNoClip_desc .. "</span><br><span>" .. T.Menus.MainBoostOptions.move .. "</span><br><span>" .. T.Menus.MainBoostOptions.speedMode .. "</span><br>" .. T.Menus.MainBoostOptions.cammode .. "" },
+        { label = T.Menus.MainBoostOptions.selfGoldCores,       value = 'goldcores',    desc = T.Menus.MainBoostOptions.selfGoldCores_desc },
+        { label = T.Menus.MainBoostOptions.enabledInfinityAmmo, value = 'infiniteammo', desc = T.Menus.MainBoostOptions.enabledInfinityAmmo_desc },
+        { label = T.Menus.MainBoostOptions.spawnWagon,          value = 'spawnwagon',   desc = T.Menus.MainBoostOptions.spawnWagon_desc },
+        { label = T.Menus.MainBoostOptions.spawnHorse,          value = 'spawnhorse',   desc = T.Menus.MainBoostOptions.spawnHorse_desc },
+        { label = T.Menus.MainBoostOptions.selfHeal,            value = 'selfheal',     desc = T.Menus.MainBoostOptions.selfHeal_desc },
+        { label = T.Menus.MainBoostOptions.selfRevive,          value = 'selfrevive',   desc = T.Menus.MainBoostOptions.selfRevive_desc },
+        { label = T.Menus.MainBoostOptions.selfInvisible,       value = 'invisibility', desc = T.Menus.MainBoostOptions.selfInvisible_desc },
         --{ label = "players blip map", value = 'playerblip', desc = "show players blip on the map" }, todo
         --{ label = "players id", value = 'showid', desc = "show players id over head", }, todo
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
-            title    = _U("MenuTitle"),
-            subtext  = _U("Boosters"),
+            title    = T.Menus.DefaultsMenusTitle.menuTitle,
+            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleBooster,
             align    = 'top-left',
             elements = elements,
             lastmenu = 'OpenMenu'
@@ -174,8 +174,7 @@ function Boost()
                             SetEntityHeading(player, GetEntityHeading(player) + 180)
                         end
                         if Config.BoosterLogs.NoClip then
-                            TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.NoClip, T.Webhooks.ActionBoosters.title,
-                                _U("usednoclip"))
+                            TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.NoClip, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usednoclip)
                         end
                     else
                         NoClipActive = false
@@ -199,8 +198,7 @@ function Boost()
                     TriggerServerEvent('vorp_admin:ReviveSelf', "vorp.staff.SelfRevive")
 
                     if Config.BoosterLogs.SelfRevive then
-                        TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfRevive, T.Webhooks.ActionBoosters.title,
-                            _U("usedrevive"))
+                        TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfRevive, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedrevive)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
@@ -210,9 +208,7 @@ function Boost()
                 Wait(100)
                 if AdminAllowed then
                     if Config.BoosterLogs.SelfHeal then
-                        TriggerServerEvent("vorp_admin:logs",
-                            Config.BoosterLogs.SelfHeal
-                            , T.Webhooks.ActionBoosters.title, _U("usedheal"))
+                        TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfHeal, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedheal)
                     end
                     TriggerServerEvent('vorp_admin:HealSelf', "vorp.staff.SelfHeal")
                     Config.Heal.Players()
@@ -229,20 +225,7 @@ function Boost()
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.SpawHorse")
                 Wait(100)
                 if AdminAllowed then
-                    local myInput = {
-                        type = "enableinput",                                                -- dont touch
-                        inputType = "input",
-                        button = _U("confirm"),                                              -- button name
-                        placeholder = _U("inserthashmodel"),                                 --placeholdername
-                        style = "block",                                                     --- dont touch
-                        attributes = {
-                            inputHeader = _U("spawnhorse"),                                  -- header
-                            type = "text",                                                   -- inputype text, number,date.etc if number comment out the pattern
-                            pattern = "[A-Za-z0-9_ \\-]{5,60}",                              -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                            title = "wrong syntax",                                          -- if input doesnt match show this message
-                            style = "border-radius: 10px; backgRound-color: ; border:none;", -- style  the inptup
-                        }
-                    }
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.MainBoostOptions.SpawnHorseInput.placeholder, T.Menus.MainBoostOptions.SpawnHorseInput.title, "text", T.Menus.MainBoostOptions.SpawnHorseInput.errorMsg, "[A-Za-z0-9_ \\-]{5,60}")
                     MenuData.CloseAll()
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                         local horse = result
@@ -256,12 +239,10 @@ function Boost()
                             Citizen.InvokeNative(0x77FF8D35EEC6BBC4, horse, 1, 0)
                             Citizen.InvokeNative(0x028F76B6E78246EB, player, horse, -1, true)
                             if Config.BoosterLogs.SelfSpawnHorse then
-                                TriggerServerEvent("vorp_admin:logs",
-                                    Config.BoosterLogs.SelfSpawnHorse
-                                    , T.Webhooks.ActionBoosters.title, _U("spawned") .. horse)
+                                TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfSpawnHorse, T.Webhooks.ActionBoosters.title, "Horse: " .. horse)
                             end
                         else
-                            TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
+                            TriggerEvent('vorp:TipRight', T.Notify.empty, 3000)
                         end
                     end)
                 else
@@ -272,41 +253,24 @@ function Boost()
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.SpawnWagon")
                 Wait(100)
                 if AdminAllowed then
-                    local myInput = {
-                        type = "enableinput",                                                -- dont touch
-                        inputType = "input",
-                        button = _U("confirm"),                                              -- button name
-                        placeholder = _U("insertmodel"),                                     --placeholdername
-                        style = "block",                                                     --- dont touch
-                        attributes = {
-                            inputHeader = _U("SpawnWagon"),                                  -- header
-                            type = "text",                                                   -- inputype text, number,date.etc if number comment out the pattern
-                            pattern = "[A-Za-z0-9_ \\-]{5,60}",                              -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                            title = "wrong syntax",                                          -- if input doesnt match show this message
-                            style = "border-radius: 10px; backgRound-color: ; border:none;", -- style  the inptup
-                        }
-                    }
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.MainBoostOptions.SpawnWagonInput.placeholder, T.Menus.MainBoostOptions.SpawnWagonInput.title, "text", T.Menus.MainBoostOptions.SpawnWagonInput.errorMsg, "[A-Za-z0-9_ \\-]{5,60}")
                     MenuData.CloseAll()
-
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                         local wagon = result
                         local playerCoords = GetEntityCoords(player)
-
                         if wagon ~= "" then
                             RequestModel(wagon)
                             while not HasModelLoaded(wagon) do
                                 Wait(10)
                             end
-
                             wagon = CreateVehicle(wagon, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
                             Citizen.InvokeNative(0x77FF8D35EEC6BBC4, wagon, 1, 0)
                             SetPedIntoVehicle(player, wagon, -1)
                             if Config.BoosterLogs.SelfSpawnWagon then
-                                TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfSpawnWagon
-                                , T.Webhooks.ActionBoosters.title, _U("spawned") .. wagon)
+                                TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfSpawnWagon, T.Webhooks.ActionBoosters.title, "Wagon: " .. wagon)
                             end
                         else
-                            TriggerEvent('vorp:TipRight', _U("advalue"), 3000)
+                            TriggerEvent('vorp:TipRight', T.Notify.empty, 3000)
                         end
                     end)
                 else
@@ -335,7 +299,7 @@ local PromptGroup = GetRandomIntInRange(0, 0xffffff)
 
 --PROMPTS
 CreateThread(function()
-    local str = _U("promptdown") .. "/" .. _U("promptup")
+    local str = T.Menus.MainBoostOptions.Prompts.down .. "/" .. T.Menus.MainBoostOptions.Prompts.up
     Prompt1 = PromptRegisterBegin()
     PromptSetControlAction(Prompt1, Config.Controls.goDown)
     PromptSetControlAction(Prompt1, Config.Controls.goUp)
@@ -348,7 +312,7 @@ CreateThread(function()
     Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt1, true)
     PromptRegisterEnd(Prompt1)
 
-    local str = _U("promptspeed")
+    local str = T.Menus.MainBoostOptions.Prompts.speed
     Prompt2 = PromptRegisterBegin()
     PromptSetControlAction(Prompt2, Config.Controls.changeSpeed) -- shift
     str = CreateVarString(10, 'LITERAL_STRING', str)
@@ -360,7 +324,7 @@ CreateThread(function()
     Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt2, true)
     PromptRegisterEnd(Prompt2)
 
-    local str = _U("promptbackward") .. "/" .. _U("promptforward")
+    local str = T.Menus.MainBoostOptions.Prompts.backward .. "/" .. T.Menus.MainBoostOptions.Prompts.forward
     Prompt4 = PromptRegisterBegin()
     PromptSetControlAction(Prompt4, Config.Controls.goBackward)
     PromptSetControlAction(Prompt4, Config.Controls.goForward)
@@ -373,7 +337,7 @@ CreateThread(function()
     Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt4, true)
     PromptRegisterEnd(Prompt4)
 
-    local str = _U("promptcancel")
+    local str = T.Menus.MainBoostOptions.Prompts.cancel
     Prompt6 = PromptRegisterBegin()
     PromptSetControlAction(Prompt6, Config.Controls.Cancel)
     str = CreateVarString(10, 'LITERAL_STRING', str)
@@ -411,7 +375,7 @@ Citizen.CreateThread(function()
             if IsDisabledControlJustPressed(1, Config.Controls.camMode) then
                 FollowCamMode = not FollowCamMode
             end
-            local label = CreateVarString(10, 'LITERAL_STRING', "No clip | Speed " .. Label .. " " .. CurrentSpeed)
+            local label = CreateVarString(10, 'LITERAL_STRING', T.Menus.MainBoostOptions.Prompts.speed_desc .. Label .. " " .. CurrentSpeed)
             PromptSetActiveGroupThisFrame(PromptGroup, label)
 
             if IsDisabledControlJustPressed(1, Config.Controls.changeSpeed) then

@@ -4,10 +4,11 @@ Translation.Langs = {
   English = {
     Menus = {
       DefaultsMenusTitle = {
-        menuTitle      = "VORP ADMIN",
-        menuTitle_desc = "Player Manegement",
-        menuSubTitle   = "Main Menu",
-        menuSubTitle2  = "Players Online",
+        menuTitle           = "VORP ADMIN",
+        menuSubTitle        = "Main Menu",
+        menuSubTitleAdmin   = "Player Manegement",
+        menuSubTitlePlayer  = "Players Online",
+        menuSubTitleBooster = "Boosters"
       },
       DefaultsInputs = {
         confirm = "Confirm",
@@ -117,7 +118,8 @@ Translation.Langs = {
       },
       SubOfflineOptions = {
         banOrUnban = "BAN/UNBAN",
-        banOrUnban_desc = "Type = ban/unban <br> StaticID = ID Fixed in DB <br> Time example 1h,1d,1w,1m,1y permaban put 0 <br> DONT USE TIME IF TYPE IS UNBAN",
+        banOrUnban_desc =
+        "Type = ban/unban <br> StaticID = ID Fixed in DB <br> Time example 1h,1d,1w,1m,1y permaban put 0 <br> DONT USE TIME IF TYPE IS UNBAN",
         whiteOrUnwhite = "WHITE/UNWHITE",
         whiteOrUnwhite_desc = "Type = whitelist/unwhitelist <br> StaticID = ID Fixed in DB",
         warnOrUnWarn = "WARN/UNWARN",
@@ -204,22 +206,62 @@ Translation.Langs = {
         },
       },
       MainBoostOptions = {
-
+        selfGodMode              = "Activate God Mode",
+        selfGodMode_desc         = "Become invulnerable to damage",
+        selfNoClip               = "Enable NoClip",
+        selfNoClip_desc          = "Pass through objects and terrain",
+        move                     = "W/A/S/D/Q/Z- MOVE",
+        speedMode                = "LShift to Change speed",
+        cammode                  = "H-Relative mode",
+        selfGoldCores            = "Gold Cores self-buff",
+        selfGoldCores_desc       = "Boost your stats with Gold Cores",
+        enabledInfinityAmmo      = "Enable Infinite Ammo",
+        enabledInfinityAmmo_desc = "Never run out of ammunition",
+        spawnWagon               = "Spawn a Wagon",
+        spawnWagon_desc          = "Summon a wagon to your location",
+        spawnHorse               = "Spawn a Horse",
+        spawnHorse_desc          = "Call a horse to ride",
+        selfHeal                 = "Heal yourself",
+        selfHeal_desc            = "Restore your health and vitality",
+        selfRevive               = "Self-Revive",
+        selfRevive_desc          = "Resurrect yourself when downed",
+        selfInvisible            = "Turn yourself Invisible",
+        selfInvisible_desc       = "Become invisible to others",
+        SpawnHorseInput          = {
+          title = "SPAWN HORSE",
+          placeholder = "A_C_Horse_Arabian_Grey",
+          errorMsg = "min 5 max 60 chars"
+        },
+        SpawnWagonInput          = {
+          title = "SPAWN WAGON",
+          placeholder = "U_M_M_CircusWagon_01",
+          errorMsg = "min 5 max 60 chars"
+        },
+        Prompts                  = {
+          backward = "BACKWARD",
+          forward  = "FORWARD",
+          speed    = "SPEED",
+          down     = "DOWN",
+          up       = "UP",
+          cancel   = "CANCEL",
+          speed_desc = "No clip | Speed "
+        }
       }
+
     },
     Notify = {
-      noperms       = "~e~You dont have permmision.",
-      userNotExist  = "User dont exist.",
-      switchedOn    = "Switched ON",
-      switchedOff   = "Switched OFF",
-      cantWarnStaff = "You cant WARN staff",
-      cantKickStaff = "You cant KICK staff",
-      cantBanStaff  = "You cant BAN staff",
-      empty         = "Its Empty",
-      whiteApproved = "Whitelist was approved",
-      whiteRemoved  = "Whitelist was removed",
-      incorrectType = "Incorrect Type!",
-      missingArgument = "Missing argument! Check example!",
+      noperms           = "~e~You dont have permmision.",
+      userNotExist      = "User dont exist.",
+      switchedOn        = "Switched ON",
+      switchedOff       = "Switched OFF",
+      cantWarnStaff     = "You cant WARN staff",
+      cantKickStaff     = "You cant KICK staff",
+      cantBanStaff      = "You cant BAN staff",
+      empty             = "Its Empty",
+      whiteApproved     = "Whitelist was approved",
+      whiteRemoved      = "Whitelist was removed",
+      incorrectType     = "Incorrect Type!",
+      missingArgument   = "Missing argument! Check example!",
       needWeaponInHands = "You need a weapon in hand!"
     },
     Webhooks = {
@@ -252,7 +294,7 @@ Translation.Langs = {
         usedheal = "🩹 Self-Healed",
         usedinfinitammo = "🔫 Enabled Infinite Ammo",
         spawn = "🆕 Spawned: ",
-    }
+      }
     }
 
   }

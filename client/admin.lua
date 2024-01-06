@@ -120,7 +120,7 @@ function OpenOnePlayerMenu(playersInfo)
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title      = T.Menus.DefaultsMenusTitle.menuTitle,
-            subtext    = T.Menus.DefaultsMenusTitle.menuSubTitle2,
+            subtext    = T.Menus.DefaultsMenusTitle.menuSubTitlePlayer,
             align      = 'top-left',
             elements   = elements,
             lastmenu   = 'Admin',
@@ -199,7 +199,7 @@ function PlayerList()
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title      = T.Menus.DefaultsMenusTitle.menuTitle,
-            subtext    = T.Menus.DefaultsMenusTitle.menuSubTitle2,
+            subtext    = T.Menus.DefaultsMenusTitle.menuSubTitlePlayer,
             align      = 'top-left',
             elements   = elements,
             lastmenu   = 'Admin',
@@ -235,7 +235,7 @@ function OpenSubAdminMenu(Player)
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
-            subtext  = T.Menus.DefaultsMenusTitle.menuTitle_desc,
+            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
             align    = 'top-left',
             elements = elements,
             lastmenu = 'PlayerList',
