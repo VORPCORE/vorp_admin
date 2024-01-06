@@ -416,7 +416,6 @@ Translation.Langs = {
         cancelAnimation      = "Cancel Animation",
         cancelAnimation_desc = "Stop the currently playing animation",
       }
-
     },
     Notify = {
       noperms               = "~e~You dont have permmision.",
