@@ -8,24 +8,25 @@ local T = Translation.Langs[Config.Lang]
 
 function OpenUsersMenu()
     MenuData.CloseAll()
-
-
     local elements = {
-        { label = _U("Report"),       value = 'report',       desc = _U("reportoptions_desc") },
-        { label = _U("requeststaff"), value = 'requeststaff', desc = _U("Requeststaff_desc") },
-        { label = _U("showMyInfo"),   value = 'showinfo',     desc = _U("showmyinfo_desc") },
-        { label = _U("commands"),     value = 'commands',     desc = _U("usercommands") },
-        { label = "Walks/Clothes",    value = 'menu',         desc = "walk styles and clothing options" },
+        { label = T.Menus.MainUserOptions.playerReport,              value = 'report',       desc = T.Menus.MainUserOptions.playerReport_desc },
+        { label = T.Menus.MainUserOptions.playerRequestStaff,        value = 'requeststaff', desc = T.Menus.MainUserOptions.playerRequestStaff_desc },
+        { label = T.Menus.MainUserOptions.selfShowInfo,              value = 'showinfo',     desc = T.Menus.MainUserOptions.selfShowInfo_desc },
+        { label = T.Menus.MainUserOptions.playerCommands,            value = 'commands',     desc = T.Menus.MainUserOptions.playerCommands_desc },
+        { label = T.Menus.MainUserOptions.playerWalkAndClothesStyle, value = 'menu',         desc = T.Menus.MainUserOptions.playerWalkAndClothesStyle_desc },
     }
-
     if Config.EnablePlayerlist then
-        elements[#elements + 1] = { label = _U("Scoreboard"), value = 'scoreboard', desc = _U("scoreboard_desc") }
+        elements[#elements + 1] = {
+            label = T.Menus.DefaultsMenusTitle.menuSubTitleScoreboard,
+            value = 'scoreboard',
+            desc = T.Menus.DefaultsMenusTitle.menuSubTitleScoreboard,
+        }
     end
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
-            title    = _U("MenuTitle"),
-            subtext  = _U("MenuSubTitle"),
+            title    = T.Menus.DefaultsMenusTitle.menuTitle,
+            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleScoreboard,
             align    = 'top-left',
             elements = elements,
         },
@@ -45,7 +46,7 @@ function OpenUsersMenu()
             elseif data.current.value == "requeststaff" then
                 RequestStaff()
             elseif data.current.value == "showinfo" then
-                VORP.NotifyRightTip(_U("notyetavailable"), 4000)
+                VORP.NotifyRightTip(T.Notify.notAvailable, 4000)
             elseif data.current.value == "commands" then
                 OpenCommands()
             elseif data.current.value == "menu" then

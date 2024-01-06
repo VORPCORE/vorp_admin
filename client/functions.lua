@@ -142,21 +142,21 @@ function CopyToClipboard(dataType)
     if dataType == 'v2' then
         local copiedText = string.format('{x = %s, y = %s, z = %s}', x, y, z)
         SendNUIMessage({ string = copiedText })
-        TriggerEvent('vorp:TipRight', _U("copied"), 3000)
+        TriggerEvent('vorp:TipRight', T.Notify.copied, 3000)
     elseif dataType == 'v3' then
         local copiedText = string.format('vector3(%s, %s, %s)', x, y, z)
         SendNUIMessage({ string = copiedText })
-        TriggerEvent('vorp:TipRight', _U("copied"), 3000)
+        TriggerEvent('vorp:TipRight', T.Notify.copied, 3000)
     elseif dataType == 'v4' then
         local heading = GetEntityHeading(ped)
         local h = Round(heading, 2)
         local copiedText = string.format('vector4(%s, %s, %s, %s)', x, y, z, h)
         SendNUIMessage({ string = copiedText })
-        TriggerEvent('vorp:TipRight', _U("copied"), 3000)
+        TriggerEvent('vorp:TipRight', T.Notify.copied, 3000)
     elseif dataType == 'heading' then
         local heading = Round(GetEntityHeading(ped), 2)
         SendNUIMessage({ string = heading })
-        TriggerEvent('vorp:TipRight', _U("copied"), 3000)
+        TriggerEvent('vorp:TipRight', T.Notify.copied, 3000)
     end
 end
 
