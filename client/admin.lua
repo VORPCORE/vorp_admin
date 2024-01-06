@@ -19,7 +19,7 @@ function Admin()
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
-            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitle,
+            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
             align    = 'top-left',
             elements = elements,
             lastmenu = 'OpenMenu', --Go back
@@ -120,7 +120,7 @@ function OpenOnePlayerMenu(playersInfo)
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title      = T.Menus.DefaultsMenusTitle.menuTitle,
-            subtext    = T.Menus.DefaultsMenusTitle.menuSubTitlePlayer,
+            subtext    = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
             align      = 'top-left',
             elements   = elements,
             lastmenu   = 'Admin',
@@ -199,7 +199,7 @@ function PlayerList()
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title      = T.Menus.DefaultsMenusTitle.menuTitle,
-            subtext    = T.Menus.DefaultsMenusTitle.menuSubTitlePlayer,
+            subtext    = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
             align      = 'top-left',
             elements   = elements,
             lastmenu   = 'Admin',
@@ -336,7 +336,7 @@ function OpenTrollActions(PlayerInfo)
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
-            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitle,
+            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
             align    = 'top-left',
             elements = elements,
             lastmenu = 'PlayerList', --Go back
@@ -487,7 +487,7 @@ function OpenSimpleActionMenu(PlayerInfo)
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
-            subtext  = "SubMenu",
+            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
             align    = 'top-left',
             elements = elements,
             lastmenu = 'PlayerList', --Go back
@@ -907,7 +907,7 @@ function Actions()
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
-            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitle,
+            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
             align    = 'top-left',
             elements = elements,
             lastmenu = 'Admin', --Go back
@@ -1004,7 +1004,7 @@ function OpenCoordsMenu()
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
-            subtext  = _U("getcoords"),
+            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleCoords,
             align    = 'top-left',
             elements = elements,
             lastmenu = 'Actions', --Go back
@@ -1048,7 +1048,7 @@ function OffLine()
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
-            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitle,
+            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
             align    = 'top-left',
             elements = elements,
             lastmenu = 'Admin',

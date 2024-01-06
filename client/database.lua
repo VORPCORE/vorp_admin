@@ -107,39 +107,39 @@ function GivePlayers(PlayerData)
     MenuData.CloseAll()
     local elements = {
         {
-            label = T.Menus.SubDatabaseGiveOptions.showInventory,
+            label = T.Menus.SubDatabaseRemoveOptions.showInventory,
             value = 'inventory',
-            desc = T.Menus.SubDatabaseGiveOptions.showInventory_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            desc = T.Menus.SubDatabaseRemoveOptions.showInventory_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId
         },
         {
-            label = T.Menus.SubDatabaseGiveOptions.giveItem,
+            label = T.Menus.SubDatabaseRemoveOptions.giveItem,
             value = 'addItem',
-            desc = T.Menus.SubDatabaseGiveOptions.giveItem_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            desc = T.Menus.SubDatabaseRemoveOptions.giveItem_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId
         },
         {
-            label = T.Menus.SubDatabaseGiveOptions.giveWeapon,
+            label = T.Menus.SubDatabaseRemoveOptions.giveWeapon,
             value = 'addWeapon',
-            desc = T.Menus.SubDatabaseGiveOptions.giveWeapon_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName,
+            desc = T.Menus.SubDatabaseRemoveOptions.giveWeapon_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName,
             info = PlayerData.serverId
         },
         {
-            label = T.Menus.SubDatabaseGiveOptions.giveMoneyOrGold,
+            label = T.Menus.SubDatabaseRemoveOptions.giveMoneyOrGold,
             value = 'addMoneygold',
-            desc = T.Menus.SubDatabaseGiveOptions.giveMoneyOrGold_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            desc = T.Menus.SubDatabaseRemoveOptions.giveMoneyOrGold_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId
         },
         {
-            label = T.Menus.SubDatabaseGiveOptions.giveHorse,
+            label = T.Menus.SubDatabaseRemoveOptions.giveHorse,
             value = 'addHorse',
-            desc = T.Menus.SubDatabaseGiveOptions.giveHorse_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            desc = T.Menus.SubDatabaseRemoveOptions.giveHorse_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId
         },
         {
-            label = T.Menus.SubDatabaseGiveOptions.giveWagon,
+            label = T.Menus.SubDatabaseRemoveOptions.giveWagon,
             value = 'addWagon',
-            desc = T.Menus.SubDatabaseGiveOptions.giveWagon_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            desc = T.Menus.SubDatabaseRemoveOptions.giveWagon_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId
         },
     }
@@ -162,7 +162,7 @@ function GivePlayers(PlayerData)
                 if AdminAllowed then
                     local targetID = data.current.info
                     local type = "item"
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.GiveItemInput.placeholder, T.Menus.SubDatabaseGiveOptions.GiveItemInput.title, "text", T.Menus.SubDatabaseGiveOptions.GiveItemInput.errorMsg, "[A-Za-z0-9_ ]{3,60}")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.GiveItemInput.placeholder, T.Menus.SubDatabaseRemoveOptions.GiveItemInput.title, "text", T.Menus.SubDatabaseRemoveOptions.GiveItemInput.errorMsg, "[A-Za-z0-9_ ]{3,60}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
                         if result ~= "" then
@@ -194,7 +194,7 @@ function GivePlayers(PlayerData)
                 Wait(100)
                 if AdminAllowed then
                     local targetID = data.current.info
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.GiveWeaponInput.placeholder, T.Menus.SubDatabaseGiveOptions.GiveWeaponInput.title, "text", T.Menus.SubDatabaseGiveOptions.GiveWeaponInput.errorMsg, "[A-Za-z_ ]{5,60}")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.GiveWeaponInput.placeholder, T.Menus.SubDatabaseRemoveOptions.GiveWeaponInput.title, "text", T.Menus.SubDatabaseRemoveOptions.GiveWeaponInput.errorMsg, "[A-Za-z_ ]{5,60}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
                         if result ~= "" then
@@ -217,7 +217,7 @@ function GivePlayers(PlayerData)
                 if AdminAllowed then
                     local targetID = data.current.info
                     local type = "moneygold"
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.GiveCurrencyInput.placeholder, T.Menus.SubDatabaseGiveOptions.GiveCurrencyInput.title, "text", T.Menus.SubDatabaseGiveOptions.GiveCurrencyInput.errorMsg, "[0-9 ]{1,20}")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.GiveCurrencyInput.placeholder, T.Menus.SubDatabaseRemoveOptions.GiveCurrencyInput.title, "text", T.Menus.SubDatabaseRemoveOptions.GiveCurrencyInput.errorMsg, "[0-9 ]{1,20}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
                         if result ~= "" then
@@ -247,7 +247,7 @@ function GivePlayers(PlayerData)
                 if AdminAllowed then
                     local targetID = data.current.info
                     local type = "horse"
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.GiveHorseInput.placeholder, T.Menus.SubDatabaseGiveOptions.GiveHorseInput.title, "text", T.Menus.SubDatabaseGiveOptions.GiveHorseInput.errorMsg, "[A-Za-z0-9_ ]{9,30}")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.GiveHorseInput.placeholder, T.Menus.SubDatabaseRemoveOptions.GiveHorseInput.title, "text", T.Menus.SubDatabaseRemoveOptions.GiveHorseInput.errorMsg, "[A-Za-z0-9_ ]{9,30}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
                         if result ~= "" then
@@ -278,7 +278,7 @@ function GivePlayers(PlayerData)
                 if AdminAllowed then
                     local targetID = data.current.info
                     local type = "wagon"
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.GiveWagonInput.placeholder, T.Menus.SubDatabaseGiveOptions.GiveWagonInput.title, "text", T.Menus.SubDatabaseGiveOptions.GiveWagonInput.errorMsg, "[A-Za-z0-9_ ]{9,30}")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.GiveWagonInput.placeholder, T.Menus.SubDatabaseRemoveOptions.GiveWagonInput.title, "text", T.Menus.SubDatabaseRemoveOptions.GiveWagonInput.errorMsg, "[A-Za-z0-9_ ]{9,30}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
                         if result ~= "" then
@@ -399,7 +399,7 @@ function RemovePlayers(PlayerData)
                 if AdminAllowed then
                     local targetID = data.current.info
                     local type = "items"
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.RemoveAllItemInput.placeholder, T.Menus.SubDatabaseGiveOptions.RemoveAllItemInput.title, "text", T.Menus.SubDatabaseGiveOptions.RemoveAllItemInput.errorMsg, "[A-Za-z]+")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseRemoveOptions.RemoveAllItemInput.placeholder, T.Menus.SubDatabaseRemoveOptions.RemoveAllItemInput.title, "text", T.Menus.SubDatabaseRemoveOptions.RemoveAllItemInput.errorMsg, "[A-Za-z]+")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
                         if result ~= "" then
@@ -424,7 +424,7 @@ function RemovePlayers(PlayerData)
                 if AdminAllowed then
                     local targetID = data.current.info
                     local type = "weapons"
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.RemoveAllWeaponInput.placeholder, T.Menus.SubDatabaseGiveOptions.RemoveAllWeaponInput.title, "text", T.Menus.SubDatabaseGiveOptions.RemoveAllWeaponInput.errorMsg, "[A-Za-z]+")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseRemoveOptions.RemoveAllWeaponInput.placeholder, T.Menus.SubDatabaseRemoveOptions.RemoveAllWeaponInput.title, "text", T.Menus.SubDatabaseRemoveOptions.RemoveAllWeaponInput.errorMsg, "[A-Za-z]+")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
                         if result ~= "" then
