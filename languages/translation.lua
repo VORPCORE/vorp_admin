@@ -262,7 +262,7 @@ Translation.Langs = {
         giveWeapon           = "Give a weapon",
         giveWeapon_desc      = "Provide a weapon to a player",
         giveMoneyOrGold      = "Give money or gold",
-        giveMoneyOrGold_desc = "Transfer currency or gold to a player's account <br> 0 FOR CASH 1 FOR GOLD AND QUANTITY",
+        giveMoneyOrGold_desc = "Transfer currency or gold to a player's account <br> FOR DOLAR = 0 | FOR GOLD = 1 AND QUANTITY",
         giveHorse            = "Give a horse",
         giveHorse_desc       = "Bestow a horse to a player",
         giveWagon            = "Give a wagon",
@@ -272,27 +272,49 @@ Translation.Langs = {
           placeholder = "Item and Quantity",
           errorMsg = "Dont use dot or commas etc"
         },
-        GiveWeaponInput        = {
+        GiveWeaponInput      = {
           title = "GIVE WEAPON",
           placeholder = "WEAPON_MELEE_KNIFE",
           errorMsg = "Dont use dot or commas etc"
         },
-        GiveCurrencyInput        = {
+        GiveCurrencyInput    = {
           title = "GIVE CURRENCY",
           placeholder = "Currency and Quantity",
           errorMsg = "Dont use dot or commas etc"
         },
-        GiveHorseInput        = {
+        GiveHorseInput       = {
           title = "GIVE HORSE",
           placeholder = "HASH | NAME | SEX",
           errorMsg = "Dont use dot or commas etc"
         },
-        GiveWagonInput        = {
+        GiveWagonInput       = {
           title = "GIVE WAGON",
           placeholder = "HASH | NAME",
           errorMsg = "Dont use dot or commas etc"
         },
-      }
+      },
+      SubDatabaseRemoveOptions = {
+        showInventory = "Show player's inventory",
+        showInventory_desc = "View the items and resources in a player's inventory",
+        removeMoney = "Remove all money",
+        removeMoney_desc = "Remove all pocket money. <br> Does not affect bank balance.",
+        removeGold = "Remove all gold",
+        removeGold_desc = "Remove all pocket gold. <br> Does not affect bank balance.",
+        clearAllItems = "Clear all items",
+        clearAllItems_desc = "Remove all items from the player's inventory.",
+        clearAllWeapons = "Clear all weapons",
+        clearAllWeapons_desc = "Remove all weapons and associated ammo from the player.",
+        RemoveAllItemInput        = {
+          title = "REMOVE ALL ITEM",
+          placeholder = "Ex: yes or no",
+          errorMsg = "Dont use dot or commas etc"
+        },
+        RemoveAllWeaponInput        = {
+          title = "REMOVE ALL WEAPON",
+          placeholder = "Ex: yes or no",
+          errorMsg = "Dont use dot or commas etc"
+        },
+      },
     },
     Notify = {
       noperms           = "~e~You dont have permmision.",
@@ -308,7 +330,8 @@ Translation.Langs = {
       incorrectType     = "Incorrect Type!",
       missingArgument   = "Missing argument! Check example!",
       needWeaponInHands = "You need a weapon in hand!",
-      reviseRules       = "Please revise our rules!"
+      reviseRules       = "Please revise our rules!",
+      actionCancell = "Cancelled"
     },
     Webhooks = {
       ActionsAdmin = {

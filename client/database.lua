@@ -324,46 +324,41 @@ function RemovePlayers(PlayerData)
 
     local elements = {
         {
-            label = _U("showInventory"),
+            label = T.Menus.SubDatabaseRemoveOptions.showInventory,
             value = 'showinventory',
-            desc = _U("showinventory_desc") ..
-                "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            desc = T.Menus.SubDatabaseRemoveOptions.showInventory_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId
         },
         {
-            label = _U("Removemoney"),
+            label = T.Menus.SubDatabaseRemoveOptions.removeMoney,
             value = "clearmoney",
-            desc = _U("removemoney_desc") ..
-                "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            desc = T.Menus.SubDatabaseRemoveOptions.removeMoney_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId
         },
         {
-            label = _U("RemoveGold"),
+            label = T.Menus.SubDatabaseRemoveOptions.removeGold,
             value = "cleargold",
-            desc = _U("removegold_desc") ..
-                "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            desc = T.Menus.SubDatabaseRemoveOptions.removeGold_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId
         },
         {
-            label = _U("Clearallitems"),
+            label = T.Menus.SubDatabaseRemoveOptions.clearAllItems,
             value = 'clearitems',
-            desc = _U("clearallitems_desc") ..
-                "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span> Inventory",
+            desc = T.Menus.SubDatabaseRemoveOptions.clearAllItems_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId
         },
         {
-            label = _U("Clearallweapons"),
+            label = T.Menus.SubDatabaseRemoveOptions.clearAllWeapons,
             value = 'clearweapons',
-            desc = _U("clearallweapons_desc") ..
-                "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span> Inventory",
+            desc = T.Menus.SubDatabaseRemoveOptions.clearAllWeapons_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId
         },
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
-            title    = _U("MenuTitle"),
-            subtext  = _U("MenuSubTitle"),
+            title    = T.Menus.DefaultsMenusTitle.menuTitle,
+            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDatabase,
             align    = 'top-left',
             elements = elements,
             lastmenu = 'DataBase', --Go back
@@ -380,9 +375,7 @@ function RemovePlayers(PlayerData)
                     local type = "money"
                     TriggerServerEvent("vorp_admin:ClearCurrency", targetID, type, "vorp.staff.RemoveAllMoney")
                     if Config.DatabaseLogs.Clearmoney then
-                        TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Clearmoney, T.Webhooks.ActionDatabase.title
-                            , _U("usedclearmoney") ..
-                            "\nPlayer: " .. PlayerData.PlayerName .. "\nplayerID: " .. targetID .. "\ntype: " .. type)
+                        TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Clearmoney, T.Webhooks.ActionDatabase.title , T.Webhooks.ActionDatabase.usedclearmoney .. "\nPlayer: " .. PlayerData.PlayerName .. "\nID: " .. targetID .. "\nCurrency: " .. type)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
@@ -395,9 +388,7 @@ function RemovePlayers(PlayerData)
                     local type = "gold"
                     TriggerServerEvent("vorp_admin:ClearCurrency", targetID, type, "vorp.staff.RemoveAllGold")
                     if Config.DatabaseLogs.Cleargold then
-                        TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Cleargold, T.Webhooks.ActionDatabase.title
-                            , _U("usedcleargold") ..
-                            "\nPlayer: " .. PlayerData.PlayerName .. "\nplayerID: " .. targetID .. "\ntype: " .. type)
+                        TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Cleargold, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedcleargold .. "\nPlayer: " .. PlayerData.PlayerName .. "\nID: " .. targetID .. "\nCurrency: " .. type)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
@@ -408,32 +399,17 @@ function RemovePlayers(PlayerData)
                 if AdminAllowed then
                     local targetID = data.current.info
                     local type = "items"
-                    local myInput = {
-                        type = "enableinput",                                                -- dont touch
-                        inputType = "input",
-                        button = _U("confirm"),                                              -- button name
-                        placeholder = " yes or no ",                                         --placeholdername
-                        style = "block",                                                     --- dont touch
-                        attributes = {
-                            inputHeader = "ARE YOU SURE?",                                   -- header
-                            type = "text",                                                   -- inputype text, number,date.etc if number comment out the pattern
-                            pattern = "[A-Za-z]+",                                           -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                            title = "DONT USE - and . or , comas",                           -- if input doesnt match show this message
-                            style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
-                        }
-                    }
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.RemoveAllItemInput.placeholder, T.Menus.SubDatabaseGiveOptions.RemoveAllItemInput.title, "text", T.Menus.SubDatabaseGiveOptions.RemoveAllItemInput.errorMsg, "[A-Za-z]+")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
                         if result ~= "" then
                             if result == "yes" then
-                                TriggerServerEvent("vorp_admin:ClearAllItems", type, targetID,
-                                    "vorp.staff.RemoveAllItems")
+                                TriggerServerEvent("vorp_admin:ClearAllItems", type, targetID, "vorp.staff.RemoveAllItems")
                                 if Config.DatabaseLogs.Clearitems then
-                                    TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Clearitems,
-                                        T.Webhooks.ActionDatabase.title
-                                        , _U("usedclearitems") ..
-                                        "\nPlayer: " .. PlayerData.PlayerName .. "\nplayerID: " .. targetID)
+                                    TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Clearitems, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedclearitems .. "\nPlayer: " .. PlayerData.PlayerName .. "\nID: " .. targetID)
                                 end
+                            else
+                                TriggerEvent("vorp:TipRight", T.Notify.actionCancell, 4000)
                             end
                         else
                             TriggerEvent("vorp:TipRight", T.Notify.empty, 4000)
@@ -448,33 +424,17 @@ function RemovePlayers(PlayerData)
                 if AdminAllowed then
                     local targetID = data.current.info
                     local type = "weapons"
-
-                    local myInput = {
-                        type = "enableinput",                                                -- dont touch
-                        inputType = "input",
-                        button = _U("confirm"),                                              -- button name
-                        placeholder = " yes or no ",                                         --placeholdername
-                        style = "block",                                                     --- dont touch
-                        attributes = {
-                            inputHeader = "ARE YOU SURE?",                                   -- header
-                            type = "text",                                                   -- inputype text, number,date.etc if number comment out the pattern
-                            pattern = "[A-Za-z]+",                                           -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                            title = "DONT USE - and . or , comas",                           -- if input doesnt match show this message
-                            style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
-                        }
-                    }
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.RemoveAllWeaponInput.placeholder, T.Menus.SubDatabaseGiveOptions.RemoveAllWeaponInput.title, "text", T.Menus.SubDatabaseGiveOptions.RemoveAllWeaponInput.errorMsg, "[A-Za-z]+")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
                         if result ~= "" then
                             if result == "yes" then
-                                TriggerServerEvent("vorp_admin:ClearAllItems", type, targetID,
-                                    "vorp.staff.RemoveAllWeapons")
+                                TriggerServerEvent("vorp_admin:ClearAllItems", type, targetID, "vorp.staff.RemoveAllWeapons")
                                 if Config.DatabaseLogs.Clearweapons then
-                                    TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Clearweapons,
-                                        T.Webhooks.ActionDatabase.title
-                                        , _U("usedclearweapons") ..
-                                        "\nPlayer: " .. PlayerData.PlayerName .. "\nplayerID: " .. targetID)
+                                    TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Clearweapons, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedclearweapons .. "\nPlayer: " .. PlayerData.PlayerName .. "\nID: " .. targetID)
                                 end
+                            else
+                                TriggerEvent("vorp:TipRight", T.Notify.actionCancell, 4000)
                             end
                         else
                             TriggerEvent("vorp:TipRight", T.Notify.empty, 4000)
@@ -505,16 +465,15 @@ function OpenInvnetory(inventorydata)
 
     for _, dataItems in pairs(inventorydata) do -- to prevent menu from opening empty and give errors
         elements[#elements + 1] = {
-            label = dataItems.label ..
-                " <span style='margin-left:10px; color: Yellow;'>" .. dataItems.count .. '</span>',
+            label = dataItems.label .. " <span style='margin-left:10px; color: Yellow;'>" .. dataItems.count .. '</span>',
             value = "",
             desc = dataItems.label
         }
     end
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
-            title    = _U("MenuTitle"),
-            subtext  = _U("Playerinventory"),
+            title    = T.Menus.DefaultsMenusTitle.menuTitle,
+            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDatabase,
             align    = 'top-left',
             elements = elements,
             lastmenu = 'DataBase',
