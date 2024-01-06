@@ -1,3 +1,6 @@
+
+local T = Translation.Langs[Config.Lang]
+
 ------------------------------------------------------------------------------------------------------------------
 ---------------------------------------- DATABASE ----------------------------------------------------------------
 function DataBase()
@@ -11,27 +14,28 @@ function DataBase()
 
         for _, PlayersData in pairs(players) do
             elements[#elements + 1] = {
-
                 label = PlayersData.PlayerName,
                 value = "players",
-                desc = _U("SteamName") .. "<span style=color:MediumSeaGreen;> "
-                    .. PlayersData.name .. "</span><br>" .. _U("ServerID") .. "<span style=color:MediumSeaGreen;>"
-                    .. PlayersData.serverId .. "</span><br>" .. _U("PlayerGroup") .. "<span style=color:MediumSeaGreen;>"
-                    .. PlayersData.Group .. "</span><br>" .. _U("PlayerJob") .. "<span style=color:MediumSeaGreen;>"
-                    .. PlayersData.Job .. "</span>" .. _U("Grade") .. "<span style=color:MediumSeaGreen;>"
-                    .. PlayersData.Grade .. "</span><br>" .. _U("Identifier") .. "<span style=color:MediumSeaGreen;>"
-                    .. PlayersData.SteamId .. "</span><br>" .. _U("PlayerMoney") .. "<span style=color:MediumSeaGreen;>"
-                    .. PlayersData.Money .. "</span><br>" .. _U("PlayerGold") .. "<span style=color:Gold;>"
-                    .. PlayersData.Gold .. "</span><br>" .. _U("PlayerStaticID") .. "<span style=color:Red;>"
-                    .. PlayersData.staticID .. "</span>",
+                desc = T.Menus.MainPlayerStatus.playerSteamName .. "<span style=color:MediumSeaGreen;> "
+                    .. PlayersData.name .. "</span><br>" .. T.Menus.MainPlayerStatus.playerServerID .. " " .. "<span style=color:MediumSeaGreen;>"
+                    .. PlayersData.serverId .. "</span><br>" .. T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>"
+                    .. PlayersData.Group .. "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;>"
+                    .. PlayersData.Job .. "</span>" .. T.Menus.MainPlayerStatus.playerGrade .. " " .. "<span style=color:MediumSeaGreen;>"
+                    .. PlayersData.Grade .. "</span><br>" .. T.Menus.MainPlayerStatus.playerIdentifier .. " " .. "<span style=color:MediumSeaGreen;>"
+                    .. PlayersData.SteamId .. "</span><br>" .. T.Menus.MainPlayerStatus.playerMoney .. " " .. "<span style=color:MediumSeaGreen;>"
+                    .. PlayersData.Money .. "</span><br>" .. T.Menus.MainPlayerStatus.playerGold .. " " .. "<span style=color:Gold;>"
+                    .. PlayersData.Gold .. "</span><br>" .. T.Menus.MainPlayerStatus.playerStaticID .. " " .. "<span style=color:Red;>"
+                    .. PlayersData.staticID .. "</span><br>" .. T.Menus.MainPlayerStatus.playerWhitelist .. " " .. "<span style=color:Gold;>"
+                    .. PlayersData.WLstatus .. "</span><br>" .. T.Menus.MainPlayerStatus.playerWarnings .. " " .. "<span style=color:Gold;>"
+                    .. PlayersData.warns .. "</span>",
                 PlayerData = PlayersData
             }
         end
 
         MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
             {
-                title    = _U("MenuTitle"),
-                subtext  = _U("MenuSubtitle2"),
+                title    = T.Menus.DefaultsMenusTitle.menuTitle,
+                subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDatabase,
                 align    = 'top-left',
                 elements = elements,
                 lastmenu = 'OpenMenu',
@@ -46,7 +50,7 @@ function DataBase()
                     if AdminAllowed then
                         DatabasePlayers(data.current.PlayerData)
                     else
-                        TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                        TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                     end
                 end
             end,
@@ -59,13 +63,13 @@ end
 function DatabasePlayers(PlayerData)
     MenuData.CloseAll()
     local elements = {
-        { label = _U("give"),   value = 'give',   desc = _U("Give_desc") },
-        { label = _U("remove"), value = 'remove', desc = _U("Remove_desc") },
+        { label = T.Menus.MainDatabaseOptions.give,   value = 'give',   desc = T.Menus.MainDatabaseOptions.give_desc },
+        { label = T.Menus.MainDatabaseOptions.remove, value = 'remove', desc = T.Menus.MainDatabaseOptions.remove_desc },
     }
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
-            title    = _U("MenuTitle"),
-            subtext  = _U("MenuSubtitle2"),
+            title    = T.Menus.DefaultsMenusTitle.menuTitle,
+            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDatabase,
             align    = 'top-left',
             elements = elements,
             lastmenu = 'DataBase', --Go back
@@ -80,7 +84,7 @@ function DatabasePlayers(PlayerData)
                 if AdminAllowed then
                     GivePlayers(PlayerData)
                 else
-                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             end
             if data.current.value == "remove" then
@@ -89,7 +93,7 @@ function DatabasePlayers(PlayerData)
                 if AdminAllowed then
                     RemovePlayers(PlayerData)
                 else
-                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             end
         end,
@@ -103,49 +107,46 @@ function GivePlayers(PlayerData)
     MenuData.CloseAll()
     local elements = {
         {
-            label = _U("showInventory"),
+            label = T.Menus.SubDatabaseGiveOptions.showInventory,
             value = 'inventory',
-            desc = _U("showinventory_desc") ..
-                "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            desc = T.Menus.SubDatabaseGiveOptions.showInventory_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId
         },
         {
-            label = _U("GiveItems"),
+            label = T.Menus.SubDatabaseGiveOptions.giveItem,
             value = 'addItem',
-            desc = _U("giveitem_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            desc = T.Menus.SubDatabaseGiveOptions.giveItem_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId
         },
         {
-            label = _U("GiveWeapons"),
+            label = T.Menus.SubDatabaseGiveOptions.giveWeapon,
             value = 'addWeapon',
-            desc = _U("giveweapon_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName,
+            desc = T.Menus.SubDatabaseGiveOptions.giveWeapon_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName,
             info = PlayerData.serverId
         },
         {
-            label = _U("GiveMoneyGold"),
+            label = T.Menus.SubDatabaseGiveOptions.giveMoneyOrGold,
             value = 'addMoneygold',
-            desc = _U("givemoney_desc") ..
-                "<span style=color:MediumSeaGreen;>" ..
-                PlayerData.PlayerName .. "</span><br><span> 0 FOR CASH 1 FOR GOLD THEN QUANTITY</span>",
+            desc = T.Menus.SubDatabaseGiveOptions.giveMoneyOrGold_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId
         },
         {
-            label = _U("GiveHorse"),
+            label = T.Menus.SubDatabaseGiveOptions.giveHorse,
             value = 'addHorse',
-            desc = _U("givehorse_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            desc = T.Menus.SubDatabaseGiveOptions.giveHorse_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId
         },
         {
-            label = _U("GiveWagon"),
+            label = T.Menus.SubDatabaseGiveOptions.giveWagon,
             value = 'addWagon',
-            desc = _U("givewagon_desc") .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
+            desc = T.Menus.SubDatabaseGiveOptions.giveWagon_desc .. "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             info = PlayerData.serverId
         },
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
         {
-            title    = _U("MenuTitle"),
+            title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             align    = 'top-left',
             elements = elements,
@@ -161,20 +162,7 @@ function GivePlayers(PlayerData)
                 if AdminAllowed then
                     local targetID = data.current.info
                     local type = "item"
-                    local myInput = {
-                        type = "enableinput",                                                -- dont touch
-                        inputType = "input",
-                        button = _U("confirm"),                                              -- button name
-                        placeholder = "NAME  QUANTITY",                                      --placeholdername
-                        style = "block",                                                     --- dont touch
-                        attributes = {
-                            inputHeader = "GIVE ITEM",                                       -- header
-                            type = "text",                                                   -- inputype text, number,date.etc if number comment out the pattern
-                            pattern = "[A-Za-z0-9_ ]{3,60}",                                 -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                            title = "DONT USE - and . or , comas",                           -- if input doesnt match show this message
-                            style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
-                        }
-                    }
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.GiveItemInput.placeholder, T.Menus.SubDatabaseGiveOptions.GiveItemInput.title, "text", T.Menus.SubDatabaseGiveOptions.GiveItemInput.errorMsg, "[A-Za-z0-9_ ]{3,60}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
                         if result ~= "" then
@@ -186,58 +174,42 @@ function GivePlayers(PlayerData)
                             if not itemQuantity then
                                 itemQuantity = 1
                             end
-                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, itemName, itemQuantity, nil,
-                                "vorp.staff.Giveitems")
+                            if itemName and itemQuantity then
+                                TriggerServerEvent("vorp_admin:givePlayer", targetID, type, itemName, itemQuantity, nil, "vorp.staff.Giveitems")
+                            else
+                                TriggerEvent("vorp:TipRight", T.Notify.missingArgument, 4000)
+                            end
                             if Config.DatabaseLogs.Giveitem then
-                                TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Giveitem, _U("titledatabase"),
-                                    _U("usedgiveitem") ..
-                                    "\nPlayer: " ..
-                                    PlayerData.PlayerName .. "\nitem: " .. itemName .. "\nQTY: " .. itemQuantity)
+                                TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Giveitem, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgiveitem .. "\nPlayer: " .. PlayerData.PlayerName .. "\nItem: " .. itemName .. "\nQTY: " .. itemQuantity)
                             end
                         else
-                            TriggerEvent("vorp:TipRight", _U("empty"), 4000)
+                            TriggerEvent("vorp:TipRight", T.Notify.empty, 4000)
                         end
                     end)
                 else
-                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             elseif data.current.value == "addWeapon" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.GiveWeapons")
                 Wait(100)
                 if AdminAllowed then
                     local targetID = data.current.info
-                    local myInput = {
-                        type = "enableinput",                                                -- dont touch
-                        inputType = "input",
-                        button = _U("confirm"),                                              -- button name
-                        placeholder = "WEAPON_MELEE_KNIFE",                                  --placeholdername
-                        style = "block",                                                     --- dont touch
-                        attributes = {
-                            inputHeader = "GIVE WEAPON",                                     -- header
-                            type = "text",                                                   -- inputype text, number,date.etc if number comment out the pattern
-                            pattern = "[A-Za-z_ ]{5,60}",                                    -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                            title = "DONT USE - and . or , comas",                           -- if input doesnt match show this message
-                            style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
-                        }
-                    }
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.GiveWeaponInput.placeholder, T.Menus.SubDatabaseGiveOptions.GiveWeaponInput.title, "text", T.Menus.SubDatabaseGiveOptions.GiveWeaponInput.errorMsg, "[A-Za-z_ ]{5,60}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
                         if result ~= "" then
                             local weaponName = result
                             local type = "weapon"
-                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, weaponName, nil, nil,
-                                "vorp.staff.GiveWeapons")
+                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, weaponName, nil, nil, "vorp.staff.GiveWeapons")
                             if Config.DatabaseLogs.Giveweapon then
-                                TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Giveweapon, _U("titledatabase")
-                                    , _U("usedgiveweapon") ..
-                                    "\nPlayer: " .. PlayerData.PlayerName .. "\nweapon: " .. weaponName)
+                                TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Giveweapon, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgiveweapon .. "\nPlayer: " .. PlayerData.PlayerName .. "\nWeapon: " .. weaponName)
                             end
                         else
-                            TriggerEvent("vorp:TipRight", _U("empty"), 4000)
+                            TriggerEvent("vorp:TipRight", T.Notify.empty, 4000)
                         end
                     end)
                 else
-                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             elseif data.current.value == "addMoneygold" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.GiveCurrency")
@@ -245,21 +217,7 @@ function GivePlayers(PlayerData)
                 if AdminAllowed then
                     local targetID = data.current.info
                     local type = "moneygold"
-                    local myInput = {
-                        type = "enableinput",                                                -- dont touch
-                        inputType = "input",
-                        button = _U("confirm"),                                              -- button name
-                        placeholder = "CURRENCY QUANTITY",                                   --placeholdername
-                        style = "block",                                                     --- dont touch
-                        attributes = {
-                            inputHeader = "GIVE CURRENCY",                                   -- header
-                            type = "text",                                                   -- inputype text, number,date.etc if number comment out the pattern
-                            pattern = "[0-9 ]{1,20}",                                        -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                            title = "DONT USE - and . or , comas",                           -- if input doesnt match show this message
-                            style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
-                        }
-                    }
-
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.GiveCurrencyInput.placeholder, T.Menus.SubDatabaseGiveOptions.GiveCurrencyInput.title, "text", T.Menus.SubDatabaseGiveOptions.GiveCurrencyInput.errorMsg, "[0-9 ]{1,20}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
                         if result ~= "" then
@@ -268,21 +226,20 @@ function GivePlayers(PlayerData)
                                 splitString[#splitString + 1] = i
                             end
                             local moneyType, Quantity = tonumber(splitString[1]), tonumber(splitString[2])
-                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, moneyType, Quantity, nil,
-                                "vorp.staff.GiveCurrency")
+                            if moneyType and Quantity then
+                                TriggerServerEvent("vorp_admin:givePlayer", targetID, type, moneyType, Quantity, nil, "vorp.staff.GiveCurrency")
+                            else
+                                TriggerEvent("vorp:TipRight", T.Notify.missingArgument, 4000)
+                            end
                             if Config.DatabaseLogs.Givecurrency then
-                                TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Givecurrency,
-                                    _U("titledatabase")
-                                    , _U("usedgivecurrency") ..
-                                    "\nPlayer: " .. PlayerData.PlayerName .. "\ntype: " .. moneyType ..
-                                    "\nQTY: " .. Quantity)
+                                TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Givecurrency, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgivecurrency .. "\nPlayer: " .. PlayerData.PlayerName .. "\nCurrency: " .. moneyType .. "\nQTY: " .. Quantity)
                             end
                         else
-                            TriggerEvent("vorp:TipRight", _U("empty"), 4000)
+                            TriggerEvent("vorp:TipRight", T.Notify.empty, 4000)
                         end
                     end)
                 else
-                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             elseif data.current.value == "addHorse" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.GiveHorse")
@@ -290,20 +247,7 @@ function GivePlayers(PlayerData)
                 if AdminAllowed then
                     local targetID = data.current.info
                     local type = "horse"
-                    local myInput = {
-                        type = "enableinput",                                                -- dont touch
-                        inputType = "input",
-                        button = _U("confirm"),                                              -- button name
-                        placeholder = "HASH NAME SEX",                                       --placeholdername
-                        style = "block",                                                     --- dont touch
-                        attributes = {
-                            inputHeader = "GIVE HORSE",                                      -- header
-                            type = "text",                                                   -- inputype text, number,date.etc if number comment out the pattern
-                            pattern = "[A-Za-z0-9_ ]{9,30}",                                 -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                            title = "DONT USE - and . or , comas",                           -- if input doesnt match show this message
-                            style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
-                        }
-                    }
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.GiveHorseInput.placeholder, T.Menus.SubDatabaseGiveOptions.GiveHorseInput.title, "text", T.Menus.SubDatabaseGiveOptions.GiveHorseInput.errorMsg, "[A-Za-z0-9_ ]{9,30}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
                         if result ~= "" then
@@ -313,19 +257,20 @@ function GivePlayers(PlayerData)
                             end
                             local Hashname, Horsename, Horsesex = tostring(splitString[1]), tostring(splitString[2]),
                                 tonumber(splitString[3])
-                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, Hashname, Horsename, Horsesex,
-                                "vorp.staff.GiveHorse")
+                            if Hashname and Horsename and Horsesex then
+                                TriggerServerEvent("vorp_admin:givePlayer", targetID, type, Hashname, Horsename, Horsesex, "vorp.staff.GiveHorse")
+                            else
+                                TriggerEvent("vorp:TipRight", T.Notify.missingArgument, 4000)
+                            end
                             if Config.DatabaseLogs.Givehorse then
-                                TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Givehorse, _U("titledatabase")
-                                    , _U("usedgivehorse") ..
-                                    "\nPlayer: " .. PlayerData.PlayerName .. "\nhorse: " .. Hashname)
+                                TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Givehorse, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgivehorse .. "\nPlayer: " .. PlayerData.PlayerName .. "\nHorse: " .. Hashname)
                             end
                         else
-                            TriggerEvent("vorp:TipRight", _U("empty"), 4000)
+                            TriggerEvent("vorp:TipRight", T.Notify.empty, 4000)
                         end
                     end)
                 else
-                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             elseif data.current.value == "addWagon" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.GiveWagons")
@@ -333,21 +278,7 @@ function GivePlayers(PlayerData)
                 if AdminAllowed then
                     local targetID = data.current.info
                     local type = "wagon"
-                    local myInput = {
-                        type = "enableinput",                                                -- dont touch
-                        inputType = "input",
-                        button = _U("confirm"),                                              -- button name
-                        placeholder = "MODEL NAME ",                                         --placeholdername
-                        style = "block",                                                     --- dont touch
-                        attributes = {
-                            inputHeader = "GIVE WAGON",                                      -- header
-                            type = "text",                                                   -- inputype text, number,date.etc if number comment out the pattern
-                            pattern = "[A-Za-z0-9_ ]{9,30}",                                 -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-                            title = "DONT USE - and . or , comas",                           -- if input doesnt match show this message
-                            style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
-                        }
-                    }
-
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubDatabaseGiveOptions.GiveWagonInput.placeholder, T.Menus.SubDatabaseGiveOptions.GiveWagonInput.title, "text", T.Menus.SubDatabaseGiveOptions.GiveWagonInput.errorMsg, "[A-Za-z0-9_ ]{9,30}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
                         if result ~= "" then
@@ -356,19 +287,20 @@ function GivePlayers(PlayerData)
                                 splitString[#splitString + 1] = i
                             end
                             local Modelname, Wagonname = tostring(splitString[1]), tostring(splitString[2])
-                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, Modelname, Wagonname, nil,
-                                "vorp.staff.GiveWagons")
+                            if Modelname and Wagonname then
+                                TriggerServerEvent("vorp_admin:givePlayer", targetID, type, Modelname, Wagonname, nil, "vorp.staff.GiveWagons")
+                            else
+                                TriggerEvent("vorp:TipRight", T.Notify.missingArgument, 4000)
+                            end
                             if Config.DatabaseLogs.Givewagon then
-                                TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Givewagon, _U("titledatabase")
-                                    , _U("usedgivewagon") ..
-                                    "\nPlayer: " .. PlayerData.PlayerName .. "\nwagon: " .. Modelname)
+                                TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Givewagon, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgivewagon .. "\nPlayer: " .. PlayerData.PlayerName .. "\nWagon: " .. Modelname)
                             end
                         else
-                            TriggerEvent("vorp:TipRight", _U("empty"), 4000)
+                            TriggerEvent("vorp:TipRight", T.Notify.empty, 4000)
                         end
                     end)
                 else
-                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             elseif data.current.value == "inventory" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.ShowInvGive")
@@ -377,7 +309,7 @@ function GivePlayers(PlayerData)
                     local TargetID = data.current.info
                     TriggerServerEvent("vorp_admin:checkInventory", TargetID, "vorp.staff.ShowInvGive")
                 else
-                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             end
         end,
@@ -448,12 +380,12 @@ function RemovePlayers(PlayerData)
                     local type = "money"
                     TriggerServerEvent("vorp_admin:ClearCurrency", targetID, type, "vorp.staff.RemoveAllMoney")
                     if Config.DatabaseLogs.Clearmoney then
-                        TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Clearmoney, _U("titledatabase")
+                        TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Clearmoney, T.Webhooks.ActionDatabase.title
                             , _U("usedclearmoney") ..
                             "\nPlayer: " .. PlayerData.PlayerName .. "\nplayerID: " .. targetID .. "\ntype: " .. type)
                     end
                 else
-                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             elseif data.current.value == "cleargold" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.RemoveAllGold")
@@ -463,12 +395,12 @@ function RemovePlayers(PlayerData)
                     local type = "gold"
                     TriggerServerEvent("vorp_admin:ClearCurrency", targetID, type, "vorp.staff.RemoveAllGold")
                     if Config.DatabaseLogs.Cleargold then
-                        TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Cleargold, _U("titledatabase")
+                        TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Cleargold, T.Webhooks.ActionDatabase.title
                             , _U("usedcleargold") ..
                             "\nPlayer: " .. PlayerData.PlayerName .. "\nplayerID: " .. targetID .. "\ntype: " .. type)
                     end
                 else
-                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             elseif data.current.value == "clearitems" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.RemoveAllItems")
@@ -498,17 +430,17 @@ function RemovePlayers(PlayerData)
                                     "vorp.staff.RemoveAllItems")
                                 if Config.DatabaseLogs.Clearitems then
                                     TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Clearitems,
-                                        _U("titledatabase")
+                                        T.Webhooks.ActionDatabase.title
                                         , _U("usedclearitems") ..
                                         "\nPlayer: " .. PlayerData.PlayerName .. "\nplayerID: " .. targetID)
                                 end
                             end
                         else
-                            TriggerEvent("vorp:TipRight", _U("empty"), 4000)
+                            TriggerEvent("vorp:TipRight", T.Notify.empty, 4000)
                         end
                     end)
                 else
-                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             elseif data.current.value == "clearweapons" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.RemoveAllWeapons")
@@ -539,17 +471,17 @@ function RemovePlayers(PlayerData)
                                     "vorp.staff.RemoveAllWeapons")
                                 if Config.DatabaseLogs.Clearweapons then
                                     TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Clearweapons,
-                                        _U("titledatabase")
+                                        T.Webhooks.ActionDatabase.title
                                         , _U("usedclearweapons") ..
                                         "\nPlayer: " .. PlayerData.PlayerName .. "\nplayerID: " .. targetID)
                                 end
                             end
                         else
-                            TriggerEvent("vorp:TipRight", _U("empty"), 4000)
+                            TriggerEvent("vorp:TipRight", T.Notify.empty, 4000)
                         end
                     end)
                 else
-                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             elseif data.current.value == "showinventory" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.ShowInvRemove")
@@ -558,7 +490,7 @@ function RemovePlayers(PlayerData)
                     local TargetID = data.current.info
                     TriggerServerEvent("vorp_admin:checkInventory", TargetID, "vorp.staff.ShowInvRemove")
                 else
-                    TriggerEvent("vorp:TipRight", _U("noperms"), 4000)
+                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             end
         end,

@@ -4,11 +4,12 @@ Translation.Langs = {
   English = {
     Menus = {
       DefaultsMenusTitle = {
-        menuTitle           = "VORP ADMIN",
-        menuSubTitle        = "Main Menu",
-        menuSubTitleAdmin   = "Player Manegement",
-        menuSubTitlePlayer  = "Players Online",
-        menuSubTitleBooster = "Boosters"
+        menuTitle            = "VORP ADMIN",
+        menuSubTitle         = "Main Menu",
+        menuSubTitleAdmin    = "Player Manegement",
+        menuSubTitlePlayer   = "Players Online",
+        menuSubTitleBooster  = "Boosters",
+        menuSubTitleDatabase = "Database"
       },
       DefaultsInputs = {
         confirm = "Confirm",
@@ -238,16 +239,60 @@ Translation.Langs = {
           errorMsg = "min 5 max 60 chars"
         },
         Prompts                  = {
-          backward = "BACKWARD",
-          forward  = "FORWARD",
-          speed    = "SPEED",
-          down     = "DOWN",
-          up       = "UP",
-          cancel   = "CANCEL",
+          backward   = "BACKWARD",
+          forward    = "FORWARD",
+          speed      = "SPEED",
+          down       = "DOWN",
+          up         = "UP",
+          cancel     = "CANCEL",
           speed_desc = "No clip | Speed "
         }
+      },
+      MainDatabaseOptions = {
+        give = "Give",
+        give_desc = "Grant an item or resource to a player",
+        remove = "Remove",
+        remove_desc = "Take away an item or resource from a player",
+      },
+      SubDatabaseGiveOptions = {
+        showInventory        = "Show player's inventory",
+        showInventory_desc   = "View the items and resources in a player's inventory",
+        giveItem             = "Give an item",
+        giveItem_desc        = "Grant a specific item to a player",
+        giveWeapon           = "Give a weapon",
+        giveWeapon_desc      = "Provide a weapon to a player",
+        giveMoneyOrGold      = "Give money or gold",
+        giveMoneyOrGold_desc = "Transfer currency or gold to a player's account <br> 0 FOR CASH 1 FOR GOLD AND QUANTITY",
+        giveHorse            = "Give a horse",
+        giveHorse_desc       = "Bestow a horse to a player",
+        giveWagon            = "Give a wagon",
+        giveWagon_desc       = "Assign a wagon to a player",
+        GiveItemInput        = {
+          title = "GIVE ITEM",
+          placeholder = "Item and Quantity",
+          errorMsg = "Dont use dot or commas etc"
+        },
+        GiveWeaponInput        = {
+          title = "GIVE WEAPON",
+          placeholder = "WEAPON_MELEE_KNIFE",
+          errorMsg = "Dont use dot or commas etc"
+        },
+        GiveCurrencyInput        = {
+          title = "GIVE CURRENCY",
+          placeholder = "Currency and Quantity",
+          errorMsg = "Dont use dot or commas etc"
+        },
+        GiveHorseInput        = {
+          title = "GIVE HORSE",
+          placeholder = "HASH | NAME | SEX",
+          errorMsg = "Dont use dot or commas etc"
+        },
+        GiveWagonInput        = {
+          title = "GIVE WAGON",
+          placeholder = "HASH | NAME",
+          errorMsg = "Dont use dot or commas etc"
+        },
       }
-
     },
     Notify = {
       noperms           = "~e~You dont have permmision.",
@@ -262,7 +307,8 @@ Translation.Langs = {
       whiteRemoved      = "Whitelist was removed",
       incorrectType     = "Incorrect Type!",
       missingArgument   = "Missing argument! Check example!",
-      needWeaponInHands = "You need a weapon in hand!"
+      needWeaponInHands = "You need a weapon in hand!",
+      reviseRules       = "Please revise our rules!"
     },
     Webhooks = {
       ActionsAdmin = {
@@ -294,8 +340,19 @@ Translation.Langs = {
         usedheal = "🩹 Self-Healed",
         usedinfinitammo = "🔫 Enabled Infinite Ammo",
         spawn = "🆕 Spawned: ",
+      },
+      ActionDatabase = {
+        title = "📋 `/DATABASE`",
+        usedgiveitem = "🎁 Granted items to player",
+        usedgiveweapon = "🔫 Provided weapons to player",
+        usedgivecurrency = "💰 Transferred currency to player",
+        usedgivehorse = "🐎 Gave a horse to player",
+        usedgivewagon = "🚛 Assigned a wagon to player",
+        usedclearmoney = "💸 Cleared player's money",
+        usedcleargold = "💰 Cleared player's gold",
+        usedclearitems = "🧺 Cleared player's items",
+        usedclearweapons = "🔫 Cleared player's weapons",
       }
     }
-
   }
 }
