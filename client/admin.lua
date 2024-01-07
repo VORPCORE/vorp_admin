@@ -867,7 +867,9 @@ function OpenAdvancedActions(Player)
                             for i in string.gmatch(result, "%S+") do
                                 splitstring[#splitstring + 1] = i
                             end
-                            local jobname, jobgrade, joblabel = tostring(splitstring[1]), tonumber(splitstring[2]), tostring(splitstring[3])
+                            local jobname = tostring(splitstring[1])
+                            local jobgrade = tonumber(splitstring[2])
+                            local joblabel = tostring(splitstring[3]) .. " " .. (tostring(splitstring[4]) or "")
                             if jobname and jobgrade and joblabel then
                                 TriggerServerEvent("vorp_admin:setJob", target, jobname, jobgrade, joblabel, 'vorp.staff.Setjob')
                                 if Config.AdminLogs.Setjob then
