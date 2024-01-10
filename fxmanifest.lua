@@ -14,8 +14,7 @@ client_scripts {
 
 shared_script {
     'config.lua',
-    'locale.lua',
-    'languages/*.lua',
+    'languages/translation.lua',
 }
 
 server_scripts {
@@ -27,6 +26,7 @@ files { -- Credits to https://github.com/LVRP-BEN/bl_coords for clipboard copy m
     'html/index.html',
     'html/index.js'
 }
+
 --version check dont touch
 version '2.4'
 vorp_checker 'yes'

@@ -4,16 +4,16 @@ local Inmenu
 local spectating = false
 local lastcoords
 
+local T = Translation.Langs[Config.Lang]
+
 MenuData = {}
+
 TriggerEvent("menuapi:getData", function(call)
     MenuData = call
 end)
 
 VORP = exports.vorp_core:GetCore()
 ClientRPC = VORP
-
-
-
 
 AddEventHandler("onResourceStop", function(resourceName)
     if resourceName ~= GetCurrentResourceName() then
@@ -120,7 +120,7 @@ RegisterNetEvent("vorp_admin:respawn", function(target)
     Wait(1000)
     DoScreenFadeIn(4000)
     FreezeEntityPosition(PlayerPedId(), false)
-    TriggerEvent('vorp:ShowBottomRight', "Please revise our rules!", 10000)
+    TriggerEvent('vorp:ShowBottomRight', T.Notify.reviseRules, 10000)
 end)
 
 
