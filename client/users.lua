@@ -64,23 +64,32 @@ function ScoreBoard()
     local elements = {}
 
     -- local players = GetPlayers()
-    ClientRPC.Callback.TriggerAsync("vorp_admin:Callback:getplayersinfo", function(result)
+    VORP.Callback.TriggerAsync("vorp_admin:Callback:getplayersinfo", function(result)
         if not result then
             return
         end
         local players = result
         for key, playersInfo in pairs(players) do
             if Config.showUsersInfo == "showAll" then
-                ShowInfo = "</span><br>" .. T.Menus.MainPlayerStatus.playerServerID .. " " .. "<span style=color:MediumSeaGreen;>"
-                .. playersInfo.serverId .. "</span><br>" .. T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>"
-                .. playersInfo.Group .. "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;> "
-                .. playersInfo.Job
+                ShowInfo = "</span><br>" ..
+                    T.Menus.MainPlayerStatus.playerServerID .. " " .. "<span style=color:MediumSeaGreen;>"
+                    ..
+                    playersInfo.serverId ..
+                    "</span><br>" .. T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>"
+                    ..
+                    playersInfo.Group ..
+                    "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;> "
+                    .. playersInfo.Job
             elseif Config.showUsersInfo == "showJob" then
-                ShowInfo = "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;> " .. playersInfo.Job
+                ShowInfo = "</span><br>" ..
+                T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;> " .. playersInfo.Job
             elseif Config.showUsersInfo == "showGroup" then
-                ShowInfo = "</span><br>" .. T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>" .. playersInfo.Group
+                ShowInfo = "</span><br>" ..
+                T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>" .. playersInfo.Group
             elseif Config.showUsersInfo == "showID" then
-                ShowInfo = "</span><br>" .. T.Menus.MainPlayerStatus.playerServerID .. " " .. "<span style=color:MediumSeaGreen;>" .. playersInfo.serverId
+                ShowInfo = "</span><br>" ..
+                T.Menus.MainPlayerStatus.playerServerID ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. playersInfo.serverId
             end
             elements[#elements + 1] = {
                 label = playersInfo.PlayerName,
@@ -111,12 +120,15 @@ end
 
 function Report()
     local player = GetPlayerServerId(tonumber(PlayerId()))
-    local myInput = Inputs("textarea", T.Menus.DefaultsInputs.confirm, T.Menus.MainUserOptions.ReportInput.placeholder, T.Menus.MainUserOptions.ReportInput.title, "text", T.Menus.MainUserOptions.ReportInput.errorMsg, "[A-Za-z0-9 ]{10,100}")
+    local myInput = Inputs("textarea", T.Menus.DefaultsInputs.confirm, T.Menus.MainUserOptions.ReportInput.placeholder,
+        T.Menus.MainUserOptions.ReportInput.title, "text", T.Menus.MainUserOptions.ReportInput.errorMsg,
+        "[A-Za-z0-9 ]{10,100}")
     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
         local report = tostring(result)
         if report and report ~= "" then
             if Config.ReportLogs then -- if nil dont send
-                TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.Reports, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.playerreported .. report)
+                TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.Reports, T.Webhooks.ActionScoreBoard.title,
+                    T.Webhooks.ActionScoreBoard.playerreported .. report)
                 VORP.NotifySimpleTop(T.Notify.reportTitle, T.Notify.reportSent, 3000)
                 TriggerServerEvent("vorp_admin:alertstaff", player)
             end
@@ -153,22 +165,26 @@ function RequestStaff()
             if data.current.value == "new" and not cooldown then
                 TriggerServerEvent("vorp_admin:requeststaff", player, "new")
                 VORP.NotifyRightTip(T.Notify.requestSent, 4000)
-                TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.RequestStaff, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.requeststaff_disc)
+                TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.RequestStaff, T.Webhooks.ActionScoreBoard.title,
+                    T.Webhooks.ActionScoreBoard.requeststaff_disc)
                 cooldown = true
             elseif data.current.value == "bug" and not cooldown then
                 TriggerServerEvent("vorp_admin:requeststaff", player, "bug")
                 VORP.NotifyRightTip(T.Notify.requestSent, 4000)
-                TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.BugReport, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.requeststaff_bug)
+                TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.BugReport, T.Webhooks.ActionScoreBoard.title,
+                    T.Webhooks.ActionScoreBoard.requeststaff_bug)
                 cooldown = true
             elseif data.current.value == "rules" and not cooldown then
                 TriggerServerEvent("vorp_admin:requeststaff", player, "rules")
                 VORP.NotifyRightTip(T.Notify.requestSent, 4000)
-                TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.RulesBroken, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.requeststaff_rulesbroke)
+                TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.RulesBroken, T.Webhooks.ActionScoreBoard.title,
+                    T.Webhooks.ActionScoreBoard.requeststaff_rulesbroke)
                 cooldown = true
             elseif data.current.value == "cheating" and not cooldown then
                 TriggerServerEvent("vorp_admin:requeststaff", player, "cheating")
                 VORP.NotifyRightTip(T.Notify.requestSent, 4000)
-                TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.Cheating, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.requeststaff_cheating)
+                TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.Cheating, T.Webhooks.ActionScoreBoard.title,
+                    T.Webhooks.ActionScoreBoard.requeststaff_cheating)
                 cooldown = true
             elseif cooldown then
                 VORP.NotifyRightTip(T.Notify.waitToReportAgain .. " " .. timer, 5000)
@@ -258,7 +274,7 @@ function Delwagon()
         DeleteEntity(wagon)
         TriggerEvent('vorp:TipRight', T.Notify.youDeletedWagon, 3000)
     else
-        TriggerEvent('vorp:TipRight',  T.Notify.youNeedtoSeatead, 3000)
+        TriggerEvent('vorp:TipRight', T.Notify.youNeedtoSeatead, 3000)
     end
 end
 

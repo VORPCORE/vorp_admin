@@ -624,7 +624,7 @@ RegisterServerEvent("vorp_admin:spectate", function(targetID, command)
         return
     end
     local targetCoords = GetEntityCoords(GetPlayerPed(targetID))
-    TriggerClientEvent("vorp_sdmin:spectatePlayer", _source, targetID, targetCoords)
+    TriggerClientEvent("vorp_admin:spectatePlayer", _source, targetID, targetCoords)
 end)
 
 
@@ -843,13 +843,17 @@ RegisterNetEvent("vorp_admin:requeststaff", function(source, type)
     local playername = Character.firstname .. ' ' .. Character.lastname --player char name
     for id, staff in pairs(stafftable) do
         if type == "new" then
-            Core.NotifyRightTip(staff, playername .. " ID: " .. playerID .. T.Notify.requestingAssistance .. T.Notify.new, 4000)
+            Core.NotifyRightTip(staff, playername .. " ID: " .. playerID .. T.Notify.requestingAssistance .. T.Notify
+            .new, 4000)
         elseif type == "bug" then
-            Core.NotifyRightTip(staff, playername .. " ID: " .. playerID .. T.Notify.requestingAssistance .. T.Notify.foundBug, 4000)
+            Core.NotifyRightTip(staff,
+                playername .. " ID: " .. playerID .. T.Notify.requestingAssistance .. T.Notify.foundBug, 4000)
         elseif type == "rules" then
-            Core.NotifyRightTip(staff, playername .. " ID: " .. playerID .. T.Notify.requestingAssistance .. T.Notify.someoneBrokerules, 4000)
+            Core.NotifyRightTip(staff,
+                playername .. " ID: " .. playerID .. T.Notify.requestingAssistance .. T.Notify.someoneBrokerules, 4000)
         elseif type == "cheating" then
-            Core.NotifyRightTip(staff, playername .. " ID: " .. playerID .. T.Notify.requestingAssistance .. T.Notify.someoneCheating, 4000)
+            Core.NotifyRightTip(staff,
+                playername .. " ID: " .. playerID .. T.Notify.requestingAssistance .. T.Notify.someoneCheating, 4000)
         end
     end
 end)

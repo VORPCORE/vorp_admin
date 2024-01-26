@@ -6,7 +6,6 @@ local goldenCores = false
 local infiniteammo = false
 local NoClipActive = false
 local invis = false
-
 local T = Translation.Langs[Config.Lang]
 
 function GODmode()
@@ -23,7 +22,8 @@ function GODmode()
         Citizen.InvokeNative(0xFD6943B6DF77E449, player, false) -- set ped can be lassoed
 
         if Config.BoosterLogs.GodMode then                      -- if nil dont send
-            TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.GodMode, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedgod)
+            TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.GodMode, T.Webhooks.ActionBoosters.title,
+                T.Webhooks.ActionBoosters.usedgod)
         end
         god = true
     else
@@ -58,7 +58,8 @@ function GoldenCores()
         -- Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 2, 5000.0)-- dead eye
         Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 0, 5000.0)
         if Config.BoosterLogs.GoldenCores then
-            TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.GoldenCores, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedgoldcores)
+            TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.GoldenCores, T.Webhooks.ActionBoosters.title,
+                T.Webhooks.ActionBoosters.usedgoldcores)
         end
         goldenCores = true
     else
@@ -92,7 +93,8 @@ function InfiAmmo()
         else
             SetPedInfiniteAmmo(player, true, weaponHash)
             if Config.BoosterLogs.InfiniteAmmo then
-                TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.InfiniteAmmo, T.Webhooks.ActionBoosters.title , T.Webhooks.ActionBoosters.usedinfinitammo)
+                TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.InfiniteAmmo, T.Webhooks.ActionBoosters.title,
+                    T.Webhooks.ActionBoosters.usedinfinitammo)
             end
         end
     else
@@ -119,7 +121,7 @@ function Boost()
         --{ label = "players id", value = 'showid', desc = "show players id over head", }, todo
     }
 
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'Boost',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleBooster,
@@ -174,7 +176,8 @@ function Boost()
                             SetEntityHeading(player, GetEntityHeading(player) + 180)
                         end
                         if Config.BoosterLogs.NoClip then
-                            TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.NoClip, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usednoclip)
+                            TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.NoClip,
+                                T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usednoclip)
                         end
                     else
                         NoClipActive = false
@@ -198,7 +201,8 @@ function Boost()
                     TriggerServerEvent('vorp_admin:ReviveSelf', "vorp.staff.SelfRevive")
 
                     if Config.BoosterLogs.SelfRevive then
-                        TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfRevive, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedrevive)
+                        TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfRevive,
+                            T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedrevive)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
@@ -208,7 +212,8 @@ function Boost()
                 Wait(100)
                 if AdminAllowed then
                     if Config.BoosterLogs.SelfHeal then
-                        TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfHeal, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedheal)
+                        TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfHeal,
+                            T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedheal)
                     end
                     TriggerServerEvent('vorp_admin:HealSelf', "vorp.staff.SelfHeal")
                     Config.Heal.Players()
@@ -225,21 +230,25 @@ function Boost()
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.SpawHorse")
                 Wait(100)
                 if AdminAllowed then
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.MainBoostOptions.SpawnHorseInput.placeholder, T.Menus.MainBoostOptions.SpawnHorseInput.title, "text", T.Menus.MainBoostOptions.SpawnHorseInput.errorMsg, "[A-Za-z0-9_ \\-]{5,60}")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
+                        T.Menus.MainBoostOptions.SpawnHorseInput.placeholder,
+                        T.Menus.MainBoostOptions.SpawnHorseInput.title, "text",
+                        T.Menus.MainBoostOptions.SpawnHorseInput.errorMsg, "[A-Za-z0-9_ \\-]{5,60}")
                     MenuData.CloseAll()
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
-                        local horse = result
+                        local horse = tostring(result)
                         local playerCoords = GetEntityCoords(player) + 1
                         if horse ~= "" then
-                            RequestModel(horse)
-                            while not HasModelLoaded(horse) do
-                                Wait(10)
-                            end
-                            horse = CreatePed(horse, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
+                            RequestModel(horse, false)
+                            repeat Wait(0) until HasModelLoaded(horse)
+                            horse = CreatePed(joaat(horse), playerCoords.x, playerCoords.y, playerCoords.z, true, true,
+                                true)
+                            repeat Wait(0) until DoesEntityExist(horse)
                             Citizen.InvokeNative(0x77FF8D35EEC6BBC4, horse, 1, 0)
                             Citizen.InvokeNative(0x028F76B6E78246EB, player, horse, -1, true)
                             if Config.BoosterLogs.SelfSpawnHorse then
-                                TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfSpawnHorse, T.Webhooks.ActionBoosters.title, "Horse: " .. horse)
+                                TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfSpawnHorse,
+                                    T.Webhooks.ActionBoosters.title, "Horse: " .. horse)
                             end
                         else
                             TriggerEvent('vorp:TipRight', T.Notify.empty, 3000)
@@ -253,7 +262,10 @@ function Boost()
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.SpawnWagon")
                 Wait(100)
                 if AdminAllowed then
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.MainBoostOptions.SpawnWagonInput.placeholder, T.Menus.MainBoostOptions.SpawnWagonInput.title, "text", T.Menus.MainBoostOptions.SpawnWagonInput.errorMsg, "[A-Za-z0-9_ \\-]{5,60}")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
+                        T.Menus.MainBoostOptions.SpawnWagonInput.placeholder,
+                        T.Menus.MainBoostOptions.SpawnWagonInput.title, "text",
+                        T.Menus.MainBoostOptions.SpawnWagonInput.errorMsg, "[A-Za-z0-9_ \\-]{5,60}")
                     MenuData.CloseAll()
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                         local wagon = result
@@ -267,7 +279,8 @@ function Boost()
                             Citizen.InvokeNative(0x77FF8D35EEC6BBC4, wagon, 1, 0)
                             SetPedIntoVehicle(player, wagon, -1)
                             if Config.BoosterLogs.SelfSpawnWagon then
-                                TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfSpawnWagon, T.Webhooks.ActionBoosters.title, "Wagon: " .. wagon)
+                                TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfSpawnWagon,
+                                    T.Webhooks.ActionBoosters.title, "Wagon: " .. wagon)
                             end
                         else
                             TriggerEvent('vorp:TipRight', T.Notify.empty, 3000)
@@ -360,7 +373,10 @@ Citizen.CreateThread(function()
     local Label = Config.Speeds[index].label
 
     while true do
-        while NoClipActive do
+        local sleep = 1000
+
+        if NoClipActive then
+            sleep = 0
             if IsPedInAnyVehicle(PlayerPedId(), false) then
                 player = GetVehiclePedIsIn(PlayerPedId(), false)
             else
@@ -375,7 +391,8 @@ Citizen.CreateThread(function()
             if IsDisabledControlJustPressed(1, Config.Controls.camMode) then
                 FollowCamMode = not FollowCamMode
             end
-            local label = CreateVarString(10, 'LITERAL_STRING', T.Menus.MainBoostOptions.Prompts.speed_desc .. Label .. " " .. CurrentSpeed)
+            local label = CreateVarString(10, 'LITERAL_STRING',
+                T.Menus.MainBoostOptions.Prompts.speed_desc .. Label .. " " .. CurrentSpeed)
             PromptSetActiveGroupThisFrame(PromptGroup, label)
 
             if IsDisabledControlJustPressed(1, Config.Controls.changeSpeed) then
@@ -449,18 +466,18 @@ Citizen.CreateThread(function()
                 SetEntityCoordsNoOffset(player, newPos.x, newPos.y, newPos.z, NoClipActive, NoClipActive, NoClipActive)
             end
 
-            SetEntityAlpha(player, 51, 0)
+            SetEntityAlpha(player, 51, false)
             if (player ~= PlayerPedId()) then
-                SetEntityAlpha(PlayerPedId(), 51, 0)
+                SetEntityAlpha(PlayerPedId(), 51, false)
             end
 
             SetEntityCollision(player, false, false)
             FreezeEntityPosition(player, true)
             SetEntityInvincible(player, true)
-            SetEntityVisible(player, false, false)
+            SetEntityVisible(player, false)
             SetEveryoneIgnorePlayer(PlayerPedId(), true)
             SetPedCanBeTargetted(player, false)
-            Citizen.Wait(0)
+            Wait(0)
 
             ResetEntityAlpha(player)
             if (player ~= PlayerPedId()) then
@@ -470,10 +487,10 @@ Citizen.CreateThread(function()
             SetEntityCollision(player, true, true)
             FreezeEntityPosition(player, false)
             SetEntityInvincible(player, false)
-            SetEntityVisible(player, true, false)
+            SetEntityVisible(player, true)
             SetEveryoneIgnorePlayer(PlayerPedId(), false)
             SetPedCanBeTargetted(player, true)
         end
-        Citizen.Wait(0)
+        Wait(sleep)
     end
 end)

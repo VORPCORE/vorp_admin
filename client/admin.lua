@@ -4,7 +4,6 @@
 -- administration category
 local freeze = false
 local lastLocation = {}
-
 local T = Translation.Langs[Config.Lang]
 
 function Admin()
@@ -16,7 +15,7 @@ function Admin()
         { label = T.Menus.MainAdminOptions.viewReports,    value = 'view',    desc = T.Menus.MainAdminOptions.viewReports_desc },
         { label = T.Menus.MainAdminOptions.searchPlayer,   value = 'search',  desc = T.Menus.MainAdminOptions.searchPlayer_desc },
     }
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'Admin',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
@@ -61,11 +60,13 @@ function Admin()
                     TriggerEvent("vorp:TipRight", T.Notify.noperm, 4000)
                 end
             elseif data.current.value == "search" then
-                local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.MainAdminOptions.MenuAdminInput.placeholder, T.Menus.MainAdminOptions.MenuAdminInput.title, "number", T.Menus.MainAdminOptions.MenuAdminInput.errorMsg, "[0-9]{10,100}")
+                local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
+                    T.Menus.MainAdminOptions.MenuAdminInput.placeholder, T.Menus.MainAdminOptions.MenuAdminInput.title,
+                    "number", T.Menus.MainAdminOptions.MenuAdminInput.errorMsg, "[0-9]{10,100}")
                 TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                     local id = tonumber(result)
                     if id and id > 0 then
-                        ClientRPC.Callback.TriggerAsync("vorp_admin:Callback:getplayersinfo", function(cb)
+                        VORP.Callback.TriggerAsync("vorp_admin:Callback:getplayersinfo", function(cb)
                             if cb then
                                 OpenOnePlayerMenu(cb)
                             else
@@ -117,7 +118,7 @@ function OpenOnePlayerMenu(playersInfo)
             info = playersInfo
         }
     }
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'OpenOnePlayerMenu',
         {
             title      = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext    = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
@@ -144,7 +145,7 @@ function PlayerList()
     local elements = {}
     local cbname = "vorp_admin:Callback:getplayersinfo"
 
-    local result = ClientRPC.Callback.TriggerAwait(cbname, { search = "all" })
+    local result = VORP.Callback.TriggerAwait(cbname, { search = "all" })
     if not result then
         return
     end
@@ -196,7 +197,7 @@ function PlayerList()
         }
     end
 
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'PlayerList',
         {
             title      = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext    = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
@@ -232,7 +233,7 @@ function OpenSubAdminMenu(Player)
         { label = T.Menus.SubAdminOptions.advancedActions, value = 'advancedaction', desc = T.Menus.SubAdminOptions.advancedActions_desc },
         { label = T.Menus.SubAdminOptions.trollActions,    value = 'trollactions',   desc = T.Menus.SubAdminOptions.trollActions_desc },
     }
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'OpenSubAdminMenu',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
@@ -281,59 +282,68 @@ function OpenTrollActions(PlayerInfo)
         {
             label = T.Menus.SubTrollOptions.killPlayer,
             value = 'killplayer',
-            desc = T.Menus.SubTrollOptions.killPlayer_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubTrollOptions.killPlayer_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubTrollOptions.invisPlayer,
             value = 'invisplayer',
-            desc = T.Menus.SubTrollOptions.invisPlayer_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubTrollOptions.invisPlayer_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubTrollOptions.lightningStrikePlayer,
             value = 'lightningstrikeplayer',
-            desc = T.Menus.SubTrollOptions.lightningStrikePlayer_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubTrollOptions.lightningStrikePlayer_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubTrollOptions.setPlayerOnFire,
             value = 'setplayeronfire',
-            desc = T.Menus.SubTrollOptions.setPlayerOnFire_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubTrollOptions.setPlayerOnFire_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubTrollOptions.teleportToHeaven,
             value = 'tptoheaven',
-            desc = T.Menus.SubTrollOptions.teleportToHeaven_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubTrollOptions.teleportToHeaven_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubTrollOptions.ragdollPlayer,
             value = 'ragdollplayer',
-            desc = T.Menus.SubTrollOptions.ragdollPlayer_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubTrollOptions.ragdollPlayer_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubTrollOptions.drainPlayerStam,
             value = 'drainplayerstam',
-            desc = T.Menus.SubTrollOptions.drainPlayerStam_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubTrollOptions.drainPlayerStam_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubTrollOptions.cuffPlayer,
             value = 'cuffplayer',
-            desc = T.Menus.SubTrollOptions.cuffPlayer_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubTrollOptions.cuffPlayer_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubTrollOptions.tempHighPlayer,
             value = 'temphighplayer',
-            desc = T.Menus.SubTrollOptions.tempHighPlayer_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubTrollOptions.tempHighPlayer_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
     }
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'OpenTrollActions',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
@@ -422,55 +432,64 @@ function OpenSimpleActionMenu(PlayerInfo)
         {
             label = T.Menus.SubSimpleActionOptions.playerSpectate,
             value = 'spectate',
-            desc = T.Menus.SubSimpleActionOptions.playerSpectate_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubSimpleActionOptions.playerSpectate_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubSimpleActionOptions.playerFreeze,
             value = 'freeze',
-            desc = T.Menus.SubSimpleActionOptions.playerFreeze_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubSimpleActionOptions.playerFreeze_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubSimpleActionOptions.playerRevive,
             value = 'revive',
-            desc = T.Menus.SubSimpleActionOptions.playerRevive_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubSimpleActionOptions.playerRevive_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubSimpleActionOptions.playerHeal,
             value = 'heal',
-            desc = T.Menus.SubSimpleActionOptions.playerHeal_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubSimpleActionOptions.playerHeal_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubSimpleActionOptions.playerGoTo,
             value = 'goto',
-            desc = T.Menus.SubSimpleActionOptions.playerGoTo_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubSimpleActionOptions.playerGoTo_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubSimpleActionOptions.playerGoBack,
             value = 'goback',
-            desc = T.Menus.SubSimpleActionOptions.playerGoBack_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubSimpleActionOptions.playerGoBack_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubSimpleActionOptions.playerBring,
             value = 'bring',
-            desc = T.Menus.SubSimpleActionOptions.playerBring_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubSimpleActionOptions.playerBring_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubSimpleActionOptions.playerSendBack,
             value = 'sendback',
-            desc = T.Menus.SubSimpleActionOptions.playerSendBack_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubSimpleActionOptions.playerSendBack_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.serverId
         },
         {
             label = T.Menus.SubSimpleActionOptions.playerWarn,
             value = 'warn',
-            desc = T.Menus.SubSimpleActionOptions.playerWarn_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubSimpleActionOptions.playerWarn_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.staticID,
             info2 = PlayerInfo.Group,
             info3 = PlayerInfo.serverId
@@ -478,13 +497,14 @@ function OpenSimpleActionMenu(PlayerInfo)
         {
             label = T.Menus.SubSimpleActionOptions.playerUnWarn,
             value = 'unwarn',
-            desc = T.Menus.SubSimpleActionOptions.playerUnWarn_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
+            desc = T.Menus.SubSimpleActionOptions.playerUnWarn_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. PlayerInfo.PlayerName .. "</span>",
             info = PlayerInfo.staticID,
             info2 = PlayerInfo.serverId
         },
     }
 
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'OpenSimpleActionMenu',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
@@ -509,7 +529,9 @@ function OpenSimpleActionMenu(PlayerInfo)
                             TriggerServerEvent("vorp_admin:freeze", target, freeze, 'vorp.staff.Frezee')
                             TriggerEvent("vorp:TipRight", T.Notify.switchedOn, 3000)
                             if Config.AdminLogs.Freezed then
-                                TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Freezed, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedfreeze .. "\n> " .. PlayerInfo.PlayerName)
+                                TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Freezed,
+                                    T.Webhooks.ActionsAdmin.title,
+                                    T.Webhooks.ActionsAdmin.usedfreeze .. "\n> " .. PlayerInfo.PlayerName)
                             end
                         else
                             freeze = false
@@ -528,7 +550,8 @@ function OpenSimpleActionMenu(PlayerInfo)
                     local adminCoords = GetEntityCoords(PlayerPedId())
                     TriggerServerEvent("vorp_admin:Bring", target, adminCoords, 'vorp.staff.Bring')
                     if Config.AdminLogs.Bring then
-                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Bring, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedbring .. "\n> " .. PlayerInfo.PlayerName)
+                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Bring, T.Webhooks.ActionsAdmin.title,
+                            T.Webhooks.ActionsAdmin.usedbring .. "\n> " .. PlayerInfo.PlayerName)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperm, 4000)
@@ -547,7 +570,8 @@ function OpenSimpleActionMenu(PlayerInfo)
 
                     TriggerServerEvent("vorp_admin:TpToPlayer", target, 'vorp.staff.GoTo')
                     if Config.AdminLogs.Goto then
-                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Goto, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedgoto .. "\n> " .. PlayerInfo.PlayerName)
+                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Goto, T.Webhooks.ActionsAdmin.title,
+                            T.Webhooks.ActionsAdmin.usedgoto .. "\n> " .. PlayerInfo.PlayerName)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperm, 4000)
@@ -564,7 +588,8 @@ function OpenSimpleActionMenu(PlayerInfo)
                     local target = data.current.info
                     TriggerServerEvent('vorp_admin:revive', target, 'vorp.staff.Revive')
                     if Config.AdminLogs.Revive then
-                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Revive, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedreviveplayer .. "\n> " .. PlayerInfo.PlayerName)
+                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Revive, T.Webhooks.ActionsAdmin.title,
+                            T.Webhooks.ActionsAdmin.usedreviveplayer .. "\n> " .. PlayerInfo.PlayerName)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperm, 4000)
@@ -577,7 +602,8 @@ function OpenSimpleActionMenu(PlayerInfo)
                     local target = data.current.info
                     TriggerServerEvent('vorp_admin:heal', target, 'vorp.staff.Heal')
                     if Config.AdminLogs.Heal then
-                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Heal, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedhealplayer .. "\n> " .. PlayerInfo.PlayerName)
+                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Heal, T.Webhooks.ActionsAdmin.title,
+                            T.Webhooks.ActionsAdmin.usedhealplayer .. "\n> " .. PlayerInfo.PlayerName)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperm, 4000)
@@ -591,16 +617,22 @@ function OpenSimpleActionMenu(PlayerInfo)
                     local targetGroup = data.current.info2
                     local target = data.current.info3
                     local status = "warn"
-                    local myInput = Inputs("textarea", T.Menus.DefaultsInputs.confirm, T.Menus.SubSimpleActionOptions.WarnInput.placeholder, T.Menus.SubSimpleActionOptions.WarnInput.title, "text", T.Menus.SubSimpleActionOptions.WarnInput.errorMsg, "[A-Za-z0-9 ]{10,100}")
+                    local myInput = Inputs("textarea", T.Menus.DefaultsInputs.confirm,
+                        T.Menus.SubSimpleActionOptions.WarnInput.placeholder,
+                        T.Menus.SubSimpleActionOptions.WarnInput.title, "text",
+                        T.Menus.SubSimpleActionOptions.WarnInput.errorMsg, "[A-Za-z0-9 ]{10,100}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                         local reason = tostring(result)
                         if reason ~= "" then
                             if targetGroup ~= "user" then
                                 TriggerEvent("vorp:TipRight", T.Notify.cantWarnStaff, 4000)
                             else
-                                TriggerServerEvent("vorp_admin:warns", target, status, staticID, reason, 'vorp.staff.Warn')
+                                TriggerServerEvent("vorp_admin:warns", target, status, staticID, reason,
+                                    'vorp.staff.Warn')
                                 if Config.AdminLogs.Warned then
-                                    TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Warned, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.warned .. reason .. "\n > " .. PlayerInfo.PlayerName)
+                                    TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Warned,
+                                        T.Webhooks.ActionsAdmin.title,
+                                        T.Webhooks.ActionsAdmin.warned .. reason .. "\n > " .. PlayerInfo.PlayerName)
                                 end
                             end
                         else
@@ -620,7 +652,8 @@ function OpenSimpleActionMenu(PlayerInfo)
                     local status = "unwarn"
                     TriggerServerEvent("vorp_admin:warns", target, status, staticID, 'vorp.staff.UnWarn')
                     if Config.AdminLogs.Unwarned then
-                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Unwarned, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.unwarned .. "\n > " .. staticID)
+                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Unwarned, T.Webhooks.ActionsAdmin.title,
+                            T.Webhooks.ActionsAdmin.unwarned .. "\n > " .. staticID)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperm, 4000)
@@ -633,7 +666,8 @@ function OpenSimpleActionMenu(PlayerInfo)
                     local target = data.current.info
                     TriggerServerEvent("vorp_admin:spectate", target, 'vorp.staff.Spectate')
                     if Config.AdminLogs.Spectate then
-                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Spectate, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedspectate .. "\n > " .. PlayerInfo.PlayerName)
+                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Spectate, T.Webhooks.ActionsAdmin.title,
+                            T.Webhooks.ActionsAdmin.usedspectate .. "\n > " .. PlayerInfo.PlayerName)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperm, 4000)
@@ -652,14 +686,16 @@ function OpenAdvancedActions(Player)
         {
             label = T.Menus.SubAdvancedActionOptions.playerKick,
             value = 'kick',
-            desc = T.Menus.SubAdvancedActionOptions.playerKick_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
+            desc = T.Menus.SubAdvancedActionOptions.playerKick_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.Group,
             info2 = Player.serverId
         },
         {
             label = T.Menus.SubAdvancedActionOptions.playerBan,
             value = 'ban',
-            desc = T.Menus.SubAdvancedActionOptions.playerBan_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
+            desc = T.Menus.SubAdvancedActionOptions.playerBan_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.staticID,
             info2 = Player.Group,
             info3 = Player.serverId
@@ -667,43 +703,49 @@ function OpenAdvancedActions(Player)
         {
             label = T.Menus.SubAdvancedActionOptions.playerUnBan,
             value = 'unban',
-            desc = T.Menus.SubAdvancedActionOptions.playerUnBan_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
+            desc = T.Menus.SubAdvancedActionOptions.playerUnBan_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.staticID
         },
         {
             label = T.Menus.SubAdvancedActionOptions.playerRespawn,
             value = 'respawn',
-            desc = T.Menus.SubAdvancedActionOptions.playerRespawn_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
+            desc = T.Menus.SubAdvancedActionOptions.playerRespawn_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.serverId
         },
         {
             label = T.Menus.SubAdvancedActionOptions.playerWhitelist,
             value = 'whitelist',
-            desc = T.Menus.SubAdvancedActionOptions.playerWhitelist_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
+            desc = T.Menus.SubAdvancedActionOptions.playerWhitelist_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.serverId,
             info2 = Player.staticID
         },
         {
             label = T.Menus.SubAdvancedActionOptions.playerUnWhitelist,
             value = 'unwhitelist',
-            desc = T.Menus.SubAdvancedActionOptions.playerUnWhitelist_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
+            desc = T.Menus.SubAdvancedActionOptions.playerUnWhitelist_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.serverId,
             info2 = Player.staticID
         },
         {
             label = T.Menus.SubAdvancedActionOptions.playerSetJob,
             value = 'setjob',
-            desc = T.Menus.SubAdvancedActionOptions.playerSetJob_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
+            desc = T.Menus.SubAdvancedActionOptions.playerSetJob_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.serverId
         },
         {
             label = T.Menus.SubAdvancedActionOptions.playerSetGroup,
             value = 'setgroup',
-            desc = T.Menus.SubAdvancedActionOptions.playerSetGroup_desc .. " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
+            desc = T.Menus.SubAdvancedActionOptions.playerSetGroup_desc ..
+                " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.serverId
         },
     }
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'OpenAdvancedActions',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = Player.PlayerName, --char player name
@@ -725,7 +767,8 @@ function OpenAdvancedActions(Player)
                     local target = data.current.info
                     TriggerServerEvent("vorp_admin:respawnPlayer", target, 'vorp.staff.Respawn')
                     if Config.AdminLogs.Respawn then
-                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Respawn, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedrespawn .. "\n > " .. Player.PlayerName)
+                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Respawn, T.Webhooks.ActionsAdmin.title,
+                            T.Webhooks.ActionsAdmin.usedrespawn .. "\n > " .. Player.PlayerName)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperm, 4000)
@@ -737,7 +780,10 @@ function OpenAdvancedActions(Player)
                 if AdminAllowed then
                     local targetGroup = data.current.info
                     local targetID = data.current.info2
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubAdvancedActionOptions.KickInput.placeholder, T.Menus.SubAdvancedActionOptions.KickInput.title, "text", T.Menus.SubAdvancedActionOptions.KickInput.errorMsg, "[A-Za-z0-9 ]{10,100}")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
+                        T.Menus.SubAdvancedActionOptions.KickInput.placeholder,
+                        T.Menus.SubAdvancedActionOptions.KickInput.title, "text",
+                        T.Menus.SubAdvancedActionOptions.KickInput.errorMsg, "[A-Za-z0-9 ]{10,100}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                         local reason = tostring(result)
                         if reason ~= "" then
@@ -746,7 +792,10 @@ function OpenAdvancedActions(Player)
                             else
                                 TriggerServerEvent("vorp_admin:kick", targetID, reason, 'vorp.staff.Kick')
                                 if Config.AdminLogs.Kick then
-                                    TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Kick, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedkick .. "\n > " .. Player.PlayerName .. "\n: " .. reason)
+                                    TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Kick,
+                                        T.Webhooks.ActionsAdmin.title,
+                                        T.Webhooks.ActionsAdmin.usedkick ..
+                                        "\n > " .. Player.PlayerName .. "\n: " .. reason)
                                 end
                             end
                         else
@@ -764,7 +813,10 @@ function OpenAdvancedActions(Player)
                     local group = data.current.info2
                     local staticID = data.current.info
                     local target = data.current.info3
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubAdvancedActionOptions.BanInput.placeholder, T.Menus.SubAdvancedActionOptions.BanInput.title, "text", T.Menus.SubAdvancedActionOptions.BanInput.errorMsg, "[A-Za-z0-9 ]{2,2}")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
+                        T.Menus.SubAdvancedActionOptions.BanInput.placeholder,
+                        T.Menus.SubAdvancedActionOptions.BanInput.title, "text",
+                        T.Menus.SubAdvancedActionOptions.BanInput.errorMsg, "[A-Za-z0-9 ]{2,2}")
 
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                         local time = tostring(result)
@@ -774,7 +826,9 @@ function OpenAdvancedActions(Player)
                             else
                                 TriggerServerEvent("vorp_admin:BanPlayer", target, staticID, time, 'vorp.staff.Ban')
                                 if Config.AdminLogs.Ban then
-                                    TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Ban, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedban .. "\n > " .. Player.PlayerName .. "\n: " .. time)
+                                    TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Ban,
+                                        T.Webhooks.ActionsAdmin.title,
+                                        T.Webhooks.ActionsAdmin.usedban .. "\n > " .. Player.PlayerName .. "\n: " .. time)
                                 end
                             end
                         else
@@ -792,7 +846,8 @@ function OpenAdvancedActions(Player)
                     local staticID = data.current.info
                     TriggerServerEvent("vorp_admin:UnBan", staticID, 'vorp.staff,Unban')
                     if Config.AdminLogs.Unban then
-                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Unban, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedunban .. "\n > " .. Player.PlayerName .. "\n: " .. staticID)
+                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Unban, T.Webhooks.ActionsAdmin.title,
+                            T.Webhooks.ActionsAdmin.usedunban .. "\n > " .. Player.PlayerName .. "\n: " .. staticID)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperm, 4000)
@@ -808,7 +863,8 @@ function OpenAdvancedActions(Player)
                     TriggerServerEvent("vorp_admin:Whitelist", target, staticID, type, 'vorp.staff.Whitelist')
                     TriggerEvent("vorp:TipRight", T.Notify.whiteApproved, 5000)
                     if Config.AdminLogs.Whitelist then
-                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Whitelist, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedwhitelist .. "\n > " .. Player.PlayerName .. "\n: " .. staticID)
+                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Whitelist, T.Webhooks.ActionsAdmin.title,
+                            T.Webhooks.ActionsAdmin.usedwhitelist .. "\n > " .. Player.PlayerName .. "\n: " .. staticID)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperm, 4000)
@@ -824,7 +880,9 @@ function OpenAdvancedActions(Player)
                     TriggerServerEvent("vorp_admin:Whitelist", target, staticID, type, 'vorp.staff.Unwhitelist')
                     TriggerEvent("vorp:TipRight", T.Notify.whiteRemoved, 5000)
                     if Config.AdminLogs.Unwhitelist then
-                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Unwhitelist, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedunwhitelist .. "\n > " .. Player.PlayerName .. "\n: " .. staticID)
+                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Unwhitelist, T.Webhooks.ActionsAdmin
+                            .title,
+                            T.Webhooks.ActionsAdmin.usedunwhitelist .. "\n > " .. Player.PlayerName .. "\n: " .. staticID)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperm, 4000)
@@ -835,14 +893,20 @@ function OpenAdvancedActions(Player)
 
                 if AdminAllowed then
                     local target = data.current.info
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubAdvancedActionOptions.GroupInput.placeholder, T.Menus.SubAdvancedActionOptions.GroupInput.title, "text", T.Menus.SubAdvancedActionOptions.GroupInput.errorMsg, "[A-Za-z]{3,20}")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
+                        T.Menus.SubAdvancedActionOptions.GroupInput.placeholder,
+                        T.Menus.SubAdvancedActionOptions.GroupInput.title, "text",
+                        T.Menus.SubAdvancedActionOptions.GroupInput.errorMsg, "[A-Za-z]{3,20}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
 
                         if result ~= "" then
                             TriggerServerEvent("vorp_admin:setGroup", target, result, 'vorp.staff.Setgroup')
                             if Config.AdminLogs.Setgroup then
-                                TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Setgroup, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedsetgroup .. "\n > " .. Player.PlayerName .. "\nGroup: " .. result)
+                                TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Setgroup,
+                                    T.Webhooks.ActionsAdmin.title,
+                                    T.Webhooks.ActionsAdmin.usedsetgroup ..
+                                    "\n > " .. Player.PlayerName .. "\nGroup: " .. result)
                             end
                         else
                             TriggerEvent("vorp:TipRight", T.Notify.empty, 4000)
@@ -857,7 +921,10 @@ function OpenAdvancedActions(Player)
 
                 if AdminAllowed then
                     local target = data.current.info
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubAdvancedActionOptions.JobInput.placeholder, T.Menus.SubAdvancedActionOptions.JobInput.title, "text", T.Menus.SubAdvancedActionOptions.JobInput.errorMsg, "[A-Za-z0-9 ]{3,20}")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
+                        T.Menus.SubAdvancedActionOptions.JobInput.placeholder,
+                        T.Menus.SubAdvancedActionOptions.JobInput.title, "text",
+                        T.Menus.SubAdvancedActionOptions.JobInput.errorMsg, "[A-Za-z0-9 ]{3,20}")
 
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
@@ -871,9 +938,13 @@ function OpenAdvancedActions(Player)
                             local jobgrade = tonumber(splitstring[2])
                             local joblabel = tostring(splitstring[3]) .. " " .. (tostring(splitstring[4]) or "")
                             if jobname and jobgrade and joblabel then
-                                TriggerServerEvent("vorp_admin:setJob", target, jobname, jobgrade, joblabel, 'vorp.staff.Setjob')
+                                TriggerServerEvent("vorp_admin:setJob", target, jobname, jobgrade, joblabel,
+                                    'vorp.staff.Setjob')
                                 if Config.AdminLogs.Setjob then
-                                    TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Setjob, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedsetjob .. "\n > " .. Player.PlayerName .. "\nJob:  " .. jobname .. " \nGrade: " .. jobgrade)
+                                    TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Setjob,
+                                        T.Webhooks.ActionsAdmin.title,
+                                        T.Webhooks.ActionsAdmin.usedsetjob ..
+                                        "\n > " .. Player.PlayerName .. "\nJob:  " .. jobname .. " \nGrade: " .. jobgrade)
                                 end
                             end
                         else
@@ -897,7 +968,6 @@ end
 
 function Actions()
     MenuData.CloseAll()
-    local player = PlayerPedId()
     local elements = {
         { label = T.Menus.SubActionsAdminOptions.deleteMountHorse,    value = 'delhorse',       desc = T.Menus.SubActionsAdminOptions.deleteMountHorse_desc },
         { label = T.Menus.SubActionsAdminOptions.deleteMountWagon,    value = 'delwagon',       desc = T.Menus.SubActionsAdminOptions.deleteMountWagon_desc },
@@ -906,7 +976,7 @@ function Actions()
         { label = T.Menus.SubActionsAdminOptions.adminAnnounce,       value = 'announce',       desc = T.Menus.SubActionsAdminOptions.adminAnnounce_desc },
     }
 
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'Actions',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
@@ -943,7 +1013,10 @@ function Actions()
                 Wait(100)
 
                 if AdminAllowed then
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubActionsAdminOptions.DelWagonRadiusInput.placeholder, T.Menus.SubActionsAdminOptions.DelWagonRadiusInput.title, "number", T.Menus.SubActionsAdminOptions.DelWagonRadiusInput.errorMsg, "[0-9]{1,2}")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
+                        T.Menus.SubActionsAdminOptions.DelWagonRadiusInput.placeholder,
+                        T.Menus.SubActionsAdminOptions.DelWagonRadiusInput.title, "number",
+                        T.Menus.SubActionsAdminOptions.DelWagonRadiusInput.errorMsg, "[0-9]{1,2}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                         local radius = result
 
@@ -970,7 +1043,10 @@ function Actions()
                 Wait(100)
 
                 if AdminAllowed then
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubActionsAdminOptions.AnnounceInput.placeholder, T.Menus.SubActionsAdminOptions.AnnounceInput.title, "text", T.Menus.SubActionsAdminOptions.AnnounceInput.errorMsg, "[A-Za-z0-9 ]{5,100}")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
+                        T.Menus.SubActionsAdminOptions.AnnounceInput.placeholder,
+                        T.Menus.SubActionsAdminOptions.AnnounceInput.title, "text",
+                        T.Menus.SubActionsAdminOptions.AnnounceInput.errorMsg, "[A-Za-z0-9 ]{5,100}")
 
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                         local announce = result
@@ -978,7 +1054,9 @@ function Actions()
                         if announce ~= "" and announce then
                             TriggerServerEvent("vorp_admin:announce", announce, 'vorp.staff.Announce')
                             if Config.AdminLogs.Announce then
-                                TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Announce, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedannounce .. "\n > " .. announce)
+                                TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Announce,
+                                    T.Webhooks.ActionsAdmin.title,
+                                    T.Webhooks.ActionsAdmin.usedannounce .. "\n > " .. announce)
                             end
                         else
                             TriggerEvent('vorp:TipRight', T.Notify.empty, 3000)
@@ -1003,7 +1081,7 @@ function OpenCoordsMenu()
         { label = T.Menus.SubCoordsMenu.getCoordsVec4, value = 'v4',      desc = T.Menus.SubCoordsMenu.getCoordsVec4_desc },
         { label = T.Menus.SubCoordsMenu.getHeading,    value = 'heading', desc = T.Menus.SubCoordsMenu.getHeading_desc },
     }
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'OpenCoordsMenu',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleCoords,
@@ -1047,7 +1125,7 @@ function OffLine()
             desc = T.Menus.SubOfflineOptions.warnOrUnWarn_desc
         },
     }
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'OffLine',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
@@ -1062,7 +1140,9 @@ function OffLine()
             end
 
             if data.current.value == "bans" then
-                local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubOfflineOptions.BanTypeInput.placeholder, T.Menus.SubOfflineOptions.BanTypeInput.title, "text", T.Menus.SubOfflineOptions.BanTypeInput.errorMsg, "[A-Za-z0-9 ]{5,100}")
+                local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
+                    T.Menus.SubOfflineOptions.BanTypeInput.placeholder, T.Menus.SubOfflineOptions.BanTypeInput.title,
+                    "text", T.Menus.SubOfflineOptions.BanTypeInput.errorMsg, "[A-Za-z0-9 ]{5,100}")
                 TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                     local result = cb
                     if result ~= "" then
@@ -1070,7 +1150,8 @@ function OffLine()
                         for i in string.gmatch(result, "%S+") do
                             splitstring[#splitstring + 1] = i
                         end
-                        local type, StaticID, time = tostring(splitstring[1]), tonumber(splitstring[2]), tostring(splitstring[3])
+                        local type, StaticID, time = tostring(splitstring[1]), tonumber(splitstring[2]),
+                            tostring(splitstring[3])
                         if type and StaticID and time then
                             if type == "ban" then
                                 if StaticID and time then
@@ -1089,7 +1170,9 @@ function OffLine()
                     end
                 end)
             elseif data.current.value == "whites" then
-                local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubOfflineOptions.WhiteTypeInput.placeholder, T.Menus.SubOfflineOptions.WhiteTypeInput.title, "text", T.Menus.SubOfflineOptions.WhiteTypeInput.errorMsg, "[A-Za-z0-9 ]{5,100}")
+                local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
+                    T.Menus.SubOfflineOptions.WhiteTypeInput.placeholder, T.Menus.SubOfflineOptions.WhiteTypeInput.title,
+                    "text", T.Menus.SubOfflineOptions.WhiteTypeInput.errorMsg, "[A-Za-z0-9 ]{5,100}")
                 TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                     local result = cb
                     if result ~= "" then
@@ -1114,7 +1197,9 @@ function OffLine()
                     end
                 end)
             elseif data.current.value == "warn" then
-                local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubOfflineOptions.WarnTypeInput.placeholder, T.Menus.SubOfflineOptions.WarnTypeInput.title, "text", T.Menus.SubOfflineOptions.WarnTypeInput.errorMsg, "[A-Za-z0-9 ]{5,100}")
+                local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
+                    T.Menus.SubOfflineOptions.WarnTypeInput.placeholder, T.Menus.SubOfflineOptions.WarnTypeInput.title,
+                    "text", T.Menus.SubOfflineOptions.WarnTypeInput.errorMsg, "[A-Za-z0-9 ]{5,100}")
                 TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                     local result = tostring(cb)
                     if result ~= "" then

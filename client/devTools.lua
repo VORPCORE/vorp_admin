@@ -1,7 +1,7 @@
 ---@diagnostic disable: undefined-global
 
 local T = Translation.Langs[Config.Lang]
-
+local active = false
 ---------------------------------------------------------------------------------------------------
 ---------------------------------- DEV TOOLS ------------------------------------------------------
 
@@ -10,17 +10,18 @@ local function LoadModel(ped)
         TriggerEvent('vorp:TipRight', "invalid model", 3000)
         return
     end
+
     local count = 1000
-    while not HasModelLoaded(ped) do
+    if not HasModelLoaded(ped) then
         RequestModel(ped, false)
-        if count <= 0 then
-            break
-        end
-        Wait(10)
+        repeat
+            Wait(0)
+            count = count - 1
+        until HasModelLoaded(ped) or count <= 0
     end
 end
 
-local active = false
+
 
 function OpenDevTools()
     MenuData.CloseAll()
@@ -34,7 +35,7 @@ function OpenDevTools()
         { label = T.Menus.MainDevToolsOptions.imapViwer,           value = 'imap',       desc = T.Menus.MainDevToolsOptions.imapViwer_desc },
         { label = T.Menus.MainDevToolsOptions.scenarioHashViwer,   value = 'scenario',   desc = T.Menus.MainDevToolsOptions.scenarioHashViwer_desc },
     }
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'OpenDevTools',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDevTools,
@@ -44,63 +45,55 @@ function OpenDevTools()
         },
         function(data, menu)
             if data.current == "backup" then
-                _G[data.trigger]()
+                return _G[data.trigger]()
             end
 
             if data.current.value == "spawnped" then
                 MenuData.CloseAll()
-                local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.MainDevToolsOptions.SpawnPedInput.placeholder, T.Menus.MainDevToolsOptions.SpawnPedInput.title, "text", T.Menus.MainDevToolsOptions.SpawnPedInput.errorMsg, "[A-Za-z0-9_ \\-]{5,60}")
+                local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
+                    T.Menus.MainDevToolsOptions.SpawnPedInput.placeholder,
+                    T.Menus.MainDevToolsOptions.SpawnPedInput.title, "text",
+                    T.Menus.MainDevToolsOptions.SpawnPedInput.errorMsg, "[A-Za-z0-9_ \\-]{5,60}")
                 TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
-                    local ped = result
+                    local ped = tostring(result)
                     local playerCoords = GetEntityCoords(PlayerPedId())
                     if ped ~= "" then
                         LoadModel(ped)
-
-                        if type(ped) == "string" then
-                            ped = joaat(ped)
-                        end
-
-                        local npc = CreatePed(ped, playerCoords.x, playerCoords.y, playerCoords.z, 0, true, true, true)
-                        while not DoesEntityExist(npc) do
-                            Wait(100)
-                        end
+                        local npc = CreatePed(joaat(ped), playerCoords.x, playerCoords.y, playerCoords.z, 0.0, true, true,
+                            true)
+                        repeat Wait(0) until DoesEntityExist(npc)
                         Citizen.InvokeNative(0x77FF8D35EEC6BBC4, npc, 1, 0)
-                        Wait(2000)
                         SetModelAsNoLongerNeeded(ped)
                         SetEntityAsNoLongerNeeded(npc)
                     else
                         TriggerEvent('vorp:TipRight', T.Notify.empty, 3000)
                     end
                 end)
+                return
             end
 
             if data.current.value == "pedlist" then
-                SpawnPeds("peds")
+                return SpawnPeds("peds")
             end
 
             if data.current.value == "wagonlist" then
-                SpawnPeds("wagons")
+                return SpawnPeds("wagons")
             end
 
             if data.current.value == "delobject" then
-                OpenObjMenu()
+                return OpenObjMenu()
             end
 
             if data.current.value == "getcoords" then
-                OpenCoordsMenu()
+                return OpenCoordsMenu()
             end
 
             if data.current.value == "imap" then
-                ExecuteCommand("imapview")
+                return ExecuteCommand("imapview")
             end
 
             if data.current.value == "scenario" then
-                if not active then
-                    active = true
-                else
-                    active = false
-                end
-
+                active = not active
                 while active do
                     Wait(1000)
                     local ped = PlayerPedId()
@@ -114,26 +107,21 @@ function OpenDevTools()
 
             if data.current.value == "spawnwagon" then
                 MenuData.CloseAll()
-                local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.MainDevToolsOptions.SpawnWagonInput.placeholder, T.Menus.MainDevToolsOptions.SpawnWagonInput.title, "text", T.Menus.MainDevToolsOptions.SpawnWagonInput.errorMsg, "[A-Za-z0-9_ \\-]{5,60}")
+                local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
+                    T.Menus.MainDevToolsOptions.SpawnWagonInput.placeholder,
+                    T.Menus.MainDevToolsOptions.SpawnWagonInput.title, "text",
+                    T.Menus.MainDevToolsOptions.SpawnWagonInput.errorMsg, "[A-Za-z0-9_ \\-]{5,60}")
                 TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
-                    local wagon = result
+                    local wagon = tostring(result)
                     local player = PlayerPedId()
                     local playerCoords = GetOffsetFromEntityInWorldCoords(player, 0.0, 5.0, 0.0)
                     if wagon ~= "" then
                         LoadModel(wagon)
-
-                        if type(wagon) == "string" then
-                            wagon = joaat(wagon)
-                        end
-
                         local Wagon = CreateVehicle(wagon, playerCoords.x, playerCoords.y, playerCoords.z, 0, true, true,
                             true)
-                        while not DoesEntityExist(Wagon) do
-                            Wait(100)
-                        end
+                        repeat Wait(0) until DoesEntityExist(Wagon)
                         Citizen.InvokeNative(0x77FF8D35EEC6BBC4, Wagon, 1, 0)
                         SetPedIntoVehicle(player, Wagon, -1)
-                        Wait(2000)
                         SetModelAsNoLongerNeeded(wagon)
                         SetEntityAsNoLongerNeeded(Wagon)
                     else
@@ -151,7 +139,7 @@ function SpawnPeds(action)
     MenuData.CloseAll()
     local elements = {}
     if action == "peds" then
-        for key, value in pairs(Peds) do
+        for _, value in ipairs(Peds) do
             elements[#elements + 1] = {
                 label = value,
                 value = value,
@@ -159,7 +147,7 @@ function SpawnPeds(action)
             }
         end
     elseif action == "wagons" then
-        for key, value in pairs(Vehicles) do
+        for _, value in ipairs(Vehicles) do
             elements[#elements + 1] = {
                 label = value,
                 value = value,
@@ -168,7 +156,7 @@ function SpawnPeds(action)
         end
     end
 
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'SpawnPeds',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDevTools,
@@ -178,8 +166,9 @@ function SpawnPeds(action)
         },
         function(data, menu)
             if data.current == "backup" then
-                _G[data.trigger]()
+                return _G[data.trigger]()
             end
+
             if data.current.value then
                 local ped = data.current.value
                 local player = PlayerPedId()
@@ -187,18 +176,17 @@ function SpawnPeds(action)
 
                 LoadModel(ped)
 
-                if type(ped) == "string" then
-                    ped = joaat(ped)
-                end
                 if action == "peds" then
-                    local npc = CreatePed(ped, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
-                    Citizen.InvokeNative(0x77FF8D35EEC6BBC4, npc, 1, 0) -- variation
+                    local npc = CreatePed(joaat(ped), playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
+                    repeat Wait(0) until DoesEntityExist(npc)
+                    Citizen.InvokeNative(0x77FF8D35EEC6BBC4, npc, true, 0) -- variation
                 else
-                    local Wagon = CreateVehicle(ped, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
-                    Citizen.InvokeNative(0x77FF8D35EEC6BBC4, Wagon, 1, 0)
+                    local Wagon = CreateVehicle(joaat(ped), playerCoords.x, playerCoords.y, playerCoords.z, 0.0, true,
+                        true)
+                    repeat Wait(0) until DoesEntityExist(Wagon)
+                    Citizen.InvokeNative(0x77FF8D35EEC6BBC4, Wagon, true, 0)
                     SetPedIntoVehicle(player, Wagon, -1)
                 end
-                Wait(2000)
                 SetModelAsNoLongerNeeded(npc)
             end
         end,
@@ -216,7 +204,7 @@ function OpenObjMenu()
         { label = T.Menus.SubDevToolsOptions.coordsMenu,  value = 'getcoords', desc = T.Menus.SubDevToolsOptions.coordsMenu_desc }
     }
 
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'OpenObjMenu',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDevTools,
@@ -227,7 +215,7 @@ function OpenObjMenu()
 
         function(data)
             if data.current == "backup" then
-                _G[data.trigger]()
+                return _G[data.trigger]()
             end
             if data.current.value == "print" then
                 local coords = GetEntityCoords(player)
