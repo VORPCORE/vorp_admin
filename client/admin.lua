@@ -714,21 +714,21 @@ function OpenAdvancedActions(Player)
                 " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.serverId
         },
-        {
+        --[[         { -- cant use this as it requires source to be in game use vorp core command to whitelist
             label = T.Menus.SubAdvancedActionOptions.playerWhitelist,
             value = 'whitelist',
             desc = T.Menus.SubAdvancedActionOptions.playerWhitelist_desc ..
                 " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.serverId,
-            info2 = Player.staticID
-        },
+            info2 = Player.steamID
+        }, ]]
         {
             label = T.Menus.SubAdvancedActionOptions.playerUnWhitelist,
             value = 'unwhitelist',
             desc = T.Menus.SubAdvancedActionOptions.playerUnWhitelist_desc ..
                 " " .. "<span style=color:MediumSeaGreen;>" .. Player.PlayerName .. "</span>",
             info = Player.serverId,
-            info2 = Player.staticID
+            info2 = Player.SteamId
         },
         {
             label = T.Menus.SubAdvancedActionOptions.playerSetJob,
@@ -852,7 +852,7 @@ function OpenAdvancedActions(Player)
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperm, 4000)
                 end
-            elseif data.current.value == "whitelist" then
+                --[[  elseif data.current.value == "whitelist" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Whitelist')
                 Wait(100)
 
@@ -868,21 +868,21 @@ function OpenAdvancedActions(Player)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperm, 4000)
-                end
+                end ]]
             elseif data.current.value == "unwhitelist" then
                 TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Unwhitelist')
                 Wait(100)
 
                 if AdminAllowed then
                     local target = data.current.info
-                    local staticID = data.current.info2
+                    local steam = data.current.info2
                     local type = "removewhitelist"
-                    TriggerServerEvent("vorp_admin:Whitelist", target, staticID, type, 'vorp.staff.Unwhitelist')
+                    TriggerServerEvent("vorp_admin:Whitelist", target, steam, type, 'vorp.staff.Unwhitelist')
                     TriggerEvent("vorp:TipRight", T.Notify.whiteRemoved, 5000)
                     if Config.AdminLogs.Unwhitelist then
-                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Unwhitelist, T.Webhooks.ActionsAdmin
-                            .title,
-                            T.Webhooks.ActionsAdmin.usedunwhitelist .. "\n > " .. Player.PlayerName .. "\n: " .. staticID)
+                        TriggerServerEvent("vorp_admin:logs", Config.AdminLogs.Unwhitelist,
+                            T.Webhooks.ActionsAdmin.title,
+                            T.Webhooks.ActionsAdmin.usedunwhitelist .. "\n > " .. Player.PlayerName .. "\n: " .. steam)
                     end
                 else
                     TriggerEvent("vorp:TipRight", T.Notify.noperm, 4000)
@@ -1180,12 +1180,12 @@ function OffLine()
                         for i in string.gmatch(result, "%S+") do
                             splitstring[#splitstring + 1] = i
                         end
-                        local type, StaticID = tostring(splitstring[1]), tonumber(splitstring[2])
-                        if type and StaticID then -- if empty dont run
+                        local type, steam = tostring(splitstring[1]), tostring(splitstring[2])
+                        if type and steam then -- if empty dont run
                             if type == "whitelist" then
-                                TriggerServerEvent("vorp_admin:Whitelistoffline", StaticID, type)
-                            elseif type == "unwhitelist" then
-                                TriggerServerEvent("vorp_admin:Whitelistoffline", StaticID, type)
+                                TriggerServerEvent("vorp_admin:Whitelistoffline", steam, type)
+                                --[[ elseif type == "unwhitelist" then
+                                TriggerServerEvent("vorp_admin:Whitelistoffline", steam, type) ]]
                             else
                                 TriggerEvent("vorp:TipRight", T.Notify.incorrectType, 4000)
                             end

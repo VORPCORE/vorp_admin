@@ -1,6 +1,5 @@
 ---@diagnostic disable: undefined-global
 
-local VORPwl = {}
 local stafftable = {}
 local PlayersTable = {}
 
@@ -24,13 +23,6 @@ end
 ----------------------------------------------------------------------------------
 
 local Core = exports.vorp_core:GetCore()
-local ServerRPC = Core
-
-TriggerEvent("getWhitelistTables", function(cb)
-    VORPwl = cb
-end)
-
-
 
 local function getUserData(User, _source)
     local Character = User.getUsedCharacter
@@ -42,8 +34,8 @@ local function getUserData(User, _source)
     local PlayerMoney = Character.money
     local PlayerGold = Character.gold
     local JobGrade = Character.jobGrade
-    local getid = VORPwl.getEntry(identifier).getId()
-    local getstatus = VORPwl.getEntry(identifier).getStatus()
+    local getid = Core.Whitelist.getEntry(identifier)
+    local getstatus = Core.Whitelist.getEntry(identifier)
     local warnstatus = User.getPlayerwarnings()
 
     local data = {
@@ -56,15 +48,15 @@ local function getUserData(User, _source)
         Money = PlayerMoney,
         Gold = PlayerGold,
         Grade = JobGrade,
-        staticID = tonumber(getid),
-        WLstatus = tostring(getstatus),
+        staticID = getid and tonumber(getid.id) or "no id",
+        WLstatus = warnstatus and tostring(getstatus.status) or "no status",
         warns = tonumber(warnstatus),
     }
     return data
 end
 
 -- Register CallBack
-ServerRPC.Callback.Register("vorp_admin:Callback:getplayersinfo", function(source, cb, args)
+Core.Callback.Register("vorp_admin:Callback:getplayersinfo", function(source, cb, args)
     if next(PlayersTable) then
         if args.search == "search" then -- is for unique player
             if PlayersTable[args.id] then
@@ -561,16 +553,16 @@ RegisterServerEvent("vorp_admin:setJob", function(targetID, newjob, newgrade, ne
 end)
 
 -- WHITELIST
-RegisterServerEvent("vorp_admin:Whitelist", function(targetID, staticid, type, command)
+RegisterServerEvent("vorp_admin:Whitelist", function(targetID, steam, type, command)
     local _source = source
     if not AllowedToExecuteAction(_source, command) then
         return
     end
-    local staticID = staticid
+    local steam = steam
     if type == "addWhiteList" then
-        TriggerEvent("vorp:whitelistPlayer", staticID)
+        Core.Whitelist.WhitelistUser(steam)
     else
-        TriggerEvent("vorp:unwhitelistPlayer", staticID)
+        Core.Whitelist.unWhitelistUser(steam)
     end
 end)
 
@@ -844,7 +836,7 @@ RegisterNetEvent("vorp_admin:requeststaff", function(source, type)
     for id, staff in pairs(stafftable) do
         if type == "new" then
             Core.NotifyRightTip(staff, playername .. " ID: " .. playerID .. T.Notify.requestingAssistance .. T.Notify
-            .new, 4000)
+                .new, 4000)
         elseif type == "bug" then
             Core.NotifyRightTip(staff,
                 playername .. " ID: " .. playerID .. T.Notify.requestingAssistance .. T.Notify.foundBug, 4000)

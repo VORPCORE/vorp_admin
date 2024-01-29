@@ -128,7 +128,7 @@ Translation.Langs = {
         banOrUnban_desc =
         "Type = ban/unban <br> StaticID = ID Fixed in DB <br> Time example 1h,1d,1w,1m,1y permaban put 0 <br> DONT USE TIME IF TYPE IS UNBAN",
         whiteOrUnwhite = "WHITE/UNWHITE",
-        whiteOrUnwhite_desc = "Type = whitelist/unwhitelist <br> StaticID = ID Fixed in DB",
+        whiteOrUnwhite_desc = "Type = whitelist <br> steamid = steamid user",
         warnOrUnWarn = "WARN/UNWARN",
         warnOrUnWarn_desc = "Give a SHORT reason!",
         BanTypeInput = {
@@ -137,8 +137,8 @@ Translation.Langs = {
           errorMsg = "min 1 max 20, dont use dot, commas etc"
         },
         WhiteTypeInput = {
-          title = "WHITE PLAYER",
-          placeholder = "Ex: whitelist 6",
+          title = "WHITELIST PLAYER",
+          placeholder = "Ex: steam:3244242442",
           errorMsg = "min 1 max 20, dont use dot, commas etc"
         },
         WarnTypeInput = {
@@ -674,7 +674,7 @@ Translation.Langs = {
         banOrUnban_desc =
         "Tipo = ban/unban <br> StaticID = ID fixo na BD <br> Exemplo de tempo: 1h, 1d, 1s, 1m, 1a para banimento permanente coloque 0 <br> NÃO UTILIZE TEMPO SE O TIPO FOR DESBAN",
         whiteOrUnwhite = "LISTA BRANCA/REMOVER DA LISTA BRANCA",
-        whiteOrUnwhite_desc = "Tipo = whitelist/unwhitelist <br> StaticID = ID fixo na BD",
+        whiteOrUnwhite_desc = "Tipo = whitelist <br> steamid = steamid user",
         warnOrUnWarn = "AVISAR/REMOVER AVISO",
         warnOrUnWarn_desc = "Forneça uma razão CURTA!",
         BanTypeInput = {
@@ -684,7 +684,7 @@ Translation.Langs = {
         },
         WhiteTypeInput = {
           title = "LISTA BRANCA JOGADOR",
-          placeholder = "Ex: whitelist 6",
+          placeholder = "Ex: steam:324234234",
           errorMsg = "mínimo 1 máximo 20, não use pontos, vírgulas, etc."
         },
         WarnTypeInput = {
@@ -1222,7 +1222,7 @@ Translation.Langs = {
         banOrUnban_desc =
         "Tipo = ban/unban <br> StaticID = ID fixo no banco de dados <br> Exemplo de tempo 1h, 1d, 1w, 1m, 1a; use 0 para banimento permanente <br> NÃO USE TEMPO SE O TIPO FOR DESBANIR",
         whiteOrUnwhite = "LISTA BRANCA/REMOVER DA LISTA BRANCA",
-        whiteOrUnwhite_desc = "Tipo = whitelist/unwhitelist <br> StaticID = ID fixo no banco de dados",
+        whiteOrUnwhite_desc = "Tipo = whitelist <br> steamid = steamid user",
         warnOrUnWarn = "ADVERTIR/REMOVER ADVERTÊNCIA",
         warnOrUnWarn_desc = "Dê uma razão CURTA!",
         BanTypeInput = {
@@ -1232,7 +1232,7 @@ Translation.Langs = {
         },
         WhiteTypeInput = {
           title = "LISTA BRANCA JOGADOR",
-          placeholder = "Ex: whitelist 6",
+          placeholder = "Ex: steam:324234234",
           errorMsg = "mínimo de 1, máximo de 20, não use ponto, vírgulas, etc."
         },
         WarnTypeInput = {
@@ -1769,7 +1769,7 @@ Translation.Langs = {
         banOrUnban_desc =
         "Type = ban/unban <br> StaticID = ID fixe dans la base de données <br> Exemple de temps : 1h, 1j, 1s, 1m, 1a, pour un ban permanent mettre 0 <br> N'UTILISEZ PAS LE TEMPS SI LE TYPE EST UNBAN",
         whiteOrUnwhite = "WHITE/UNWHITE",
-        whiteOrUnwhite_desc = "Type = whitelist/unwhitelist <br> StaticID = ID fixe dans la base de données",
+        whiteOrUnwhite_desc = "Type = whitelist <br> steamid = steamid user",
         warnOrUnWarn = "WARN/UNWARN",
         warnOrUnWarn_desc = "Donnez une brève raison !",
         BanTypeInput = {
@@ -1779,7 +1779,7 @@ Translation.Langs = {
         },
         WhiteTypeInput = {
           title = "WHITELISTER UN JOUEUR",
-          placeholder = "Exemple : whitelist 6",
+          placeholder = "Ex: steam:324234234",
           errorMsg = "minimum 1 maximum 20, n'utilisez pas de points, de virgules, etc.",
         },
         WarnTypeInput = {
@@ -2316,7 +2316,7 @@ Translation.Langs = {
         banOrUnban_desc =
         "Typ = ban/unban <br> StaticID = In der Datenbank festgelegte ID <br> Zeitbeispiel 1h,1d,1w,1m,1y Dauerhaftes Verbot auf 0 setzen <br> VERWENDEN SIE KEINE ZEIT, WENN DER TYP UNBAN IST",
         whiteOrUnwhite = "WHITELIST/ENTWHITELISTEN",
-        whiteOrUnwhite_desc = "Typ = whitelist/unwhitelist <br> StaticID = In der Datenbank festgelegte ID",
+        whiteOrUnwhite_desc = "Typ = whitelist <br> steamid = steamid user",
         warnOrUnWarn = "WARNEN/ENTWARNEN",
         warnOrUnWarn_desc = "Geben Sie einen KURZEN Grund an!",
         BanTypeInput = {
@@ -2326,7 +2326,7 @@ Translation.Langs = {
         },
         WhiteTypeInput = {
           title = "SPIELER WHITELISTEN",
-          placeholder = "Beispiel: whitelist 6",
+          placeholder = "Ex: steam:324234234",
           errorMsg = "min. 1 max. 20, keine Punkte, Kommas usw. verwenden"
         },
         WarnTypeInput = {
@@ -2864,7 +2864,7 @@ Translation.Langs = {
         banOrUnban_desc =
         "Tipo = ban/unban <br> ID Estático = ID Fijo en la Base de Datos <br> Ejemplo de Tiempo: 1h, 1d, 1s, 1m, 1a; para ban permanente, pon 0 <br> NO USES TIEMPO SI EL TIPO ES DESBANEAR",
         whiteOrUnwhite = "LISTA BLANCA/DESLISTA BLANCA",
-        whiteOrUnwhite_desc = "Tipo = whitelist/unwhitelist <br> ID Estático = ID Fijo en la Base de Datos",
+        whiteOrUnwhite_desc = "Tipo = whitelist <br> steamid = steamid user",
         warnOrUnWarn = "ADVERTIR/QUITAR ADVERTENCIA",
         warnOrUnWarn_desc = "¡Proporciona una breve razón!",
         BanTypeInput = {
@@ -2874,7 +2874,7 @@ Translation.Langs = {
         },
         WhiteTypeInput = {
           title = "LISTA BLANCA DEL JUGADOR",
-          placeholder = "Ejemplo: whitelist 6",
+          placeholder = "Ex: steam:324234234",
           errorMsg = "mín. 1 máx. 20, no uses puntos, comas, etc.",
         },
         WarnTypeInput = {
