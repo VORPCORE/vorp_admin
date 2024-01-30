@@ -49,7 +49,7 @@ local function getUserData(User, _source)
         Gold = PlayerGold,
         Grade = JobGrade,
         staticID = getid and tonumber(getid.id) or "no id",
-        WLstatus = warnstatus and tostring(getstatus.status) or "no status",
+        WLstatus = getstatus and tostring(getstatus.status) or "no status",
         warns = tonumber(warnstatus),
     }
     return data
