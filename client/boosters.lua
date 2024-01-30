@@ -375,7 +375,7 @@ Citizen.CreateThread(function()
     while true do
         local sleep = 1000
 
-        if NoClipActive then
+        while NoClipActive do
             sleep = 0
             if IsPedInAnyVehicle(PlayerPedId(), false) then
                 player = GetVehiclePedIsIn(PlayerPedId(), false)
