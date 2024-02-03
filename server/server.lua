@@ -853,12 +853,11 @@ end)
 
 AddEventHandler('playerDropped', function()
     local _source = source
-    if _source then
-        if stafftable[_source] then
-            stafftable[_source] = nil
-        end
-        if PlayersTable[_source] then
-            PlayersTable[_source] = nil
-        end
+
+    if stafftable[_source] then
+        stafftable[_source] = nil
+    end
+    if PlayersTable[_source] then
+        PlayersTable[_source] = nil
     end
 end)
