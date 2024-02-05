@@ -547,7 +547,7 @@ Translation.Langs = {
       }
     }
   },
-  Poruguese_PT = {
+  Portuguese_PT = {
     Menus = {
       DefaultsMenusTitle = {
         menuTitle                = "VORP ADMIN",
