@@ -924,7 +924,7 @@ function OpenAdvancedActions(Player)
                     local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
                         T.Menus.SubAdvancedActionOptions.JobInput.placeholder,
                         T.Menus.SubAdvancedActionOptions.JobInput.title, "text",
-                        T.Menus.SubAdvancedActionOptions.JobInput.errorMsg, "[A-Za-z0-9 ]{3,20}")
+                        T.Menus.SubAdvancedActionOptions.JobInput.errorMsg, "[A-Za-z0-9 ]{3,40}")
 
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(cb)
                         local result = tostring(cb)
