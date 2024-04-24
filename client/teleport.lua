@@ -62,12 +62,15 @@ function Teleport()
                 TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.TpCoords")
                 Wait(100)
                 if AdminAllowed then
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.MainTeleportOptions.InsertCoordsInput.placeholder, T.Menus.MainTeleportOptions.InsertCoordsInput.title, "text", T.Menus.MainTeleportOptions.InsertCoordsInput.errorMsg, "[0-9 \\-\\.]{5,60}")
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.MainTeleportOptions.InsertCoordsInput.placeholder, T.Menus.MainTeleportOptions.InsertCoordsInput.title, "text", T.Menus.MainTeleportOptions.InsertCoordsInput.errorMsg, '.*{5,60}')
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                         local coords = result
                         local admin = PlayerPedId()
                         if coords ~= "" and coords then
                             local finalCoords = {}
+                            coords = string.gsub(coords, "(vector[34])", "")
+                            coords = string.gsub(coords, "[^%d%. -]", "")
+
                             for i in string.gmatch(coords, "%S+") do
                                 finalCoords[#finalCoords + 1] = i
                             end
