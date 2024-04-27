@@ -64,71 +64,57 @@ function ScoreBoard()
     local elements = {}
 
     -- local players = GetPlayers()
-    VORP.Callback.TriggerAsync("vorp_admin:Callback:getplayersinfo", function(result)
-        if not result then
-            return
+    local result = VORP.Callback.TriggerAsync("vorp_admin:Callback:getplayersinfo", { search = "all" })
+    if not result then
+        return
+    end
+    local players = result
+    for key, playersInfo in pairs(players) do
+        if Config.showUsersInfo == "showAll" then
+            ShowInfo = "</span><br>" .. T.Menus.MainPlayerStatus.playerServerID .. " " .. "<span style=color:MediumSeaGreen;>" ..
+                playersInfo.serverId .. "</span><br>" .. T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>" .. playersInfo.Group ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;> " .. playersInfo.Job
+        elseif Config.showUsersInfo == "showJob" then
+            ShowInfo = "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;> " .. playersInfo.Job
+        elseif Config.showUsersInfo == "showGroup" then
+            ShowInfo = "</span><br>" .. T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>" .. playersInfo.Group
+        elseif Config.showUsersInfo == "showID" then
+            ShowInfo = "</span><br>" .. T.Menus.MainPlayerStatus.playerServerID .. " " .. "<span style=color:MediumSeaGreen;>" .. playersInfo.serverId
         end
-        local players = result
-        for key, playersInfo in pairs(players) do
-            if Config.showUsersInfo == "showAll" then
-                ShowInfo = "</span><br>" ..
-                    T.Menus.MainPlayerStatus.playerServerID .. " " .. "<span style=color:MediumSeaGreen;>"
-                    ..
-                    playersInfo.serverId ..
-                    "</span><br>" .. T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>"
-                    ..
-                    playersInfo.Group ..
-                    "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;> "
-                    .. playersInfo.Job
-            elseif Config.showUsersInfo == "showJob" then
-                ShowInfo = "</span><br>" ..
-                T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;> " .. playersInfo.Job
-            elseif Config.showUsersInfo == "showGroup" then
-                ShowInfo = "</span><br>" ..
-                T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>" .. playersInfo.Group
-            elseif Config.showUsersInfo == "showID" then
-                ShowInfo = "</span><br>" ..
-                T.Menus.MainPlayerStatus.playerServerID ..
-                " " .. "<span style=color:MediumSeaGreen;>" .. playersInfo.serverId
+        elements[#elements + 1] = {
+            label = playersInfo.PlayerName,
+            value = "players",
+            desc = ShowInfo
+        }
+    end
+
+    MenuData.Open('default', GetCurrentResourceName(), 'ScoreBoard',
+        {
+            title    = T.Menus.DefaultsMenusTitle.menuTitle,
+            subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleScoreboard,
+            align    = 'top-left',
+            elements = elements,
+            lastmenu = 'OpenUsersMenu', --Go back
+        },
+        function(data, menu)
+            if data.current == "backup" then
+                _G[data.trigger]()
             end
-            elements[#elements + 1] = {
-                label = playersInfo.PlayerName,
-                value = "players",
-                desc = ShowInfo
-            }
-        end
+        end,
 
-        MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
-            {
-                title    = T.Menus.DefaultsMenusTitle.menuTitle,
-                subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleScoreboard,
-                align    = 'top-left',
-                elements = elements,
-                lastmenu = 'OpenUsersMenu', --Go back
-            },
-            function(data, menu)
-                if data.current == "backup" then
-                    _G[data.trigger]()
-                end
-            end,
-
-            function(data, menu)
-                menu.close()
-            end)
-    end, { search = "all" })
+        function(data, menu)
+            menu.close()
+        end)
 end
 
 function Report()
     local player = GetPlayerServerId(tonumber(PlayerId()))
-    local myInput = Inputs("textarea", T.Menus.DefaultsInputs.confirm, T.Menus.MainUserOptions.ReportInput.placeholder,
-        T.Menus.MainUserOptions.ReportInput.title, "text", T.Menus.MainUserOptions.ReportInput.errorMsg,
-        "[A-Za-z0-9 ]{10,100}")
+    local myInput = Inputs("textarea", T.Menus.DefaultsInputs.confirm, T.Menus.MainUserOptions.ReportInput.placeholder, T.Menus.MainUserOptions.ReportInput.title, "text", T.Menus.MainUserOptions.ReportInput.errorMsg, "[A-Za-z0-9 ]{10,100}")
     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
         local report = tostring(result)
         if report and report ~= "" then
             if Config.ReportLogs then -- if nil dont send
-                TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.Reports, T.Webhooks.ActionScoreBoard.title,
-                    T.Webhooks.ActionScoreBoard.playerreported .. report)
+                TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.Reports, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.playerreported .. report)
                 VORP.NotifySimpleTop(T.Notify.reportTitle, T.Notify.reportSent, 3000)
                 TriggerServerEvent("vorp_admin:alertstaff", player)
             end
@@ -149,7 +135,7 @@ function RequestStaff()
         { label = T.Menus.SubUserOptions.rulesBroken,     value = "rules",    desc = T.Menus.SubUserOptions.rulesBroken_desc },
         { label = T.Menus.SubUserOptions.someoneCheating, value = "cheating", desc = T.Menus.SubUserOptions.someoneCheating_desc },
     }
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'RequestStaff',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleRequestStaff,
@@ -197,6 +183,7 @@ function RequestStaff()
 end
 
 Citizen.CreateThread(function()
+    repeat Wait(1000) until LocalPlayer.state.IsInSession
     while true do
         Citizen.Wait(10)
         if timer >= 0 and cooldown then
@@ -223,7 +210,7 @@ function OpenCommands()
         { label = T.Menus.SubUserOptions.cancelAnimation, value = 'cancelanim', desc = T.Menus.SubUserOptions.cancelAnimation_desc },
     }
 
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'OpenCommands',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleCommands,
@@ -280,14 +267,12 @@ end
 
 function HideUI()
     if not hideUI then
-        --ExecuteCommand("togglechat")
         DisplayRadar(false)
         DisplayHud(false)
         TriggerEvent("syn_displayrange", false)
         TriggerEvent("vorp:showUi", false)
         hideUI = true
     else
-        -- ExecuteCommand("togglechat")
         DisplayRadar(true)
         DisplayHud(true)
         TriggerEvent("syn_displayrange", true)

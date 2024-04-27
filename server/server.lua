@@ -13,13 +13,6 @@ if not hasResourceStarted or not hasvorpcorestarted then
     return
 end
 
-local invVersion = GetResourceMetadata("vorp_inventory", "version", 0)
-local coreVersion = GetResourceMetadata("vorp_core", "version", 0)
-if tonumber(invVersion) < 2.9 or tonumber(coreVersion) < 2.3 then
-    print("vorp_inventory or vorp core is not up to date this resource will stop")
-    StopResource("vorp_admin")
-    return
-end
 ----------------------------------------------------------------------------------
 
 local Core = exports.vorp_core:GetCore()
@@ -509,6 +502,7 @@ end)
 
 -----------------------------------------------------------------------------------------------------------------
 --ADMINACTIONS
+
 --GROUP
 RegisterServerEvent("vorp_admin:setGroup", function(targetID, newgroup, command)
     local _source = source
@@ -529,6 +523,7 @@ RegisterServerEvent("vorp_admin:setGroup", function(targetID, newgroup, command)
     TriggerEvent("vorp:setGroup", _target, NewPlayerGroup)
     Core.NotifyRightTip(_target, T.Notify.groupGiven .. NewPlayerGroup, 5000)
 end)
+
 -- JOB
 RegisterServerEvent("vorp_admin:setJob", function(targetID, newjob, newgrade, newJobLabel, command)
     local _source = source
@@ -675,19 +670,15 @@ end)
 -----------------------------------------------------------------------------------------------------------------
 --PERMISSIONS
 --OPEN MAIN MENU
-RegisterServerEvent('vorp_admin:opneStaffMenu', function(object)
+Core.CallBack.Register('vorp_admin:CanOpenStaffMenu', function(source, cb, object)
     local _source = source
-    local ace = IsPlayerAceAllowed(_source, object) -- this feature allows to have discord role permissions
-    local Character = Core.getUser(_source).getUsedCharacter
-    local User = Core.getUser(_source)
-    local group = Character.group
+    local ace = IsPlayerAceAllowed(_source, object)
+    local User = Core.getUser(_source) -- user group only
     local group1 = User.getGroup
     if ace or CheckTable(group, group1, object) then
-        Perm = true
-        TriggerClientEvent('vorp_admin:OpenStaffMenu', _source, Perm)
+        cb(true)
     else
-        Perm = false
-        TriggerClientEvent('vorp_admin:OpenStaffMenu', _source, Perm)
+        cb(false)
     end
 end)
 

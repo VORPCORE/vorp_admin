@@ -4,7 +4,6 @@ local Inmenu
 local spectating = false
 local lastcoords = nil
 local T = Translation.Langs[Config.Lang]
-
 MenuData = exports.vorp_menu:GetMenuData()
 VORP = exports.vorp_core:GetCore()
 
@@ -30,15 +29,6 @@ AddEventHandler("onClientResourceStart", function(resourceName)
     AdminAllowed = false
     local player = GetPlayerServerId(tonumber(PlayerId()))
     Wait(100)
-    TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenMenu")
-    TriggerServerEvent("vorp_admin:getStaffInfo", player)
-end)
-
-RegisterNetEvent('vorp:SelectedCharacter', function()
-    AdminAllowed = false
-    local player = GetPlayerServerId(tonumber(PlayerId()))
-    Wait(100)
-    TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenMenu")
     TriggerServerEvent("vorp_admin:getStaffInfo", player)
 end)
 
@@ -50,8 +40,7 @@ local function CanOpenUsersMenu()
 end
 
 local function OpenAdminMenu()
-    TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenMenu")
-    Wait(100)
+    local AdminAllowed = IsAdminAllowed("vorp.staff.OpenMenu")
     if AdminAllowed then
         OpenMenu()
         return true
@@ -60,23 +49,20 @@ local function OpenAdminMenu()
 end
 
 
-if Config.useAdminCommand then
-    TriggerEvent('chat:addSuggestion', '/' .. Config.commandAdmin, 'Open admin menu or use pagedown', {
-        {}
-    })
-
-    RegisterCommand(Config.commandAdmin, function()
-        TriggerServerEvent("vorp_admin:opneStaffMenu", "vorp.staff.OpenMenu")
-        Wait(200)
-        if AdminAllowed then
-            OpenMenu()
-            return true
-        end
-    end, false)
-end
-
---OPEN MENU
 CreateThread(function()
+    repeat Wait(1000) until LocalPlayer.state.IsInSession
+
+    if Config.useAdminCommand then
+        TriggerEvent('chat:addSuggestion', '/' .. Config.commandAdmin, 'Open admin menu or use pagedown', { {} })
+        RegisterCommand(Config.commandAdmin, function()
+            local AdminAllowed = IsAdminAllowed("vorp.staff.OpenMenu")
+            if AdminAllowed then
+                OpenMenu()
+                return true
+            end
+        end, false)
+    end
+
     while true do
         local player = PlayerPedId()
         local isDead = IsPedDeadOrDying(player, false)
@@ -97,17 +83,13 @@ CreateThread(function()
     end
 end)
 
-RegisterNetEvent("vorp_admin:OpenStaffMenu", function(perm)
-    AdminAllowed = perm
-end)
-
 ----- EVENTS
 RegisterNetEvent("vorp_admin:Freezeplayer")
 AddEventHandler("vorp_admin:Freezeplayer", function(state)
     FreezeEntityPosition(PlayerPedId(), state)
 end)
 
-RegisterNetEvent("vorp_admin:respawn", function(target)
+RegisterNetEvent("vorp_admin:respawn", function()
     Wait(50)
     DoScreenFadeOut(1000)
     repeat Wait(0) until not IsScreenFadingOut()
@@ -185,7 +167,7 @@ end)
 
 -- show items inventory
 RegisterNetEvent("vorp_admin:getplayerInventory", function(inventorydata)
-    OpenInvnetory(inventorydata)
+    OpenInventory(inventorydata)
 end)
 
 --------------------------Troll Actions Events------------------------------
@@ -214,8 +196,7 @@ RegisterNetEvent('vorp_admin:ClientTrollSetPlayerOnFireHandler', function()
     end
     local object = CreateObject(joaat(model), 0, 0, 0, false, false, false)
     repeat Wait(0) until DoesEntityExist(object)
-    AttachEntityToEntity(object, PlayerPedId(), 41, 1000, 1000, 10000, 0, 0, 0, false, false, true, false, 1000, false,
-        false, false)
+    AttachEntityToEntity(object, PlayerPedId(), 41, 1000, 1000, 10000, 0, 0, 0, false, false, true, false, 1000, false, false, false)
     Wait(5000)
     DeleteObject(object)
 end)

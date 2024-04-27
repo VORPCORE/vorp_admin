@@ -40,16 +40,16 @@ end
 
 function Inputs(input, button, placeholder, header, type, errormsg, pattern)
     local myInput = {
-        type = "enableinput", -- dont touch
+        type = "enableinput",                                                -- dont touch
         inputType = input,
-        button = button, -- button name
-        placeholder = placeholder, --placeholdername
-        style = "block", --- dont touch
+        button = button,                                                     -- button name
+        placeholder = placeholder,                                           --placeholdername
+        style = "block",                                                     --- dont touch
         attributes = {
-            inputHeader = header, -- header
-            type = type, -- inputype text, number,date.etc if number comment out the pattern
-            pattern = pattern, -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
-            title = errormsg, -- if input doesnt match show this message
+            inputHeader = header,                                            -- header
+            type = type,                                                     -- inputype text, number,date.etc if number comment out the pattern
+            pattern = pattern,                                               -- regular expression validated for only numbers "[0-9]", for letters only [A-Za-z]+   with charecter limit  [A-Za-z]{5,20}     with chareceter limit and numbers [A-Za-z0-9]{5,}
+            title = errormsg,                                                -- if input doesnt match show this message
             style = "border-radius: 10px; background-color: ; border:none;", -- style  the inptup
         }
     }
@@ -81,44 +81,29 @@ function OpenMenu()
             end
 
             if data.current.value == "administration" then
-                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Admin')
-                Wait(100)
+                local AdminAllowed = IsAdminAllowed("vorp.staff.Admin")
                 if AdminAllowed then
                     Admin()
-                else
-                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             elseif data.current.value == "boost" then
-                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Boosters')
-                Wait(100)
+                local AdminAllowed = IsAdminAllowed("vorp.staff.Boosters")
                 if AdminAllowed then
                     Boost()
-                else
-                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             elseif data.current.value == "database" then
-                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Database')
-                Wait(100)
+                local AdminAllowed = IsAdminAllowed("vorp.staff.Database")
                 if AdminAllowed then
                     DataBase()
-                else
-                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             elseif data.current.value == "teleport" then
-                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Teleports')
-                Wait(100)
+                local AdminAllowed = IsAdminAllowed("vorp.staff.Teleports")
                 if AdminAllowed then
                     Teleport()
-                else
-                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             elseif data.current.value == "devtools" then
-                TriggerServerEvent("vorp_admin:opneStaffMenu", 'vorp.staff.Devtools')
-                Wait(100)
+                local AdminAllowed = IsAdminAllowed("vorp.staff.Devtools")
                 if AdminAllowed then
                     OpenDevTools()
-                else
-                    TriggerEvent("vorp:TipRight", T.Notify.noperms, 4000)
                 end
             end
         end,
