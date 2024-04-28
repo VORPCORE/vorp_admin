@@ -11,34 +11,24 @@ function DataBase()
     end
     local players = result
 
-    for _, PlayersData in pairs(players) do
+    for _, playersInfo in pairs(players) do
         elements[#elements + 1] = {
-            label = PlayersData.PlayerName,
+            label = playersInfo.PlayerName,
             value = "players",
-            desc = T.Menus.MainPlayerStatus.playerSteamName .. "<span style=color:MediumSeaGreen;> " ..
-                PlayersData.name .. "</span><br>" ..
-                T.Menus.MainPlayerStatus.playerServerID .. " " .. "<span style=color:MediumSeaGreen;>" .. PlayersData.serverId ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>" ..
-                PlayersData.Group ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;>"
-                .. PlayersData.Job ..
-                "</span>" .. T.Menus.MainPlayerStatus.playerGrade .. " " .. "<span style=color:MediumSeaGreen;>" ..
-                PlayersData.Grade .. "</span><br>" ..
-                T.Menus.MainPlayerStatus.playerIdentifier .. " " .. "<span style=color:MediumSeaGreen;>" ..
-                PlayersData.SteamId ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerMoney .. " " .. "<span style=color:MediumSeaGreen;>"
-                .. PlayersData.Money ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerGold .. " " .. "<span style=color:Gold;>"
-                .. PlayersData.Gold ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerStaticID .. " " .. "<span style=color:Red;>"
-                .. PlayersData.staticID ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerWhitelist .. " " .. "<span style=color:Gold;>"
-                .. PlayersData.WLstatus ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerWarnings .. " " .. "<span style=color:Gold;>"
-                .. PlayersData.warns .. "</span>",
-            PlayerData = PlayersData
+            desc = T.Menus.MainPlayerStatus.playerSteamName .. "<span style=color:MediumSeaGreen;> " .. (playersInfo.name or "") ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerServerID .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.serverId or 0) ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.Group or 0) ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.Job or "") ..
+                "</span>" .. T.Menus.MainPlayerStatus.playerGrade .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.Grade or 0) ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerIdentifier .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.SteamId or "") ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerMoney .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.Money or 0) ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerGold .. " " .. "<span style=color:Gold;>" .. (playersInfo.Gold or 0) ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerWhitelist .. " " .. "<span style=color:Gold;>" .. (playersInfo.WLstatus or "") ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerWarnings .. " " .. "<span style=color:Gold;>" .. (playersInfo.warns or 0) .. "</span>",
+            PlayerData = playersInfo
         }
     end
+
 
     MenuData.Open('default', GetCurrentResourceName(), 'DataBase',
         {

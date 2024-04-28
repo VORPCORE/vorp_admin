@@ -71,9 +71,7 @@ function ScoreBoard()
     local players = result
     for key, playersInfo in pairs(players) do
         if Config.showUsersInfo == "showAll" then
-            ShowInfo = "</span><br>" .. T.Menus.MainPlayerStatus.playerServerID .. " " .. "<span style=color:MediumSeaGreen;>" ..
-                playersInfo.serverId .. "</span><br>" .. T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>" .. playersInfo.Group ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;> " .. playersInfo.Job
+            ShowInfo = "</span><br>" .. T.Menus.MainPlayerStatus.playerServerID .. " " .. "<span style=color:MediumSeaGreen;>" .. playersInfo.serverId .. "</span><br>" .. T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>" .. playersInfo.Group .. "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;> " .. playersInfo.Job
         elseif Config.showUsersInfo == "showJob" then
             ShowInfo = "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;> " .. playersInfo.Job
         elseif Config.showUsersInfo == "showGroup" then

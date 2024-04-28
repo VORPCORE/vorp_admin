@@ -82,33 +82,13 @@ function OpenOnePlayerMenu(playersInfo)
         {
             label = playersInfo.PlayerName .. "<br>" .. T.Menus.MainPlayerStatus.playerServerID .. playersInfo.serverId,
             value = "players" .. playersInfo.serverId,
-            desc = T.Menus.MainPlayerStatus.playerSteamName .. "<span style=color:MediumSeaGreen;> "
-                ..
-                playersInfo.name ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerServerID .. " " .. "<span style=color:MediumSeaGreen;>"
-                ..
-                playersInfo.serverId ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>"
-                ..
-                playersInfo.Group ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;>"
-                .. playersInfo.Job ..
-                "</span>" .. T.Menus.MainPlayerStatus.playerGrade .. " " .. "<span style=color:MediumSeaGreen;>"
-                ..
-                playersInfo.Grade ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerIdentifier .. " " .. "<span style=color:MediumSeaGreen;>"
-                ..
-                playersInfo.SteamId ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerMoney .. " " .. "<span style=color:MediumSeaGreen;>"
-                .. playersInfo.Money ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerGold .. " " .. "<span style=color:Gold;>"
-                .. playersInfo.Gold ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerStaticID .. " " .. "<span style=color:Red;>"
-                .. playersInfo.staticID ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerWhitelist .. " " .. "<span style=color:Gold;>"
-                .. playersInfo.WLstatus ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerWarnings .. " " .. "<span style=color:Gold;>"
-                .. playersInfo.warns .. "</span>",
+            desc = T.Menus.MainPlayerStatus.playerSteamName .. "<span style=color:MediumSeaGreen;> " .. (playersInfo.name or "") .. "</span><br>" .. T.Menus.MainPlayerStatus.playerServerID .. " " .. "<span style=color:MediumSeaGreen;>"
+                .. (playersInfo.serverId or 0) .. "</span><br>" .. T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.Group or "") ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.Job or "") ..
+                "</span>" .. T.Menus.MainPlayerStatus.playerGrade .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.Grade or "") .. "</span><br>" .. T.Menus.MainPlayerStatus.playerIdentifier .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.SteamId or "") .. "</span><br>" .. T.Menus.MainPlayerStatus.playerMoney .. " " .. "<span style=color:MediumSeaGreen;>"
+                .. (playersInfo.Money or 0) .. "</span><br>" .. T.Menus.MainPlayerStatus.playerGold .. " " .. "<span style=color:Gold;>"
+                .. (playersInfo.Gold or 0) .. "</span><br>" .. T.Menus.MainPlayerStatus.playerWhitelist .. " " .. "<span style=color:Gold;>" .. (playersInfo.WLstatus or "") ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerWarnings .. " " .. "<span style=color:Gold;>" .. (playersInfo.warns or 0) .. "</span>",
             info = playersInfo
         }
     }
@@ -158,33 +138,16 @@ function PlayerList()
         elements[#elements + 1] = {
             label = playersInfo.PlayerName .. "<br>" .. T.Menus.MainPlayerStatus.playerServerID .. playersInfo.serverId,
             value = "players" .. playersInfo.serverId,
-            desc = T.Menus.MainPlayerStatus.playerSteamName .. "<span style=color:MediumSeaGreen;> "
-                ..
-                playersInfo.name ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerServerID .. " " .. "<span style=color:MediumSeaGreen;>"
-                ..
-                playersInfo.serverId ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>"
-                ..
-                playersInfo.Group ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;>"
-                .. playersInfo.Job ..
-                "</span>" .. T.Menus.MainPlayerStatus.playerGrade .. " " .. "<span style=color:MediumSeaGreen;>"
-                ..
-                playersInfo.Grade ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerIdentifier .. " " .. "<span style=color:MediumSeaGreen;>"
-                ..
-                playersInfo.SteamId ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerMoney .. " " .. "<span style=color:MediumSeaGreen;>"
-                .. playersInfo.Money ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerGold .. " " .. "<span style=color:Gold;>"
-                .. playersInfo.Gold ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerStaticID .. " " .. "<span style=color:Red;>"
-                .. playersInfo.staticID ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerWhitelist .. " " .. "<span style=color:Gold;>"
-                .. playersInfo.WLstatus ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerWarnings .. " " .. "<span style=color:Gold;>"
-                .. playersInfo.warns .. "</span>",
+            desc = T.Menus.MainPlayerStatus.playerSteamName .. "<span style=color:MediumSeaGreen;> " .. (playersInfo.name or "") ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerServerID .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.serverId or 0) ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerGroup .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.Group or 0) ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerJob .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.Job or "") ..
+                "</span>" .. T.Menus.MainPlayerStatus.playerGrade .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.Grade or 0) ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerIdentifier .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.SteamId or "") ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerMoney .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.Money or 0) ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerGold .. " " .. "<span style=color:Gold;>" .. (playersInfo.Gold or 0) ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerWhitelist .. " " .. "<span style=color:Gold;>" .. (playersInfo.WLstatus or "") ..
+                "</span><br>" .. T.Menus.MainPlayerStatus.playerWarnings .. " " .. "<span style=color:Gold;>" .. (playersInfo.warns or 0) .. "</span>",
             info = playersInfo
         }
     end
