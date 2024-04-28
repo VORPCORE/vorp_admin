@@ -670,7 +670,7 @@ end)
 -----------------------------------------------------------------------------------------------------------------
 --PERMISSIONS
 --OPEN MAIN MENU
-Core.CallBack.Register('vorp_admin:CanOpenStaffMenu', function(source, cb, object)
+Core.Callback.Register('vorp_admin:CanOpenStaffMenu', function(source, cb, object)
     local _source = source
     local ace = IsPlayerAceAllowed(_source, object)
     local User = Core.getUser(_source) -- user group only
@@ -681,7 +681,6 @@ Core.CallBack.Register('vorp_admin:CanOpenStaffMenu', function(source, cb, objec
         cb(false)
     end
 end)
-
 
 -------------------------------------------------------------------------------------------------------------------
 -------------------------- Troll Actions--------------------------------------------------------------------------
