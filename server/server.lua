@@ -78,10 +78,10 @@ Core.Callback.Register("vorp_admin:Callback:getplayersinfo", function(source, cb
 end)
 
 
-local function CheckTable(group, group1, object)
+local function CheckTable(group)
     for key, value in ipairs(Config.AllowedGroups) do
         for k, v in ipairs(value.group) do
-            if v == group or v == group1 then
+            if v == group then
                 return true
             end
         end
@@ -91,11 +91,9 @@ end
 
 local function AllowedToExecuteAction(source, command)
     local User = Core.getUser(source)
-    local Character = User.getUsedCharacter
-    local group = Character.group
-    local group1 = User.getGroup
+    local group = User.getGroup
 
-    if IsPlayerAceAllowed(source, command) or CheckTable(group, group1, command) then
+    if IsPlayerAceAllowed(source, command) or CheckTable(group) then
         return true
     end
 
@@ -674,8 +672,8 @@ Core.Callback.Register('vorp_admin:CanOpenStaffMenu', function(source, cb, objec
     local _source = source
     local ace = IsPlayerAceAllowed(_source, object)
     local User = Core.getUser(_source) -- user group only
-    local group1 = User.getGroup
-    if ace or CheckTable(group, group1, object) then
+    local group = User.getGroup
+    if ace or CheckTable(group) then
         cb(true)
     else
         cb(false)
