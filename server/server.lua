@@ -801,17 +801,30 @@ RegisterServerEvent('vorp_admin:alertstaff', function(source)
 end)
 
 
-RegisterServerEvent("vorp_admin:getStaffInfo", function(source)
-    local _source = source
 
-    local Staff = Core.getUser(_source).getUsedCharacter
+AddEventHandler("vorp:SelectedCharacter", function(source, character)
+    local _source = source
     local User = Core.getUser(_source)
     local staffgroup1 = User.getGroup
-    local staffgroup = Staff.group
 
-    if staffgroup and staffgroup ~= "user" or staffgroup1 and staffgroup1 ~= "user" then
+    if staffgroup1 and staffgroup1 ~= "user" then
         stafftable[_source] = _source
     end
+
+    local data = getUserData(User, _source)
+    PlayersTable[_source] = data
+end)
+
+
+RegisterServerEvent("vorp_admin:getStaffInfo", function(source)
+    local _source = source
+    local User = Core.getUser(_source)
+    local staffgroup1 = User.getGroup
+
+    if staffgroup1 and staffgroup1 ~= "user" then
+        stafftable[_source] = _source
+    end
+
     local data = getUserData(User, _source)
     PlayersTable[_source] = data
 end)
