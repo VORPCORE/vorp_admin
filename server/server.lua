@@ -672,6 +672,7 @@ Core.Callback.Register('vorp_admin:CanOpenStaffMenu', function(source, cb, objec
     local _source = source
     local ace = IsPlayerAceAllowed(_source, object)
     local User = Core.getUser(_source) -- user group only
+    if not User then return end
     local group = User.getGroup
     if ace or CheckTable(group) then
         cb(true)
@@ -792,7 +793,9 @@ end)
 -- alert staff of report
 RegisterServerEvent('vorp_admin:alertstaff', function(source)
     local _source = source
-    local Character = Core.getUser(_source).getUsedCharacter
+    local Character = Core.getUser(_source)
+    if not Character then return end
+    Character = Character.getUsedCharacter
     local playername = Character.firstname .. ' ' .. Character.lastname --player char name
 
     for _, staff in pairs(stafftable) do
@@ -805,6 +808,7 @@ end)
 AddEventHandler("vorp:SelectedCharacter", function(source, character)
     local _source = source
     local User = Core.getUser(_source)
+    if not User then return
     local staffgroup1 = User.getGroup
 
     if staffgroup1 and staffgroup1 ~= "user" then
@@ -819,6 +823,7 @@ end)
 RegisterServerEvent("vorp_admin:getStaffInfo", function(source)
     local _source = source
     local User = Core.getUser(_source)
+    if not User then return end
     local staffgroup1 = User.getGroup
 
     if staffgroup1 and staffgroup1 ~= "user" then
@@ -832,7 +837,9 @@ end)
 RegisterNetEvent("vorp_admin:requeststaff", function(source, type)
     local _source = source
     local playerID = _source
-    local Character = Core.getUser(_source).getUsedCharacter
+    local Character = Core.getUser(_source)
+    if not Character then return end
+    Character = Character.getUsedCharacter
     local playername = Character.firstname .. ' ' .. Character.lastname --player char name
     for id, staff in pairs(stafftable) do
         if type == "new" then
