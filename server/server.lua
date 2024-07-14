@@ -91,6 +91,7 @@ end
 
 local function AllowedToExecuteAction(source, command)
     local User = Core.getUser(source)
+    if not User then return end
     local group = User.getGroup
 
     if IsPlayerAceAllowed(source, command) or CheckTable(group) then
