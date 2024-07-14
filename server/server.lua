@@ -808,7 +808,7 @@ end)
 AddEventHandler("vorp:SelectedCharacter", function(source, character)
     local _source = source
     local User = Core.getUser(_source)
-    if not User then return
+    if not User then return end
     local staffgroup1 = User.getGroup
 
     if staffgroup1 and staffgroup1 ~= "user" then
