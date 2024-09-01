@@ -30,10 +30,13 @@ function Teleport()
                 _G[data.trigger]()
             end
             if data.current.value == "tpm" then
-                TriggerServerEvent('vorp:teleportWayPoint', "vorp.staff.WayPoint")
-                if Config.TeleportLogs.Tpm then
-                    TriggerServerEvent("vorp_admin:logs", Config.TeleportLogs.Tpm, T.Webhooks.ActionTeleport.title, T.Webhooks.ActionTeleport.usedtpm)
+                local coords = GetEntityCoords(PlayerPedId())
+                local waypointCoords = GetWaypointCoords()
+                local waypoint = IsWaypointActive()
+                if not waypoint then
+                    return VORP.NotifyObjective("theres no waypoint set", 5000)
                 end
+                TriggerServerEvent('vorp:teleportWayPoint', "vorp.staff.WayPoint", coords, waypointCoords)
             elseif data.current.value == 'autotpm' then
                 if autotpm == false then
                     autotpm = true
@@ -50,6 +53,7 @@ function Teleport()
                 local AdminAllowed = IsAdminAllowed("vorp.staff.TpCoords")
                 if AdminAllowed then
                     local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.MainTeleportOptions.InsertCoordsInput.placeholder, T.Menus.MainTeleportOptions.InsertCoordsInput.title, "text", T.Menus.MainTeleportOptions.InsertCoordsInput.errorMsg, '.*{5,60}')
+                    local oldCoords = GetEntityCoords(PlayerPedId())
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                         local coords = result
                         local admin = PlayerPedId()
@@ -67,7 +71,8 @@ function Teleport()
                             SetEntityCoords(admin, x, y, z, false, false, false, false)
                             DoScreenFadeIn(3000)
                             if Config.TeleportLogs.Tptocoords then
-                                TriggerServerEvent("vorp_admin:logs", Config.TeleportLogs.Tptocoords, T.Webhooks.ActionTeleport.title, T.Webhooks.ActionTeleport.usedtptocoords)
+                                local description = T.Webhooks.ActionTeleport.usedtptocoords .. "\nfrom coords: " .. tostring(oldCoords) .. "\nto coords: " .. tostring(vector3(x, y, z))
+                                TriggerServerEvent("vorp_admin:logs", Config.TeleportLogs.Tptocoords, T.Webhooks.ActionTeleport.title, description)
                             end
                         else
                             VORP.NotifyObjective(T.Notify.empty, 5000)

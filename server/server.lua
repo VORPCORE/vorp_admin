@@ -657,12 +657,15 @@ RegisterNetEvent("vorp_admin:BanOffline", function(staticid, time, command)
     TriggerEvent("vorpbans:addtodb", false, staticid, time)
 end)
 
-RegisterNetEvent('vorp:teleportWayPoint', function(command)
+RegisterNetEvent('vorp:teleportWayPoint', function(command, coords, waypoint)
     local _source = source
     if not AllowedToExecuteAction(_source, command) then
         return
     end
-    TriggerClientEvent('vorp:teleportWayPoint', _source)
+    if Config.TeleportLogs.Tpm then
+        local description = T.Webhooks.ActionTeleport.usedtpm .. "\nWaypoint teleported to " .. tostring(waypoint) .. "\nfrom Coords : " .. tostring(coords)
+        TriggerEvent("vorp_admin:logs", Config.TeleportLogs.Tpm, T.Webhooks.ActionTeleport.title, description)
+    end
 end)
 
 
@@ -769,9 +772,9 @@ function GetIdentity(source, identity)
     end
 end
 
-RegisterServerEvent('vorp_admin:logs', function(webhook, title, description)
+RegisterServerEvent('vorp_admin:logs')
+AddEventHandler('vorp_admin:logs', function(webhook, title, description)
     local _source = source
-
     local Identifier = GetPlayerIdentifier(_source, 1)
     local discordIdentity = GetIdentity(_source, "discord")
     local discordId = string.sub(discordIdentity, 9)
@@ -785,8 +788,7 @@ RegisterServerEvent('vorp_admin:logs', function(webhook, title, description)
         "` \n**Discord:** <@" ..
         discordId ..
         ">**\nIP: **`" .. ip .. "`\n `" .. description .. "`"
-    Core.AddWebhook(title, webhook, message, Config.webhookColor, Config.name, Config.logo, Config.footerLogo,
-        Config.Avatar)
+    Core.AddWebhook(title, webhook, message, Config.webhookColor, Config.name, Config.logo, Config.footerLogo, Config.Avatar)
 end)
 
 
