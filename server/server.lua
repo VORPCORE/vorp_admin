@@ -138,7 +138,7 @@ RegisterServerEvent("vorp_admin:freeze", function(targetID, freeze, command)
             return
         end
 
-        TriggerClientEvent("vorp_admin:Freezeplayer", target, state)
+        TriggerClientEvent("vorp_admin:Freezeplayer", targetID, state)
     end
 end)
 ---------------------------------------------------------------
