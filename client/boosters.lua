@@ -160,6 +160,8 @@ function Boost()
                 local AdminAllowed = IsAdminAllowed("vorp.staff.Noclip")
                 if AdminAllowed then
                     if not NoClipActive then
+                        SetEveryoneIgnorePlayer(PlayerId(), true)
+                        SetPedCanBeTargetted(player, false)
                         NoClipActive = true
                         VORP.NotifyObjective(T.Notify.switchedOn, 5000)
                         if Config.FrozenPosition then
@@ -169,6 +171,8 @@ function Boost()
                             TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.NoClip, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usednoclip)
                         end
                     else
+                        SetEveryoneIgnorePlayer(PlayerId(), false)
+                        SetPedCanBeTargetted(player, true)
                         NoClipActive = false
                         VORP.NotifyObjective(T.Notify.switchedOff, 5000)
                     end
@@ -400,6 +404,8 @@ Citizen.CreateThread(function()
             end
 
             if IsDisabledControlPressed(0, Config.Controls.Cancel) then
+                SetEveryoneIgnorePlayer(PlayerId(), false)
+                SetPedCanBeTargetted(player, true)
                 NoClipActive = false
                 break
             end
