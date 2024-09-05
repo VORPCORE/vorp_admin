@@ -254,13 +254,11 @@ RegisterServerEvent("vorp_admin:respawnPlayer", function(targetID, command)
         return
     end
 
-    TriggerEvent("vorp:PlayerForceRespawn", targetID)
-    TriggerClientEvent("vorp:PlayerForceRespawn", targetID)
     exports.vorp_inventory:closeInventory(targetID)
     TriggerClientEvent('vorp:updatemissioNotify', targetID, T.Notify.respawnedNotify, T.Notify.lostAllItems, 8000)
-    SetTimeout(8000, function()
-        TriggerClientEvent("vorp_core:respawnPlayer", targetID) --remove player
-        TriggerClientEvent("vorp_admin:respawn", targetID)      --add effects
+    SetTimeout(5000, function()
+        Core.Player.Respawn(targetID)
+        TriggerClientEvent("vorp_admin:respawn", targetID) --add effects
     end)
 end)
 
@@ -584,7 +582,7 @@ RegisterServerEvent("vorp_admin:revive", function(targetID, command)
     end
 
     if Core.getUser(_target) then
-        TriggerClientEvent('vorp:resurrectPlayer', _target)
+        Core.Player.Revive(_target)
     end
 end)
 
@@ -598,7 +596,7 @@ RegisterServerEvent("vorp_admin:heal", function(targetID, command)
     end
 
     if Core.getUser(_target) then
-        TriggerClientEvent('vorp:heal', _target)
+        Core.Player.Heal(_target)
     end
 end)
 
@@ -628,7 +626,7 @@ RegisterNetEvent('vorp_admin:HealSelf', function(command)
     if not AllowedToExecuteAction(_source, command) then
         return
     end
-    TriggerClientEvent('vorp:heal', _source)
+    Core.Player.Heal(_source)
 end)
 
 RegisterNetEvent('vorp_admin:ReviveSelf', function(command)
@@ -636,7 +634,7 @@ RegisterNetEvent('vorp_admin:ReviveSelf', function(command)
     if not AllowedToExecuteAction(_source, command) then
         return
     end
-    TriggerClientEvent('vorp:resurrectPlayer', _source)
+    Core.Player.Revive(_source)
 end)
 
 RegisterNetEvent("vorp_admin:Unban", function(staticid, command)
