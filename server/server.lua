@@ -767,8 +767,7 @@ function GetIdentity(source, identity)
     end
 end
 
-RegisterServerEvent('vorp_admin:logs')
-AddEventHandler('vorp_admin:logs', function(webhook, title, description)
+RegisterServerEvent('vorp_admin:logs', function(webhook, title, description)
     local _source = source
     local Identifier = GetPlayerIdentifier(_source, 1)
     local discordIdentity = GetIdentity(_source, "discord")
@@ -783,8 +782,7 @@ AddEventHandler('vorp_admin:logs', function(webhook, title, description)
         "` \n**Discord:** <@" ..
         discordId ..
         ">**\nIP: **`" .. ip .. "`\n `" .. description .. "`"
-    Core.AddWebhook(title, webhook, message, Config.webhookColor, Config.name, Config.logo, Config.footerLogo,
-        Config.Avatar)
+    Core.AddWebhook(title, webhook, message, Config.webhookColor, Config.name, Config.logo, Config.footerLogo, Config.Avatar)
 end)
 
 
