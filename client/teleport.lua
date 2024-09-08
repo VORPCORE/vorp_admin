@@ -36,7 +36,12 @@ function Teleport()
                 if not waypoint then
                     return VORP.NotifyObjective("theres no waypoint set", 5000)
                 end
-                TriggerServerEvent('vorp:teleportWayPoint', "vorp.staff.WayPoint", coords, waypointCoords)
+                TriggerServerEvent('vorp:teleportWayPoint', "vorp.staff.WayPoint", coords)
+                if Config.TeleportLogs.Tpm then
+                    local description = T.Webhooks.ActionTeleport.usedtpm .. "\nWaypoint teleported to " .. tostring(waypointCoords) .. "\nfrom Coords : " .. tostring(coords)
+                    TriggerServerEvent("vorp_admin:logs", Config.TeleportLogs.Tpm, T.Webhooks.ActionTeleport.title,
+                        description)
+                end
             elseif data.current.value == 'autotpm' then
                 if autotpm == false then
                     autotpm = true
@@ -52,7 +57,10 @@ function Teleport()
             elseif data.current.value == "tptocoords" then
                 local AdminAllowed = IsAdminAllowed("vorp.staff.TpCoords")
                 if AdminAllowed then
-                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.MainTeleportOptions.InsertCoordsInput.placeholder, T.Menus.MainTeleportOptions.InsertCoordsInput.title, "text", T.Menus.MainTeleportOptions.InsertCoordsInput.errorMsg, '.*{5,60}')
+                    local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
+                        T.Menus.MainTeleportOptions.InsertCoordsInput.placeholder,
+                        T.Menus.MainTeleportOptions.InsertCoordsInput.title, "text",
+                        T.Menus.MainTeleportOptions.InsertCoordsInput.errorMsg, '.*{5,60}')
                     local oldCoords = GetEntityCoords(PlayerPedId())
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                         local coords = result
@@ -71,8 +79,11 @@ function Teleport()
                             SetEntityCoords(admin, x, y, z, false, false, false, false)
                             DoScreenFadeIn(3000)
                             if Config.TeleportLogs.Tptocoords then
-                                local description = T.Webhooks.ActionTeleport.usedtptocoords .. "\nfrom coords: " .. tostring(oldCoords) .. "\nto coords: " .. tostring(vector3(x, y, z))
-                                TriggerServerEvent("vorp_admin:logs", Config.TeleportLogs.Tptocoords, T.Webhooks.ActionTeleport.title, description)
+                                local description = T.Webhooks.ActionTeleport.usedtptocoords ..
+                                    "\nfrom coords: " ..
+                                    tostring(oldCoords) .. "\nto coords: " .. tostring(vector3(x, y, z))
+                                TriggerServerEvent("vorp_admin:logs", Config.TeleportLogs.Tptocoords,
+                                    T.Webhooks.ActionTeleport.title, description)
                             end
                         else
                             VORP.NotifyObjective(T.Notify.empty, 5000)
@@ -80,43 +91,50 @@ function Teleport()
                     end)
                 end
             elseif data.current.value == "tptoplayer" then
-                TriggerEvent("vorpinputs:getInput", T.Menus.DefaultsInputs.confirm, T.Menus.DefaultsInputs.serverID, function(result)
-                    local TargetID = result
-                    if TargetID ~= "" then
-                        TriggerServerEvent("vorp_admin:TpToPlayer", TargetID, "vorp.staff.TpPlayer")
-                        if Config.TeleportLogs.Tptoplayer then
-                            TriggerServerEvent("vorp_admin:logs", Config.TeleportLogs.Tptoplayer, T.Webhooks.ActionTeleport.title, T.Webhooks.ActionTeleport.usedtptoplayer .. "\nID: " .. TargetID)
+                TriggerEvent("vorpinputs:getInput", T.Menus.DefaultsInputs.confirm, T.Menus.DefaultsInputs.serverID,
+                    function(result)
+                        local TargetID = result
+                        if TargetID ~= "" then
+                            TriggerServerEvent("vorp_admin:TpToPlayer", TargetID, "vorp.staff.TpPlayer")
+                            if Config.TeleportLogs.Tptoplayer then
+                                TriggerServerEvent("vorp_admin:logs", Config.TeleportLogs.Tptoplayer,
+                                    T.Webhooks.ActionTeleport.title,
+                                    T.Webhooks.ActionTeleport.usedtptoplayer .. "\nID: " .. TargetID)
+                            end
+                        else
+                            VORP.NotifyObjective(T.Notify.empty, 5000)
                         end
-                    else
-                        VORP.NotifyObjective(T.Notify.empty, 5000)
-                    end
-                end)
+                    end)
             elseif data.current.value == "admingoback" then
                 if lastLocation then
                     TriggerServerEvent("vorp_admin:sendAdminBack", "vorp.staff.TpPlayer")
                 end
             elseif data.current.value == "bringplayer" then
-                TriggerEvent("vorpinputs:getInput", T.Menus.DefaultsInputs.confirm, T.Menus.DefaultsInputs.serverID, function(result)
-                    local TargetID = result
-                    if TargetID ~= "" and lastLocation then
-                        local adminCoords = GetEntityCoords(PlayerPedId())
-                        TriggerServerEvent("vorp_admin:Bring", TargetID, adminCoords, "vorp.staff.BringPlayer")
-                        if Config.TeleportLogs.Bringplayer then
-                            TriggerServerEvent("vorp_admin:logs", Config.TeleportLogs.Bringplayer, T.Webhooks.ActionTeleport.title, T.Webhooks.ActionTeleport.usedbringplayer .. "\nID: " .. TargetID)
+                TriggerEvent("vorpinputs:getInput", T.Menus.DefaultsInputs.confirm, T.Menus.DefaultsInputs.serverID,
+                    function(result)
+                        local TargetID = result
+                        if TargetID ~= "" and lastLocation then
+                            local adminCoords = GetEntityCoords(PlayerPedId())
+                            TriggerServerEvent("vorp_admin:Bring", TargetID, adminCoords, "vorp.staff.BringPlayer")
+                            if Config.TeleportLogs.Bringplayer then
+                                TriggerServerEvent("vorp_admin:logs", Config.TeleportLogs.Bringplayer,
+                                    T.Webhooks.ActionTeleport.title,
+                                    T.Webhooks.ActionTeleport.usedbringplayer .. "\nID: " .. TargetID)
+                            end
+                        else
+                            VORP.NotifyObjective(T.Notify.empty, 5000)
                         end
-                    else
-                        VORP.NotifyObjective(T.Notify.empty, 5000)
-                    end
-                end)
+                    end)
             elseif data.current.value == "sendback" then
-                TriggerEvent("vorpinputs:getInput", T.Menus.DefaultsInputs.confirm, T.Menus.DefaultsInputs.serverID, function(result)
-                    local TargetID = result
-                    if TargetID ~= "" and lastLocation then
-                        TriggerServerEvent("vorp_admin:TeleportPlayerBack", TargetID, "vorp.staff.SendBack")
-                    else
-                        TriggerEvent("vorp:TipRight", T.Notify.goToPlayerFirst, 4000)
-                    end
-                end)
+                TriggerEvent("vorpinputs:getInput", T.Menus.DefaultsInputs.confirm, T.Menus.DefaultsInputs.serverID,
+                    function(result)
+                        local TargetID = result
+                        if TargetID ~= "" and lastLocation then
+                            TriggerServerEvent("vorp_admin:TeleportPlayerBack", TargetID, "vorp.staff.SendBack")
+                        else
+                            TriggerEvent("vorp:TipRight", T.Notify.goToPlayerFirst, 4000)
+                        end
+                    end)
             end
         end,
 

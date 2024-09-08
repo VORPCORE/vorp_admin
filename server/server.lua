@@ -655,15 +655,12 @@ RegisterNetEvent("vorp_admin:BanOffline", function(staticid, time, command)
     TriggerEvent("vorpbans:addtodb", false, staticid, time)
 end)
 
-RegisterNetEvent('vorp:teleportWayPoint', function(command, coords, waypoint)
+RegisterNetEvent('vorp:teleportWayPoint', function(command, coords)
     local _source = source
     if not AllowedToExecuteAction(_source, command) then
         return
     end
-    if Config.TeleportLogs.Tpm then
-        local description = T.Webhooks.ActionTeleport.usedtpm .. "\nWaypoint teleported to " .. tostring(waypoint) .. "\nfrom Coords : " .. tostring(coords)
-        TriggerEvent("vorp_admin:logs", Config.TeleportLogs.Tpm, T.Webhooks.ActionTeleport.title, description)
-    end
+    TriggerClientEvent('vorp:teleportWayPoint', _source, coords)
 end)
 
 
@@ -786,7 +783,8 @@ AddEventHandler('vorp_admin:logs', function(webhook, title, description)
         "` \n**Discord:** <@" ..
         discordId ..
         ">**\nIP: **`" .. ip .. "`\n `" .. description .. "`"
-    Core.AddWebhook(title, webhook, message, Config.webhookColor, Config.name, Config.logo, Config.footerLogo, Config.Avatar)
+    Core.AddWebhook(title, webhook, message, Config.webhookColor, Config.name, Config.logo, Config.footerLogo,
+        Config.Avatar)
 end)
 
 
