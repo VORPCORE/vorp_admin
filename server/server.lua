@@ -771,7 +771,10 @@ RegisterServerEvent('vorp_admin:logs', function(webhook, title, description)
     local _source = source
     local Identifier = GetPlayerIdentifier(_source, 1)
     local discordIdentity = GetIdentity(_source, "discord")
-    local discordId = string.sub(discordIdentity, 9)
+    local discordId = "no discord"
+    if not discordIdentity then
+        discordId = string.sub(discordIdentity, 9)
+    end
     local ip = GetPlayerEndpoint(_source)
     local steamName = GetPlayerName(_source)
 
