@@ -772,7 +772,7 @@ RegisterServerEvent('vorp_admin:logs', function(webhook, title, description)
     local Identifier = GetPlayerIdentifier(_source, 1)
     local discordIdentity = GetIdentity(_source, "discord")
     local discordId = "no discord"
-    if not discordIdentity then
+    if discordIdentity then
         discordId = string.sub(discordIdentity, 9)
     end
     local ip = GetPlayerEndpoint(_source)
