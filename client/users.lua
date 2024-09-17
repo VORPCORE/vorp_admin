@@ -64,7 +64,7 @@ function ScoreBoard()
     local elements = {}
 
     -- local players = GetPlayers()
-    local result = VORP.Callback.TriggerAsync("vorp_admin:Callback:getplayersinfo", { search = "all" })
+    local result = VORP.Callback.TriggerAwait("vorp_admin:Callback:getplayersinfo", { search = "all" })
     if not result then
         return
     end
