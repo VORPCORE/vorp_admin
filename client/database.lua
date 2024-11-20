@@ -66,7 +66,7 @@ function DatabasePlayers(PlayerData)
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDatabase,
             align    = 'top-left',
             elements = elements,
-            lastmenu = 'DataBase', --Go back
+            lastmenu = 'DataBase', -- Go back
         },
         function(data)
             if data.current == "backup" then
@@ -139,7 +139,7 @@ function GivePlayers(PlayerData)
             subtext  = "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
             align    = 'top-left',
             elements = elements,
-            lastmenu = 'DataBase', --Go back
+            lastmenu = 'DataBase', -- Go back
         },
         function(data)
             if data.current == "backup" then
@@ -334,7 +334,7 @@ function RemovePlayers(PlayerData)
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDatabase,
             align    = 'top-left',
             elements = elements,
-            lastmenu = 'DataBase', --Go back
+            lastmenu = 'DataBase', -- Go back
         },
         function(data)
             if data.current == "backup" then

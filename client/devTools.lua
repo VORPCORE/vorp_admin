@@ -210,7 +210,7 @@ function OpenObjMenu()
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDevTools,
             align    = 'top-left',
             elements = elements,
-            lastmenu = 'Actions', --Go back
+            lastmenu = 'Actions', -- Go back
         },
 
         function(data)

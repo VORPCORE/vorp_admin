@@ -180,12 +180,12 @@ function RequestStaff()
         end)
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
     repeat Wait(1000) until LocalPlayer.state.IsInSession
     while true do
-        Citizen.Wait(10)
+        Wait(10)
         if timer >= 0 and cooldown then
-            Citizen.Wait(1000)
+            Wait(1000)
             if timer > 0 then
                 timer = timer - 1
             end

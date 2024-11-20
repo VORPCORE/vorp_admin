@@ -6,7 +6,7 @@ Translation.Langs = {
       DefaultsMenusTitle = {
         menuTitle                = "VORP ADMIN",
         menuSubTitle             = "Main Menu",
-        menuSubTitleAdmin        = "Admin Manegement",
+        menuSubTitleAdmin        = "Admin Management",
         menuSubTitleBooster      = "Boosters",
         menuSubTitleDatabase     = "Database",
         menuSubTitleCoords       = "Coordinates",
@@ -46,7 +46,7 @@ Translation.Langs = {
         MenuAdminInput = {
           title = "SEARCH PLAYER",
           placeholder = "Server ID",
-          errorMsg = "min 10 max 100 chars dont use dot or commas"
+          errorMsg = "Min 10 Max 100 chars dont use dot or commas"
         }
       },
       MainPlayerStatus = {
@@ -85,12 +85,12 @@ Translation.Langs = {
         DelWagonRadiusInput = {
           title = "DEL WAGON",
           placeholder = "Insert number",
-          errorMsg = "numbers only max allowed is 2",
+          errorMsg = "Numbers only max allowed is 2",
         },
         AnnounceInput = {
           title = "ANNOUNCE",
           placeholder = "Insert text",
-          errorMsg = "only letters and numbers, no dots no commas etc",
+          errorMsg = "Only letters and numbers, no dots no commas etc",
         },
       },
       SubCoordsMenu = {
@@ -134,17 +134,17 @@ Translation.Langs = {
         BanTypeInput = {
           title = "BAN PLAYER",
           placeholder = "Ex: ban 6 1d",
-          errorMsg = "min 1 max 20, dont use dot, commas etc"
+          errorMsg = "Min 1 Max 20, dont use dot, commas etc"
         },
         WhiteTypeInput = {
           title = "WHITELIST PLAYER",
           placeholder = "Ex: steam:3244242442",
-          errorMsg = "min 1 max 20, dont use dot, commas etc"
+          errorMsg = "Min 1 Max 20, dont use dot, commas etc"
         },
         WarnTypeInput = {
           title = "WARN PLAYER",
           placeholder = "Ex: warn 6",
-          errorMsg = "min 1 max 20, dont use dot, commas etc"
+          errorMsg = "Min 1 Max 20, dont use dot, commas etc"
         }
       },
       SubSimpleActionOptions = {
@@ -194,22 +194,22 @@ Translation.Langs = {
         KickInput = {
           title = "KICK PLAYER",
           placeholder = "Reason of Kick",
-          errorMsg = "min 10 max 100 chars dont use dot or commas"
+          errorMsg = "Min 10 Max 100 chars dont use dot or commas"
         },
         BanInput = {
           title = "BAN PLAYER",
           placeholder = "Ex: 1d is 1 day",
-          errorMsg = "min 2 max 2 chars dont use dot or commas"
+          errorMsg = "Min 2 Max 2 chars dont use dot or commas"
         },
         GroupInput = {
           title = "SET GROUP",
           placeholder = "Ex: admin",
-          errorMsg = "min 3 max 20, only letters"
+          errorMsg = "Min 3 Max 20, only letters"
         },
         JobInput = {
           title = "SET JOB",
           placeholder = "Ex: police 1 Sheriff",
-          errorMsg = "min 3 max 20 no symbols"
+          errorMsg = "Min 3 Max 20 no symbols"
         },
       },
       MainBoostOptions = {

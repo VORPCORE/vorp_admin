@@ -13,8 +13,8 @@ AddEventHandler("onResourceStop", function(resourceName)
         return
     end
     local player = PlayerPedId()
-    ClearPedTasksImmediately(player, true, true) -- clear tasks
-    Closem()                                     --close menu
+    ClearPedTasksImmediately(player, true, true) -- Clear tasks
+    Closem()                                     -- Close menu
     AdminAllowed = false
 end)
 
@@ -22,7 +22,7 @@ AddEventHandler("onClientResourceStart", function(resourceName)
     if resourceName ~= GetCurrentResourceName() then
         return
     end
-    --FOR TESTS ENABLED THIS
+    -- FOR TESTS ENABLED THIS
     if not Config.DevMode then
         return
     end
@@ -34,7 +34,7 @@ end)
 
 local function CanOpenUsersMenu()
     if Config.UseUsersMenu then
-        TriggerServerEvent("vorp_admin:GetGroup") -- check permission
+        TriggerServerEvent("vorp_admin:GetGroup") -- Check Permission
         OpenUsersMenu()
     end
 end
@@ -165,12 +165,12 @@ RegisterNetEvent("vorp_admin:TeleportPlayerBack", function()
 end)
 -----------------------------------------------------------------------------
 
--- show items inventory
+-- Show items inventory
 RegisterNetEvent("vorp_admin:getplayerInventory", function(inventorydata)
     OpenInventory(inventorydata)
 end)
 
---------------------------Troll Actions Events------------------------------
+-------------------------- Troll Actions Events ------------------------------
 RegisterNetEvent('vorp_admin:ClientTrollKillPlayerHandler', function()
     SetEntityHealth(PlayerPedId(), 0, 0)
 end)

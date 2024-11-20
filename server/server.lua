@@ -167,7 +167,7 @@ end)
 ----------------------------------------------------------------------------------
 ---------------------------- ADVANCED ADMIN ACTIONS ---------------------------------------
 
---KICK
+-- KICK
 RegisterServerEvent("vorp_admin:kick", function(targetID, reason, command)
     local _source = source
     local _target = targetID
@@ -183,7 +183,7 @@ RegisterServerEvent("vorp_admin:kick", function(targetID, reason, command)
     end
 end)
 
---UNWARN WARN
+-- UNWARN / WARN
 RegisterServerEvent("vorp_admin:warns", function(targetID, status, staticid, msg, command)
     local _source = source
     local _target = targetID
@@ -204,7 +204,7 @@ RegisterServerEvent("vorp_admin:warns", function(targetID, status, staticid, msg
     end
 end)
 
---BAN
+-- BAN
 RegisterServerEvent("vorp_admin:BanPlayer", function(targetID, staticid, time, command)
     local _source = source
     local _target = targetID
@@ -243,7 +243,7 @@ RegisterServerEvent("vorp_admin:BanPlayer", function(targetID, staticid, time, c
     end
 end)
 
---RESPAWN
+-- RESPAWN
 RegisterServerEvent("vorp_admin:respawnPlayer", function(targetID, command)
     local _source = source
     if not Core.getUser(targetID) then
@@ -413,7 +413,7 @@ RegisterServerEvent("vorp_admin:givePlayer", function(targetID, action, data1, d
 end)
 
 
---REMOVE DB
+-- REMOVE DB
 
 RegisterServerEvent("vorp_admin:ClearAllItems", function(type, targetID, command)
     local _source = source
@@ -456,7 +456,7 @@ RegisterServerEvent("vorp_admin:ClearAllItems", function(type, targetID, command
     end
 end)
 
---GET ITEMS FROM INVENTORY
+-- GET ITEMS FROM INVENTORY
 RegisterServerEvent("vorp_admin:checkInventory", function(targetID, command)
     local _source = source
     if not Core.getUser(targetID) then
@@ -469,7 +469,7 @@ RegisterServerEvent("vorp_admin:checkInventory", function(targetID, command)
     TriggerClientEvent("vorp_admin:getplayerInventory", _source, inv)
 end)
 
---REMOVE CURRENCY
+-- REMOVE CURRENCY
 RegisterServerEvent("vorp_admin:ClearCurrency", function(targetID, type, command)
     local _source = source
 
@@ -498,9 +498,9 @@ RegisterServerEvent("vorp_admin:ClearCurrency", function(targetID, type, command
 end)
 
 -----------------------------------------------------------------------------------------------------------------
---ADMINACTIONS
+-- ADMIN ACTIONS
 
---GROUP
+-- GROUP
 RegisterServerEvent("vorp_admin:setGroup", function(targetID, newgroup, command)
     local _source = source
     local _target = targetID
@@ -572,7 +572,7 @@ RegisterServerEvent("vorp_admin:Whitelistoffline", function(staticid, type, comm
     end
 end)
 
---REVIVE
+-- REVIVE
 RegisterServerEvent("vorp_admin:revive", function(targetID, command)
     local _source = source
     local _target = targetID
@@ -586,7 +586,7 @@ RegisterServerEvent("vorp_admin:revive", function(targetID, command)
     end
 end)
 
---HEAL
+-- HEAL
 RegisterServerEvent("vorp_admin:heal", function(targetID, command)
     local _source = source
     local _target = targetID
@@ -600,7 +600,7 @@ RegisterServerEvent("vorp_admin:heal", function(targetID, command)
     end
 end)
 
---SPECTATE
+-- SPECTATE
 RegisterServerEvent("vorp_admin:spectate", function(targetID, command)
     local _source = source
 
@@ -665,8 +665,8 @@ end)
 
 
 -----------------------------------------------------------------------------------------------------------------
---PERMISSIONS
---OPEN MAIN MENU
+-- PERMISSIONS
+-- OPEN MAIN MENU
 Core.Callback.Register('vorp_admin:CanOpenStaffMenu', function(source, cb, object)
     local _source = source
     local ace = IsPlayerAceAllowed(_source, object)
@@ -790,13 +790,13 @@ end)
 
 
 
--- alert staff of report
+-- Alert staff of report
 RegisterServerEvent('vorp_admin:alertstaff', function(source)
     local _source = source
     local Character = Core.getUser(_source)
     if not Character then return end
     Character = Character.getUsedCharacter
-    local playername = Character.firstname .. ' ' .. Character.lastname --player char name
+    local playername = Character.firstname .. ' ' .. Character.lastname -- Player char name
 
     for _, staff in pairs(stafftable) do
         Core.NotifyRightTip(staff, T.Notify.player .. playername .. T.Notify.reportedToDiscord, 4000)
@@ -840,7 +840,7 @@ RegisterNetEvent("vorp_admin:requeststaff", function(source, type)
     local Character = Core.getUser(_source)
     if not Character then return end
     Character = Character.getUsedCharacter
-    local playername = Character.firstname .. ' ' .. Character.lastname --player char name
+    local playername = Character.firstname .. ' ' .. Character.lastname -- Player char name
     for id, staff in pairs(stafftable) do
         if type == "new" then
             Core.NotifyRightTip(staff, playername .. " ID: " .. playerID .. T.Notify.requestingAssistance .. T.Notify

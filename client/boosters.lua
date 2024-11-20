@@ -14,14 +14,14 @@ function GODmode()
         TriggerEvent('vorp:TipRight', T.Notify.switchedOn, 3000)
         SetEntityCanBeDamaged(player, false)
         SetEntityInvincible(player, true)
-        SetPedConfigFlag(player, 2, true) -- no critical hits
+        SetPedConfigFlag(player, 2, true) -- No critical hits
         SetPedCanRagdoll(player, false)
         SetPedCanBeTargetted(player, false)
-        Citizen.InvokeNative(0x5240864E847C691C, player, false) --set ped can be incapacitaded
+        Citizen.InvokeNative(0x5240864E847C691C, player, false) -- Set ped can be incapacitaded
         SetPlayerInvincible(player, true)
-        Citizen.InvokeNative(0xFD6943B6DF77E449, player, false) -- set ped can be lassoed
+        Citizen.InvokeNative(0xFD6943B6DF77E449, player, false) -- Set ped can be lassoed
 
-        if Config.BoosterLogs.GodMode then                      -- if nil dont send
+        if Config.BoosterLogs.GodMode then                      -- If nil dont send
             TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.GodMode, T.Webhooks.ActionBoosters.title,
                 T.Webhooks.ActionBoosters.usedgod)
         end
@@ -44,18 +44,18 @@ function GoldenCores()
     local player = PlayerPedId()
     if not goldenCores then
         TriggerEvent('vorp:TipRight', T.Notify.switchedOn, 3000)
-        -- inner cores
+        -- Inner cores
         Citizen.InvokeNative(0xC6258F41D86676E0, player, 0, 100)
         Citizen.InvokeNative(0xC6258F41D86676E0, player, 1, 100)
-        -- Citizen.InvokeNative(0xC6258F41D86676E0, player, 2, 100) -- dead eye
+        -- Citizen.InvokeNative(0xC6258F41D86676E0, player, 2, 100) -- Dead Eye
 
-        --outter cores
+        -- Outter cores
         Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 0, 5000.0)
         Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 1, 5000.0)
-        -- Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 2, 5000.0) -- dead eye
+        -- Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 2, 5000.0) -- Dead Eye
 
         Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 1, 5000.0)
-        -- Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 2, 5000.0)-- dead eye
+        -- Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 2, 5000.0)-- Dead Eye
         Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 0, 5000.0)
         if Config.BoosterLogs.GoldenCores then
             TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.GoldenCores, T.Webhooks.ActionBoosters.title,
@@ -64,12 +64,12 @@ function GoldenCores()
         goldenCores = true
     else
         TriggerEvent('vorp:TipRight', T.Notify.switchedOff, 3000)
-        --inner cores
+        -- Inner cores
         Citizen.InvokeNative(0xC6258F41D86676E0, player, 0, 100)
         Citizen.InvokeNative(0xC6258F41D86676E0, player, 1, 100)
         Citizen.InvokeNative(0xC6258F41D86676E0, player, 2, 100)
 
-        --outter cores
+        -- Outter cores
         Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 0, 0.0)
         Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 1, 0.0)
         Citizen.InvokeNative(0x4AF5A4C7B9157D14, player, 2, 0.0)
@@ -117,8 +117,8 @@ function Boost()
         { label = T.Menus.MainBoostOptions.selfHeal,            value = 'selfheal',     desc = T.Menus.MainBoostOptions.selfHeal_desc },
         { label = T.Menus.MainBoostOptions.selfRevive,          value = 'selfrevive',   desc = T.Menus.MainBoostOptions.selfRevive_desc },
         { label = T.Menus.MainBoostOptions.selfInvisible,       value = 'invisibility', desc = T.Menus.MainBoostOptions.selfInvisible_desc },
-        --{ label = "players blip map", value = 'playerblip', desc = "show players blip on the map" }, todo
-        --{ label = "players id", value = 'showid', desc = "show players id over head", }, todo
+        --{ label = "players blip map", value = 'playerblip', desc = "Show players blip on the map" }, -- TODO
+        --{ label = "players id", value = 'showid', desc = "Show players id over head", }, -- TODO
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'Boost',
@@ -260,8 +260,8 @@ function Boost()
 end
 
 local function DisableControls()
-    DisableControlAction(0, 0xB238FE0B, true) --disable controls here
-    DisableControlAction(0, 0x3C0A40F2, true) --disable controls here
+    DisableControlAction(0, 0xB238FE0B, true) -- Disable controls here
+    DisableControlAction(0, 0x3C0A40F2, true) -- Disable controls here
 end
 
 
@@ -271,7 +271,7 @@ local Prompt4
 local Prompt6
 local PromptGroup = GetRandomIntInRange(0, 0xffffff)
 
---PROMPTS
+-- Prompts
 CreateThread(function()
     repeat Wait(1000) until LocalPlayer.state.IsInSession
 
@@ -290,7 +290,7 @@ CreateThread(function()
 
     local str = T.Menus.MainBoostOptions.Prompts.speed
     Prompt2 = PromptRegisterBegin()
-    PromptSetControlAction(Prompt2, Config.Controls.changeSpeed) -- shift
+    PromptSetControlAction(Prompt2, Config.Controls.changeSpeed) -- Shift
     str = CreateVarString(10, 'LITERAL_STRING', str)
     PromptSetText(Prompt2, str)
     PromptSetEnabled(Prompt2, 1)
