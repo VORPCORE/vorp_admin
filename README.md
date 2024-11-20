@@ -5,7 +5,7 @@
 ----
 
 ## Features
-- Built in Ace permissions and databse
+- Built in Ace permissions and database
 - Owners have all perms by default
 - Permissions for all actions
 - Administration tools
@@ -14,7 +14,7 @@ and many more
 
 <img width="280" alt="image" src="https://user-images.githubusercontent.com/87246847/176924806-692cb9ab-9e5b-4c91-ae22-76a6cbe3faf8.png">
 
-Theres also  a menu for users
+Theres also a menu for users
 
 <img width="280" alt="image" src="https://user-images.githubusercontent.com/87246847/176924596-959f8642-f5d2-40f5-a966-aef59346407a.png">
 
@@ -26,7 +26,7 @@ Theres also  a menu for users
 - Restart server, enjoy.
 
 ## Dependencies
-*(You need all these updated to lattest verions or it wont work )*
+*(You need all these updated to latest versions or it wont work)*
 - [vorp_inputs](https://github.com/VORPCORE/vorp_inputs-lua) **LUA**
 - [vorp_menu](https://github.com/VORPCORE/vorp_menu)
 
