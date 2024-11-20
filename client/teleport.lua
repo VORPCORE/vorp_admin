@@ -22,7 +22,7 @@ function Teleport()
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleTeleport,
             align    = 'top-left',
             elements = elements,
-            lastmenu = 'OpenMenu', --Go back
+            lastmenu = 'OpenMenu', -- Go back
         },
 
         function(data)

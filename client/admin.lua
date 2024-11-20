@@ -27,7 +27,7 @@ function Admin()
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
             align    = 'top-left',
             elements = elements,
-            lastmenu = 'OpenMenu', --Go back
+            lastmenu = 'OpenMenu', -- Go back
         },
         function(data)
             if data.current == "backup" then
@@ -292,7 +292,7 @@ function OpenTrollActions(PlayerInfo)
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
             align    = 'top-left',
             elements = elements,
-            lastmenu = 'PlayerList', --Go back
+            lastmenu = 'PlayerList', -- Go back
         },
 
         function(data)
@@ -398,7 +398,7 @@ function OpenSimpleActionMenu(PlayerInfo)
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
             align    = 'top-left',
             elements = elements,
-            lastmenu = 'PlayerList', --Go back
+            lastmenu = 'PlayerList', -- Go back
         },
 
         function(data)
@@ -551,7 +551,7 @@ function OpenAdvancedActions(Player)
     MenuData.Open('default', GetCurrentResourceName(), 'OpenAdvancedActions',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
-            subtext  = Player.PlayerName, --char player name
+            subtext  = Player.PlayerName, -- Char player name
             align    = 'top-left',
             elements = elements,
             lastmenu = 'PlayerList',
@@ -693,7 +693,7 @@ function Actions()
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
             align    = 'top-left',
             elements = elements,
-            lastmenu = 'Admin', --Go back
+            lastmenu = 'Admin', -- Go back
         },
 
         function(data)
@@ -704,7 +704,7 @@ function Actions()
             if data.current.value == "delhorse" then
                 local AdminAllowed = IsAdminAllowed('vorp.staff.DeleteHorse')
                 if AdminAllowed then
-                    TriggerEvent("vorp:delHorse") -- todo make server side
+                    TriggerEvent("vorp:delHorse") -- TODO Make Server Side
                 end
             elseif data.current.value == "delwagon" then
                 local AdminAllowed = IsAdminAllowed('vorp.staff.DeleteWagon')
@@ -718,7 +718,7 @@ function Actions()
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                         local radius = result
                         if radius ~= "" then
-                            TriggerEvent("vorp:deleteVehicle", radius) -- todo make server side
+                            TriggerEvent("vorp:deleteVehicle", radius) -- TODO Make Server Side
                         else
                             VORP.NotifyObjective(T.Notify.empty, 5000)
                         end
@@ -765,7 +765,7 @@ function OpenCoordsMenu()
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleCoords,
             align    = 'top-left',
             elements = elements,
-            lastmenu = 'Actions', --Go back
+            lastmenu = 'Actions', -- Go back
         },
 
         function(data)
@@ -854,7 +854,7 @@ function OffLine()
                             splitstring[#splitstring + 1] = i
                         end
                         local type, steam = tostring(splitstring[1]), tostring(splitstring[2])
-                        if type and steam then -- if empty dont run
+                        if type and steam then -- If empty dont run
                             if type == "whitelist" then
                                 TriggerServerEvent("vorp_admin:Whitelistoffline", steam, type)
                             else

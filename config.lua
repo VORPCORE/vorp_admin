@@ -1,26 +1,25 @@
 Config = {
-    --add your language
-    DevMode             = false, -- leave false
-    useAdminCommand     = true,  -- can open menu with adim command below
+    -- Add your language
+    DevMode             = false, -- Leave false
+    useAdminCommand     = true,  -- Can open menu with adim command below
     commandAdmin        = "adminMenu",
     -- Language setting - English | Portuguese_PT | Portuguese_BR | French | German | Spanish
     Lang                = "English",
-    Key                 = 0x3C3DD371, --PGDOWN open menu
-    CanOpenMenuWhenDead = true,       -- if true any staff can open menu when dead, !WARNING! staff can abuse this to get revived
-    useQWreports        = true,       -- disable this if you are not using qw reports
-    VorpStable          = true,       -- if you are using vorp_stable then set to true if syn stable set false  when giving worses or wagons it will go directly to databse
+    Key                 = 0x3C3DD371, -- PGDOWN Open Menu
+    CanOpenMenuWhenDead = true,       -- If true any staff can open menu when dead, !WARNING! staff can abuse this to get revived
+    useQWreports        = true,       -- Disable this if you are not using qw reports
+    VorpStable          = true,       -- If you are using vorp_stable then set to true if syn stable set false  when giving worses or wagons it will go directly to databse
 
-    -- heal
+    -- Heal
     Heal                = {
         Players = function()
-            --TriggerServerEvent("outsider_needs:Heal") -- trigger to server and from there heal player
+            --TriggerServerEvent("outsider_needs:Heal") -- Trigger to server and from there heal player
             TriggerEvent("vorpmetabolism:changeValue", "Thirst", 1000)
             TriggerEvent("vorpmetabolism:changeValue", "Hunger", 1000)
-            TriggerEvent('fred_meta:consume', 100, 100, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0) -- fred metabolism
+            TriggerEvent('fred_meta:consume', 100, 100, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0) -- Fred Metabolism
         end
     },
     ---------------------- NO CLIP ----------------------
-
     Controls            = {
 
         goUp = 0xF84FA74F,        -- Q
@@ -31,7 +30,7 @@ Config = {
         goBackward = 0xD27782E3,  -- S
         changeSpeed = 0x8FFC75D6, -- L-Shift
         camMode = 0x24978A28,     -- H
-        Cancel = 0x4AF4D473
+        Cancel = 0x4AF4D473       -- Delete
 
     },
     Speeds              = {
@@ -48,10 +47,10 @@ Config = {
         z = 0.1,                -- Upward and downward movement speed multiplier
         h = 1,                  -- Rotation movement speed multiplier
     },
-    FrozenPosition      = true, -- frozen on open menu vorp.staff.OpenMenu
+    FrozenPosition      = true, -- Frozen on open menu vorp.staff.OpenMenu
     AllowedGroups       = {
         { group = { "admin" }, command = "vorp.staff.OpenMenu" },
-        { group = { "admin" }, command = "vorp.staff.Admin" }, -- groups you want for these permissions
+        { group = { "admin" }, command = "vorp.staff.Admin" }, -- Groups you want for these permissions
         { group = { "admin" }, command = "vorp.staff.Boosters" },
         { group = { "admin" }, command = "vorp.staff.Database" },
         { group = { "admin" }, command = "vorp.staff.Teleports" },
@@ -125,18 +124,18 @@ Config = {
     },
     -----------------------------------------------------
     -- Users scoreboard
-    -- only one can be added
-    -- choose what info should show to all users
+    -- Only one can be added
+    -- Choose what info should show to all users
     showUsersInfo       = "showAll", -- showAll --showJob --showGroup -- showID
-    UseUsersMenu        = true,      --leave false if you dont need users menu
-    EnablePlayerlist    = true,      -- enable scroeboard
+    UseUsersMenu        = true,      -- Leave false if you dont need users menu
+    EnablePlayerlist    = true,      -- Enable scroeboard
     --------------------------------------------------------
     -- WEBHOOKS/LOGS
-    AlertCooldown       = 60,                                  -- cooldown for request staff to request again (seconds)
-    webhookColor        = 16711680,                            --EMBED COLOR RED
-    name                = "VORP",                              --NAME OF EMBED
-    logo                = "https://via.placeholder.com/30x30", --HEAD LOGO
-    footerLogo          = "https://via.placeholder.com/30x30", --FOOTER LOGO
+    AlertCooldown       = 60,                                  -- Cooldown for request staff to request again (seconds)
+    webhookColor        = 16711680,                            -- EMBED COLOR RED
+    name                = "VORP",                              -- NAME OF EMBED
+    logo                = "https://via.placeholder.com/30x30", -- HEAD LOGO
+    footerLogo          = "https://via.placeholder.com/30x30", -- FOOTER LOGO
     Avatar              = "https://via.placeholder.com/30x30", -- AVATAR LOGO
     ReportLogs          = {
         Reports = "",                                          -- for reports
@@ -156,7 +155,7 @@ Config = {
         SelfSpawnWagon = "",
     },
     AdminLogs           = {
-        --simple actions
+        -- Simple actions
         Freezed = "",
         Bring = "",
         Goto = "",
@@ -165,7 +164,7 @@ Config = {
         Warned = "",
         Unwarned = "",
         Spectate = "",
-        --advanced actions
+        -- Advanced actions
         Respawn = "",
         Kick = "",
         Ban = "",
