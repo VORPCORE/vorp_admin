@@ -27,7 +27,7 @@ function OpenUsersMenu()
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleScoreboard,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
         },
         function(data, menu)
@@ -90,7 +90,7 @@ function ScoreBoard()
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleScoreboard,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'OpenUsersMenu', --Go back
         },
@@ -137,7 +137,7 @@ function RequestStaff()
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleRequestStaff,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'OpenUsersMenu', --Go back
         },
@@ -212,7 +212,7 @@ function OpenCommands()
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleCommands,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'OpenUsersMenu', --Go back
         },

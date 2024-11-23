@@ -25,7 +25,7 @@ function Admin()
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'OpenMenu', -- Go back
         },
@@ -189,7 +189,7 @@ function OpenSubAdminMenu(Player)
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'PlayerList',
         },
@@ -290,7 +290,7 @@ function OpenTrollActions(PlayerInfo)
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'PlayerList', -- Go back
         },
@@ -396,7 +396,7 @@ function OpenSimpleActionMenu(PlayerInfo)
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'PlayerList', -- Go back
         },
@@ -552,7 +552,7 @@ function OpenAdvancedActions(Player)
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = Player.PlayerName, -- Char player name
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'PlayerList',
         },
@@ -691,7 +691,7 @@ function Actions()
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'Admin', -- Go back
         },
@@ -763,7 +763,7 @@ function OpenCoordsMenu()
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleCoords,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'Actions', -- Go back
         },
@@ -807,7 +807,7 @@ function OffLine()
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleAdmin,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'Admin',
         },

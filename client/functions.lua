@@ -72,7 +72,7 @@ function OpenMenu()
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitle,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
         },
         function(data, menu)

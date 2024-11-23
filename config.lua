@@ -1,7 +1,8 @@
 Config = {
     -- Add your language
-    DevMode             = false, -- Leave false
-    useAdminCommand     = true,  -- Can open menu with adim command below
+    DevMode             = false,      -- Leave false
+    AlignMenu           = 'top-left', -- align menu
+    useAdminCommand     = true,       -- Can open menu with adim command below
     commandAdmin        = "adminMenu",
     -- Language setting - English | Portuguese_PT | Portuguese_BR | French | German | Spanish
     Lang                = "English",

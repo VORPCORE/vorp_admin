@@ -39,7 +39,7 @@ function OpenDevTools()
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDevTools,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'OpenMenu'
         },
@@ -160,7 +160,7 @@ function SpawnPeds(action)
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDevTools,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'OpenMenu'
         },
@@ -208,7 +208,7 @@ function OpenObjMenu()
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDevTools,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'Actions', -- Go back
         },

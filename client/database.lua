@@ -34,7 +34,7 @@ function DataBase()
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDatabase,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'OpenMenu',
         },
@@ -64,7 +64,7 @@ function DatabasePlayers(PlayerData)
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDatabase,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'DataBase', -- Go back
         },
@@ -137,7 +137,7 @@ function GivePlayers(PlayerData)
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = "<span style=color:MediumSeaGreen;>" .. PlayerData.PlayerName .. "</span>",
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'DataBase', -- Go back
         },
@@ -332,7 +332,7 @@ function RemovePlayers(PlayerData)
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDatabase,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'DataBase', -- Go back
         },
@@ -435,7 +435,7 @@ function OpenInventory(inventorydata)
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDatabase,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'DataBase',
         },

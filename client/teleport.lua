@@ -20,7 +20,7 @@ function Teleport()
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleTeleport,
-            align    = 'top-left',
+            align    = Config.AlignMenu,
             elements = elements,
             lastmenu = 'OpenMenu', -- Go back
         },
