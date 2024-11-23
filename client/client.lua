@@ -2,7 +2,7 @@ local Key = Config.Key
 local CanOpen = Config.CanOpenMenuWhenDead
 local Inmenu
 local spectating = false
-local lastcoords = nil
+local lastcoords = { x = 0, y = 0, z = 0 }
 local T = Translation.Langs[Config.Lang]
 MenuData = exports.vorp_menu:GetMenuData()
 VORP = exports.vorp_core:GetCore()
@@ -22,10 +22,9 @@ AddEventHandler("onClientResourceStart", function(resourceName)
     if resourceName ~= GetCurrentResourceName() then
         return
     end
-    -- FOR TESTS ENABLED THIS
-    if not Config.DevMode then
-        return
-    end
+
+    if not Config.DevMode then return end
+
     AdminAllowed = false
     local player = GetPlayerServerId(tonumber(PlayerId()))
     Wait(100)
@@ -34,7 +33,7 @@ end)
 
 local function CanOpenUsersMenu()
     if Config.UseUsersMenu then
-        TriggerServerEvent("vorp_admin:GetGroup") -- Check Permission
+        TriggerServerEvent("vorp_admin:GetGroup")
         OpenUsersMenu()
     end
 end
@@ -50,7 +49,7 @@ end
 
 
 CreateThread(function()
-    repeat Wait(1000) until LocalPlayer.state.IsInSession
+    repeat Wait(3000) until LocalPlayer.state.IsInSession
 
     if Config.useAdminCommand then
         TriggerEvent('chat:addSuggestion', '/' .. Config.commandAdmin, 'Open admin menu or use pagedown', { {} })
@@ -84,8 +83,7 @@ CreateThread(function()
 end)
 
 ----- EVENTS
-RegisterNetEvent("vorp_admin:Freezeplayer")
-AddEventHandler("vorp_admin:Freezeplayer", function(state)
+RegisterNetEvent("vorp_admin:Freezeplayer", function(state)
     FreezeEntityPosition(PlayerPedId(), state)
 end)
 
@@ -138,7 +136,7 @@ RegisterNetEvent("vorp_admin:spectatePlayer", function(target, targetCoords)
         spectating = false
     end
 end)
-
+local lastLocation = nil
 ------------------------- TELEPORT  EVENTS FROM SERVER  -------------------------------
 RegisterNetEvent("vorp_admin:gotoPlayer", function(targetCoords)
     lastLocation = GetEntityCoords(PlayerPedId())

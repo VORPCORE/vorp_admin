@@ -1,5 +1,3 @@
----@diagnostic disable: undefined-global
-
 local T = Translation.Langs[Config.Lang]
 local active = false
 ---------------------------------------------------------------------------------------------------
@@ -7,17 +5,13 @@ local active = false
 
 local function LoadModel(ped)
     if not IsModelInCdimage(ped) then
-        TriggerEvent('vorp:TipRight', "invalid model", 3000)
+        print("invalid model")
         return
     end
 
-    local count = 1000
     if not HasModelLoaded(ped) then
         RequestModel(ped, false)
-        repeat
-            Wait(0)
-            count = count - 1
-        until HasModelLoaded(ped) or count <= 0
+        repeat Wait(0) until HasModelLoaded(ped)
     end
 end
 
@@ -50,18 +44,16 @@ function OpenDevTools()
 
             if data.current.value == "spawnped" then
                 MenuData.CloseAll()
-                local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
-                    T.Menus.MainDevToolsOptions.SpawnPedInput.placeholder,
-                    T.Menus.MainDevToolsOptions.SpawnPedInput.title, "text",
+                local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.MainDevToolsOptions.SpawnPedInput.placeholder, T.Menus.MainDevToolsOptions.SpawnPedInput.title, "text",
                     T.Menus.MainDevToolsOptions.SpawnPedInput.errorMsg, "[A-Za-z0-9_ \\-]{5,60}")
                 TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                     local ped = tostring(result)
-                    local playerCoords = GetEntityCoords(PlayerPedId())
                     if ped ~= "" then
                         LoadModel(ped)
-                        local npc = CreatePed(joaat(ped), playerCoords.x, playerCoords.y, playerCoords.z, 0.0, true, true,
-                            true)
+                        local offset = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 5.0, 0.0)
+                        local npc = CreatePed(joaat(ped), offset.x, offset.y, offset.z, 0.0, true, true, true, false)
                         repeat Wait(0) until DoesEntityExist(npc)
+
                         Citizen.InvokeNative(0x77FF8D35EEC6BBC4, npc, 1, 0)
                         SetModelAsNoLongerNeeded(ped)
                         SetEntityAsNoLongerNeeded(npc)
@@ -117,8 +109,7 @@ function OpenDevTools()
                     local playerCoords = GetOffsetFromEntityInWorldCoords(player, 0.0, 5.0, 0.0)
                     if wagon ~= "" then
                         LoadModel(wagon)
-                        local Wagon = CreateVehicle(wagon, playerCoords.x, playerCoords.y, playerCoords.z, 0, true, true,
-                            true)
+                        local Wagon = CreateVehicle(wagon, playerCoords.x, playerCoords.y, playerCoords.z, 0, true, true, true)
                         repeat Wait(0) until DoesEntityExist(Wagon)
                         Citizen.InvokeNative(0x77FF8D35EEC6BBC4, Wagon, 1, 0)
                         SetPedIntoVehicle(player, Wagon, -1)
@@ -170,24 +161,20 @@ function SpawnPeds(action)
             end
 
             if data.current.value then
-                local ped = data.current.value
                 local player = PlayerPedId()
                 local playerCoords = GetOffsetFromEntityInWorldCoords(player, 0.0, 5.0, 0.0)
-
-                LoadModel(ped)
-
+                LoadModel(data.current.value)
                 if action == "peds" then
-                    local npc = CreatePed(joaat(ped), playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
+                    local npc = CreatePed(joaat(data.current.value), playerCoords.x, playerCoords.y, playerCoords.z, 0.0, true, true, false, false)
                     repeat Wait(0) until DoesEntityExist(npc)
                     Citizen.InvokeNative(0x77FF8D35EEC6BBC4, npc, true, 0) -- variation
                 else
-                    local Wagon = CreateVehicle(joaat(ped), playerCoords.x, playerCoords.y, playerCoords.z, 0.0, true,
-                        true)
+                    local Wagon = CreateVehicle(joaat(data.current.value), playerCoords.x, playerCoords.y, playerCoords.z, 0.0, true, true)
                     repeat Wait(0) until DoesEntityExist(Wagon)
                     Citizen.InvokeNative(0x77FF8D35EEC6BBC4, Wagon, true, 0)
                     SetPedIntoVehicle(player, Wagon, -1)
                 end
-                SetModelAsNoLongerNeeded(npc)
+                SetModelAsNoLongerNeeded(data.current.value)
             end
         end,
         function(data, menu)
@@ -220,14 +207,14 @@ function OpenObjMenu()
             if data.current.value == "print" then
                 local coords = GetEntityCoords(player)
                 local closestObject, distance = GetClosestObject(coords)
+                local objectCoords = GetEntityCoords(closestObject)
                 local model = GetEntityModel(closestObject)
-                print(T.Notify.closesObject .. " " .. model)
+                print(T.Notify.closesObject .. " " .. model, objectCoords)
                 TriggerEvent("vorp:TipRight", T.Notify.closesObject .. " " .. model, 6000)
             elseif data.current.value == "del" then
                 -- only client side
                 local coords = GetEntityCoords(player)
                 local closestObject, distance = GetClosestObject(coords)
-                print(closestObject, distance)
                 TriggerEvent("vorp:TipRight", T.Notify.closesObject .. " " .. closestObject, 4000)
                 DeleteObject(closestObject)
             elseif data.current.value == "getcoords" then

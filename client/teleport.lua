@@ -2,7 +2,6 @@
 ---------------------------------------- TELEPORTS ---------------------------------------------------------
 local lastLocation = {}
 local autotpm = false
-
 local T = Translation.Langs[Config.Lang]
 
 function Teleport()
@@ -16,7 +15,7 @@ function Teleport()
         { label = T.Menus.MainTeleportOptions.bringPlayer,              value = 'bringplayer', desc = T.Menus.MainTeleportOptions.bringPlayer_desc },
         { label = T.Menus.MainTeleportOptions.sendPlayerToLastLocation, value = 'sendback',    desc = T.Menus.MainTeleportOptions.sendPlayerToLastLocation_desc },
     }
-    MenuData.Open('default', GetCurrentResourceName(), 'menuapi',
+    MenuData.Open('default', GetCurrentResourceName(), 'Teleport',
         {
             title    = T.Menus.DefaultsMenusTitle.menuTitle,
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleTeleport,
@@ -27,8 +26,9 @@ function Teleport()
 
         function(data)
             if data.current == "backup" then
-                _G[data.trigger]()
+                return _G[data.trigger]()
             end
+
             if data.current.value == "tpm" then
                 local coords = GetEntityCoords(PlayerPedId())
                 local waypointCoords = GetWaypointCoords()
@@ -36,18 +36,14 @@ function Teleport()
                 if not waypoint then
                     return VORP.NotifyObjective("theres no waypoint set", 5000)
                 end
-                TriggerServerEvent('vorp:teleportWayPoint', "vorp.staff.WayPoint", coords)
-                if Config.TeleportLogs.Tpm then
-                    local description = T.Webhooks.ActionTeleport.usedtpm .. "\nWaypoint teleported to " .. tostring(waypointCoords) .. "\nfrom Coords : " .. tostring(coords)
-                    TriggerServerEvent("vorp_admin:logs", Config.TeleportLogs.Tpm, T.Webhooks.ActionTeleport.title,
-                        description)
-                end
+
+                TriggerServerEvent('vorp:teleportWayPoint', "vorp.staff.WayPoint", coords, waypointCoords)
             elseif data.current.value == 'autotpm' then
                 if autotpm == false then
                     autotpm = true
                     TriggerEvent('vorp:TipRight', T.Notify.switchedOn, 3000)
                     while autotpm do
-                        Citizen.Wait(2000)
+                        Wait(2000)
                         TriggerServerEvent('vorp:teleportWayPoint', "vorp.staff.AutoTpm")
                     end
                 else
@@ -78,13 +74,7 @@ function Teleport()
                             Wait(2000)
                             SetEntityCoords(admin, x, y, z, false, false, false, false)
                             DoScreenFadeIn(3000)
-                            if Config.TeleportLogs.Tptocoords then
-                                local description = T.Webhooks.ActionTeleport.usedtptocoords ..
-                                    "\nfrom coords: " ..
-                                    tostring(oldCoords) .. "\nto coords: " .. tostring(vector3(x, y, z))
-                                TriggerServerEvent("vorp_admin:logs", Config.TeleportLogs.Tptocoords,
-                                    T.Webhooks.ActionTeleport.title, description)
-                            end
+                            TriggerServerEvent("vorp_admin:tptocoords", oldCoords, x, y, z)
                         else
                             VORP.NotifyObjective(T.Notify.empty, 5000)
                         end
@@ -96,11 +86,6 @@ function Teleport()
                         local TargetID = result
                         if TargetID ~= "" then
                             TriggerServerEvent("vorp_admin:TpToPlayer", TargetID, "vorp.staff.TpPlayer")
-                            if Config.TeleportLogs.Tptoplayer then
-                                TriggerServerEvent("vorp_admin:logs", Config.TeleportLogs.Tptoplayer,
-                                    T.Webhooks.ActionTeleport.title,
-                                    T.Webhooks.ActionTeleport.usedtptoplayer .. "\nID: " .. TargetID)
-                            end
                         else
                             VORP.NotifyObjective(T.Notify.empty, 5000)
                         end
@@ -115,12 +100,7 @@ function Teleport()
                         local TargetID = result
                         if TargetID ~= "" and lastLocation then
                             local adminCoords = GetEntityCoords(PlayerPedId())
-                            TriggerServerEvent("vorp_admin:Bring", TargetID, adminCoords, "vorp.staff.BringPlayer")
-                            if Config.TeleportLogs.Bringplayer then
-                                TriggerServerEvent("vorp_admin:logs", Config.TeleportLogs.Bringplayer,
-                                    T.Webhooks.ActionTeleport.title,
-                                    T.Webhooks.ActionTeleport.usedbringplayer .. "\nID: " .. TargetID)
-                            end
+                            TriggerServerEvent("vorp_admin:Bring", TargetID, adminCoords, "vorp.staff.BringPlayer", nil, TargetID)
                         else
                             VORP.NotifyObjective(T.Notify.empty, 5000)
                         end

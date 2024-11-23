@@ -151,10 +151,10 @@ function GetClosestObject(coords)
     local objects = GetGamePool('CObject')
     local closestDistance = -1
     local closestObject = -1
-    if coords then
-    else
+    if not coords then
         coords = GetEntityCoords(ped)
     end
+
     for i = 1, #objects, 1 do
         local objectCoords = GetEntityCoords(objects[i])
         local distance = #(objectCoords - coords)

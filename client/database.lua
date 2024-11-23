@@ -24,7 +24,7 @@ function DataBase()
                 "</span><br>" .. T.Menus.MainPlayerStatus.playerMoney .. " " .. "<span style=color:MediumSeaGreen;>" .. (playersInfo.Money or 0) ..
                 "</span><br>" .. T.Menus.MainPlayerStatus.playerGold .. " " .. "<span style=color:Gold;>" .. (playersInfo.Gold or 0) ..
                 "</span><br>" .. T.Menus.MainPlayerStatus.playerWhitelist .. " " .. "<span style=color:Gold;>" .. (playersInfo.WLstatus or "") ..
-                "</span><br>" .. T.Menus.MainPlayerStatus.playerWarnings .. " " .. "<span style=color:Gold;>" .. (playersInfo.warns or 0) .. "</span>",
+                "</span>",
             PlayerData = playersInfo
         }
     end
@@ -40,7 +40,7 @@ function DataBase()
         },
         function(data)
             if data.current == "backup" then
-                _G[data.trigger]()
+                return _G[data.trigger]()
             end
             if data.current.value == "players" then
                 local AdminAllowed = IsAdminAllowed("vorp.staff.OpenDatabase")
@@ -70,7 +70,7 @@ function DatabasePlayers(PlayerData)
         },
         function(data)
             if data.current == "backup" then
-                _G[data.trigger]()
+                return _G[data.trigger]()
             end
             if data.current.value == "give" then
                 local AdminAllowed = IsAdminAllowed("vorp.staff.OpenGiveMenu")
@@ -161,12 +161,9 @@ function GivePlayers(PlayerData)
                             itemQuantity = 1
                         end
                         if itemName and itemQuantity then
-                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, itemName, itemQuantity, nil, "vorp.staff.Giveitems")
+                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, itemName, itemQuantity, nil, "vorp.staff.Giveitems", PlayerData.PlayerName)
                         else
                             VORP.NotifyObjective(T.Notify.missingArgument, 4000)
-                        end
-                        if Config.DatabaseLogs.Giveitem then
-                            TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Giveitem, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgiveitem .. "\nPlayer: " .. PlayerData.PlayerName .. "\nItem: " .. itemName .. "\nQTY: " .. itemQuantity)
                         end
                     else
                         VORP.NotifyObjective(T.Notify.empty, 4000)
@@ -180,10 +177,7 @@ function GivePlayers(PlayerData)
                     if result ~= "" then
                         local weaponName = result
                         local type = "weapon"
-                        TriggerServerEvent("vorp_admin:givePlayer", targetID, type, weaponName, nil, nil, "vorp.staff.GiveWeapons")
-                        if Config.DatabaseLogs.Giveweapon then
-                            TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Giveweapon, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgiveweapon .. "\nPlayer: " .. PlayerData.PlayerName .. "\nWeapon: " .. weaponName)
-                        end
+                        TriggerServerEvent("vorp_admin:givePlayer", targetID, type, weaponName, nil, nil, "vorp.staff.GiveWeapons", PlayerData.PlayerName)
                     else
                         VORP.NotifyObjective(T.Notify.empty, 4000)
                     end
@@ -204,12 +198,9 @@ function GivePlayers(PlayerData)
                         end
                         local moneyType, Quantity = tonumber(splitString[1]), tonumber(splitString[2])
                         if moneyType and Quantity then
-                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, moneyType, Quantity, nil, "vorp.staff.GiveCurrency")
+                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, moneyType, Quantity, nil, "vorp.staff.GiveCurrency", PlayerData.PlayerName)
                         else
                             TriggerEvent("vorp:TipRight", T.Notify.missingArgument, 4000)
-                        end
-                        if Config.DatabaseLogs.Givecurrency then
-                            TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Givecurrency, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgivecurrency .. "\nPlayer: " .. PlayerData.PlayerName .. "\nCurrency: " .. moneyType .. "\nQTY: " .. Quantity)
                         end
                     else
                         VORP.NotifyObjective(T.Notify.empty, 4000)
@@ -232,15 +223,9 @@ function GivePlayers(PlayerData)
                         local Hashname, Horsename, Horsesex = tostring(splitString[1]), tostring(splitString[2]),
                             tonumber(splitString[3])
                         if Hashname and Horsename and Horsesex then
-                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, Hashname, Horsename, Horsesex, "vorp.staff.GiveHorse")
+                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, Hashname, Horsename, Horsesex, "vorp.staff.GiveHorse", PlayerData.PlayerName)
                         else
                             TriggerEvent("vorp:TipRight", T.Notify.missingArgument, 4000)
-                        end
-                        if Config.DatabaseLogs.Givehorse then
-                            TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Givehorse,
-                                T.Webhooks.ActionDatabase.title,
-                                T.Webhooks.ActionDatabase.usedgivehorse ..
-                                "\nPlayer: " .. PlayerData.PlayerName .. "\nHorse: " .. Hashname)
                         end
                     else
                         VORP.NotifyObjective(T.Notify.empty, 4000)
@@ -262,15 +247,9 @@ function GivePlayers(PlayerData)
                         end
                         local Modelname, Wagonname = tostring(splitString[1]), tostring(splitString[2])
                         if Modelname and Wagonname then
-                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, Modelname, Wagonname, nil, "vorp.staff.GiveWagons")
+                            TriggerServerEvent("vorp_admin:givePlayer", targetID, type, Modelname, Wagonname, nil, "vorp.staff.GiveWagons", PlayerData.PlayerName)
                         else
                             TriggerEvent("vorp:TipRight", T.Notify.missingArgument, 4000)
-                        end
-                        if Config.DatabaseLogs.Givewagon then
-                            TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Givewagon,
-                                T.Webhooks.ActionDatabase.title,
-                                T.Webhooks.ActionDatabase.usedgivewagon ..
-                                "\nPlayer: " .. PlayerData.PlayerName .. "\nWagon: " .. Modelname)
                         end
                     else
                         VORP.NotifyObjective(T.Notify.empty, 4000)
@@ -343,23 +322,11 @@ function RemovePlayers(PlayerData)
             if data.current.value == "clearmoney" then
                 local targetID = data.current.info
                 local type = "money"
-                TriggerServerEvent("vorp_admin:ClearCurrency", targetID, type, "vorp.staff.RemoveAllMoney")
-                if Config.DatabaseLogs.Clearmoney then
-                    TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Clearmoney,
-                        T.Webhooks.ActionDatabase.title,
-                        T.Webhooks.ActionDatabase.usedclearmoney ..
-                        "\nPlayer: " .. PlayerData.PlayerName .. "\nID: " .. targetID .. "\nCurrency: " .. type)
-                end
+                TriggerServerEvent("vorp_admin:ClearCurrency", targetID, type, "vorp.staff.RemoveAllMoney", PlayerData.PlayerName)
             elseif data.current.value == "cleargold" then
                 local targetID = data.current.info
                 local type = "gold"
-                TriggerServerEvent("vorp_admin:ClearCurrency", targetID, type, "vorp.staff.RemoveAllGold")
-                if Config.DatabaseLogs.Cleargold then
-                    TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Cleargold,
-                        T.Webhooks.ActionDatabase.title,
-                        T.Webhooks.ActionDatabase.usedcleargold ..
-                        "\nPlayer: " .. PlayerData.PlayerName .. "\nID: " .. targetID .. "\nCurrency: " .. type)
-                end
+                TriggerServerEvent("vorp_admin:ClearCurrency", targetID, type, "vorp.staff.RemoveAllGold", PlayerData.PlayerName)
             elseif data.current.value == "clearitems" then
                 local targetID = data.current.info
                 local type = "items"
@@ -371,13 +338,7 @@ function RemovePlayers(PlayerData)
                     local result = tostring(cb)
                     if result ~= "" then
                         if result == "yes" then
-                            TriggerServerEvent("vorp_admin:ClearAllItems", type, targetID, "vorp.staff.RemoveAllItems")
-                            if Config.DatabaseLogs.Clearitems then
-                                TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Clearitems,
-                                    T.Webhooks.ActionDatabase.title,
-                                    T.Webhooks.ActionDatabase.usedclearitems ..
-                                    "\nPlayer: " .. PlayerData.PlayerName .. "\nID: " .. targetID)
-                            end
+                            TriggerServerEvent("vorp_admin:ClearAllItems", type, targetID, "vorp.staff.RemoveAllItems", PlayerData.PlayerName)
                         else
                             TriggerEvent("vorp:TipRight", T.Notify.actionCancell, 4000)
                         end
@@ -396,13 +357,7 @@ function RemovePlayers(PlayerData)
                     local result = tostring(cb)
                     if result ~= "" then
                         if result == "yes" then
-                            TriggerServerEvent("vorp_admin:ClearAllItems", type, targetID, "vorp.staff.RemoveAllWeapons")
-                            if Config.DatabaseLogs.Clearweapons then
-                                TriggerServerEvent("vorp_admin:logs", Config.DatabaseLogs.Clearweapons,
-                                    T.Webhooks.ActionDatabase.title,
-                                    T.Webhooks.ActionDatabase.usedclearweapons ..
-                                    "\nPlayer: " .. PlayerData.PlayerName .. "\nID: " .. targetID)
-                            end
+                            TriggerServerEvent("vorp_admin:ClearAllItems", type, targetID, "vorp.staff.RemoveAllWeapons", PlayerData.PlayerName)
                         else
                             TriggerEvent("vorp:TipRight", T.Notify.actionCancell, 4000)
                         end
@@ -427,7 +382,7 @@ function OpenInventory(inventorydata)
     for _, dataItems in pairs(inventorydata) do -- to prevent menu from opening empty and give errors
         elements[#elements + 1] = {
             label = dataItems.label .. " <span style='margin-left:10px; color: Yellow;'>" .. dataItems.count .. '</span>',
-            value = "",
+            value = "none",
             desc = dataItems.label
         }
     end
@@ -441,7 +396,7 @@ function OpenInventory(inventorydata)
         },
         function(data)
             if data.current == "backup" then
-                _G[data.trigger]()
+                return _G[data.trigger]()
             end
         end,
         function(menu)

@@ -1,4 +1,3 @@
----@diagnostic disable: undefined-global
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------ USERS MENU ------------------------------------------------
 
@@ -106,7 +105,6 @@ function ScoreBoard()
 end
 
 function Report()
-    local player = GetPlayerServerId(tonumber(PlayerId()))
     local myInput = Inputs("textarea", T.Menus.DefaultsInputs.confirm, T.Menus.MainUserOptions.ReportInput.placeholder, T.Menus.MainUserOptions.ReportInput.title, "text", T.Menus.MainUserOptions.ReportInput.errorMsg, "[A-Za-z0-9 ]{10,100}")
     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
         local report = tostring(result)
@@ -114,7 +112,7 @@ function Report()
             if Config.ReportLogs then -- if nil dont send
                 TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.Reports, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.playerreported .. report)
                 VORP.NotifySimpleTop(T.Notify.reportTitle, T.Notify.reportSent, 3000)
-                TriggerServerEvent("vorp_admin:alertstaff", player)
+                TriggerServerEvent("vorp_admin:alertstaff", report)
             end
         end
     end)
@@ -142,30 +140,29 @@ function RequestStaff()
             lastmenu = 'OpenUsersMenu', --Go back
         },
         function(data, menu)
-            local player = GetPlayerServerId(tonumber(PlayerId()))
             if data.current == "backup" then
                 _G[data.trigger]()
             end
             if data.current.value == "new" and not cooldown then
-                TriggerServerEvent("vorp_admin:requeststaff", player, "new")
+                TriggerServerEvent("vorp_admin:requeststaff", "new")
                 VORP.NotifyRightTip(T.Notify.requestSent, 4000)
                 TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.RequestStaff, T.Webhooks.ActionScoreBoard.title,
                     T.Webhooks.ActionScoreBoard.requeststaff_disc)
                 cooldown = true
             elseif data.current.value == "bug" and not cooldown then
-                TriggerServerEvent("vorp_admin:requeststaff", player, "bug")
+                TriggerServerEvent("vorp_admin:requeststaff", "bug")
                 VORP.NotifyRightTip(T.Notify.requestSent, 4000)
                 TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.BugReport, T.Webhooks.ActionScoreBoard.title,
                     T.Webhooks.ActionScoreBoard.requeststaff_bug)
                 cooldown = true
             elseif data.current.value == "rules" and not cooldown then
-                TriggerServerEvent("vorp_admin:requeststaff", player, "rules")
+                TriggerServerEvent("vorp_admin:requeststaff", "rules")
                 VORP.NotifyRightTip(T.Notify.requestSent, 4000)
                 TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.RulesBroken, T.Webhooks.ActionScoreBoard.title,
                     T.Webhooks.ActionScoreBoard.requeststaff_rulesbroke)
                 cooldown = true
             elseif data.current.value == "cheating" and not cooldown then
-                TriggerServerEvent("vorp_admin:requeststaff", player, "cheating")
+                TriggerServerEvent("vorp_admin:requeststaff", "cheating")
                 VORP.NotifyRightTip(T.Notify.requestSent, 4000)
                 TriggerServerEvent("vorp_admin:logs", Config.ReportLogs.Cheating, T.Webhooks.ActionScoreBoard.title,
                     T.Webhooks.ActionScoreBoard.requeststaff_cheating)

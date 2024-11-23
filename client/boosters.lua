@@ -20,11 +20,7 @@ function GODmode()
         Citizen.InvokeNative(0x5240864E847C691C, player, false) -- Set ped can be incapacitaded
         SetPlayerInvincible(player, true)
         Citizen.InvokeNative(0xFD6943B6DF77E449, player, false) -- Set ped can be lassoed
-
-        if Config.BoosterLogs.GodMode then                      -- If nil dont send
-            TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.GodMode, T.Webhooks.ActionBoosters.title,
-                T.Webhooks.ActionBoosters.usedgod)
-        end
+        TriggerServerEvent("vorp_admin:GodMode")                -- log
         god = true
     else
         TriggerEvent('vorp:TipRight', T.Notify.switchedOff, 3000)
@@ -57,10 +53,7 @@ function GoldenCores()
         Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 1, 5000.0)
         -- Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 2, 5000.0)-- Dead Eye
         Citizen.InvokeNative(0xF6A7C08DF2E28B28, player, 0, 5000.0)
-        if Config.BoosterLogs.GoldenCores then
-            TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.GoldenCores, T.Webhooks.ActionBoosters.title,
-                T.Webhooks.ActionBoosters.usedgoldcores)
-        end
+        TriggerServerEvent("vorp_admin:GoldenCores") -- log
         goldenCores = true
     else
         TriggerEvent('vorp:TipRight', T.Notify.switchedOff, 3000)
@@ -92,10 +85,7 @@ function InfiAmmo()
             TriggerEvent("vorp:Tip", T.Notify.needWeaponInHands, 3000)
         else
             SetPedInfiniteAmmo(player, true, weaponHash)
-            if Config.BoosterLogs.InfiniteAmmo then
-                TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.InfiniteAmmo, T.Webhooks.ActionBoosters.title,
-                    T.Webhooks.ActionBoosters.usedinfinitammo)
-            end
+            TriggerServerEvent("vorp_admin:InfiAmmo") -- log
         end
     else
         infiniteammo = false
@@ -117,8 +107,6 @@ function Boost()
         { label = T.Menus.MainBoostOptions.selfHeal,            value = 'selfheal',     desc = T.Menus.MainBoostOptions.selfHeal_desc },
         { label = T.Menus.MainBoostOptions.selfRevive,          value = 'selfrevive',   desc = T.Menus.MainBoostOptions.selfRevive_desc },
         { label = T.Menus.MainBoostOptions.selfInvisible,       value = 'invisibility', desc = T.Menus.MainBoostOptions.selfInvisible_desc },
-        --{ label = "players blip map", value = 'playerblip', desc = "Show players blip on the map" }, -- TODO
-        --{ label = "players id", value = 'showid', desc = "Show players id over head", }, -- TODO
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'Boost',
@@ -167,9 +155,7 @@ function Boost()
                         if Config.FrozenPosition then
                             SetEntityHeading(player, GetEntityHeading(player) + 180)
                         end
-                        if Config.BoosterLogs.NoClip then
-                            TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.NoClip, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usednoclip)
-                        end
+                        TriggerServerEvent("vorp_admin:NoClip") -- log
                     else
                         SetEveryoneIgnorePlayer(PlayerId(), false)
                         SetPedCanBeTargetted(player, true)
@@ -184,13 +170,7 @@ function Boost()
                 end
             elseif data.current.value == "selfrevive" then
                 TriggerServerEvent('vorp_admin:ReviveSelf', "vorp.staff.SelfRevive")
-                if Config.BoosterLogs.SelfRevive then
-                    TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfRevive, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedrevive)
-                end
             elseif data.current.value == "selfheal" then
-                if Config.BoosterLogs.SelfHeal then
-                    TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfHeal, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedheal)
-                end
                 TriggerServerEvent('vorp_admin:HealSelf', "vorp.staff.SelfHeal")
                 Config.Heal.Players()
                 local horse = GetMount(PlayerPedId())
@@ -214,9 +194,7 @@ function Boost()
                             repeat Wait(0) until DoesEntityExist(horse)
                             Citizen.InvokeNative(0x77FF8D35EEC6BBC4, horse, 1, 0)
                             Citizen.InvokeNative(0x028F76B6E78246EB, player, horse, -1, true)
-                            if Config.BoosterLogs.SelfSpawnHorse then
-                                TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfSpawnHorse, T.Webhooks.ActionBoosters.title, "Horse: " .. horse)
-                            end
+                            TriggerServerEvent("vorp_admin:spawnHorse", result) -- log
                         else
                             VORP.NotifyObjective(T.Notify.empty, 3000)
                         end
@@ -243,9 +221,7 @@ function Boost()
                             repeat Wait(0) until DoesEntityExist(wagon)
                             Citizen.InvokeNative(0x77FF8D35EEC6BBC4, wagon, 1, 0)
                             SetPedIntoVehicle(player, wagon, -1)
-                            if Config.BoosterLogs.SelfSpawnWagon then
-                                TriggerServerEvent("vorp_admin:logs", Config.BoosterLogs.SelfSpawnWagon, T.Webhooks.ActionBoosters.title, "Wagon: " .. wagon)
-                            end
+                            TriggerServerEvent("vorp_admin:spawnWagon", result) -- log
                         else
                             VORP.NotifyObjective(T.Notify.empty, 3000)
                         end
@@ -273,63 +249,60 @@ local PromptGroup = GetRandomIntInRange(0, 0xffffff)
 
 -- Prompts
 CreateThread(function()
-    repeat Wait(1000) until LocalPlayer.state.IsInSession
+    repeat Wait(3000) until LocalPlayer.state.IsInSession
 
     local str = T.Menus.MainBoostOptions.Prompts.down .. "/" .. T.Menus.MainBoostOptions.Prompts.up
-    Prompt1 = PromptRegisterBegin()
-    PromptSetControlAction(Prompt1, Config.Controls.goDown)
-    PromptSetControlAction(Prompt1, Config.Controls.goUp)
-    str = CreateVarString(10, 'LITERAL_STRING', str)
-    PromptSetText(Prompt1, str)
-    PromptSetEnabled(Prompt1, 1)
-    PromptSetVisible(Prompt1, 1)
-    PromptSetStandardMode(Prompt1, 1)
-    PromptSetGroup(Prompt1, PromptGroup)
-    Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt1, true)
-    PromptRegisterEnd(Prompt1)
+    Prompt1 = UiPromptRegisterBegin()
+    UiPromptSetControlAction(Prompt1, Config.Controls.goDown)
+    UiPromptSetControlAction(Prompt1, Config.Controls.goUp)
+    str = VarString(10, 'LITERAL_STRING', str)
+    UiPromptSetText(Prompt1, str)
+    UiPromptSetEnabled(Prompt1, true)
+    UiPromptSetVisible(Prompt1, true)
+    UiPromptSetStandardMode(Prompt1, true)
+    UiPromptSetGroup(Prompt1, PromptGroup, 0)
+    UiPromptRegisterEnd(Prompt1)
 
     local str = T.Menus.MainBoostOptions.Prompts.speed
-    Prompt2 = PromptRegisterBegin()
-    PromptSetControlAction(Prompt2, Config.Controls.changeSpeed) -- Shift
-    str = CreateVarString(10, 'LITERAL_STRING', str)
-    PromptSetText(Prompt2, str)
-    PromptSetEnabled(Prompt2, 1)
-    PromptSetVisible(Prompt2, 1)
-    PromptSetStandardMode(Prompt2, 1)
-    PromptSetGroup(Prompt2, PromptGroup)
-    Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt2, true)
-    PromptRegisterEnd(Prompt2)
+    Prompt2 = UiPromptRegisterBegin()
+    UiPromptSetControlAction(Prompt2, Config.Controls.changeSpeed) -- Shift
+    str = VarString(10, 'LITERAL_STRING', str)
+    UiPromptSetText(Prompt2, str)
+    UiPromptSetEnabled(Prompt2, true)
+    UiPromptSetVisible(Prompt2, true)
+    UiPromptSetStandardMode(Prompt2, true)
+    UiPromptSetGroup(Prompt2, PromptGroup, 0)
+    UiPromptRegisterEnd(Prompt2)
 
     local str = T.Menus.MainBoostOptions.Prompts.backward .. "/" .. T.Menus.MainBoostOptions.Prompts.forward
-    Prompt4 = PromptRegisterBegin()
-    PromptSetControlAction(Prompt4, Config.Controls.goBackward)
-    PromptSetControlAction(Prompt4, Config.Controls.goForward)
-    str = CreateVarString(10, 'LITERAL_STRING', str)
-    PromptSetText(Prompt4, str)
-    PromptSetEnabled(Prompt4, 1)
-    PromptSetVisible(Prompt4, 1)
-    PromptSetStandardMode(Prompt4, 1)
-    PromptSetGroup(Prompt4, PromptGroup)
-    Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt4, true)
-    PromptRegisterEnd(Prompt4)
+    Prompt4 = UiPromptRegisterBegin()
+    UiPromptSetControlAction(Prompt4, Config.Controls.goBackward)
+    UiPromptSetControlAction(Prompt4, Config.Controls.goForward)
+    str = VarString(10, 'LITERAL_STRING', str)
+    UiPromptSetText(Prompt4, str)
+    UiPromptSetEnabled(Prompt4, true)
+    UiPromptSetVisible(Prompt4, true)
+    UiPromptSetStandardMode(Prompt4, true)
+    UiPromptSetGroup(Prompt4, PromptGroup, 0)
+    UiPromptRegisterEnd(Prompt4)
 
     local str = T.Menus.MainBoostOptions.Prompts.cancel
-    Prompt6 = PromptRegisterBegin()
-    PromptSetControlAction(Prompt6, Config.Controls.Cancel)
-    str = CreateVarString(10, 'LITERAL_STRING', str)
-    PromptSetText(Prompt6, str)
-    PromptSetEnabled(Prompt6, 1)
-    PromptSetVisible(Prompt6, 1)
-    PromptSetStandardMode(Prompt6, 1)
-    PromptSetGroup(Prompt6, PromptGroup)
-    Citizen.InvokeNative(0xC5F428EE08FA7F2C, Prompt6, true)
-    PromptRegisterEnd(Prompt6)
+    Prompt6 = UiPromptRegisterBegin()
+    UiPromptSetControlAction(Prompt6, Config.Controls.Cancel)
+    str = VarString(10, 'LITERAL_STRING', str)
+    UiPromptSetText(Prompt6, str)
+    UiPromptSetEnabled(Prompt6, true)
+    UiPromptSetVisible(Prompt6, true)
+    UiPromptSetStandardMode(Prompt6, true)
+    UiPromptSetGroup(Prompt6, PromptGroup, 0)
+    UiPromptRegisterEnd(Prompt6)
 end)
 
 
 
-Citizen.CreateThread(function()
-    repeat Wait(1000) until LocalPlayer.state.IsInSession
+CreateThread(function()
+    repeat Wait(3000) until LocalPlayer.state.IsInSession
+
     local player = PlayerPedId()
     local index = 1
     local CurrentSpeed = Config.Speeds[index].speed
@@ -355,9 +328,9 @@ Citizen.CreateThread(function()
             if IsDisabledControlJustPressed(1, Config.Controls.camMode) then
                 FollowCamMode = not FollowCamMode
             end
-            local label = CreateVarString(10, 'LITERAL_STRING', T.Menus.MainBoostOptions.Prompts.speed_desc .. Label .. " " .. CurrentSpeed)
+            local label = VarString(10, 'LITERAL_STRING', T.Menus.MainBoostOptions.Prompts.speed_desc .. Label .. " " .. CurrentSpeed)
 
-            PromptSetActiveGroupThisFrame(PromptGroup, label)
+            UiPromptSetActiveGroupThisFrame(PromptGroup, label, 0, 0, 0, 0)
 
             if IsDisabledControlJustPressed(1, Config.Controls.changeSpeed) then
                 if index ~= #Config.Speeds then
@@ -411,8 +384,7 @@ Citizen.CreateThread(function()
             end
 
 
-            local newPos = GetOffsetFromEntityInWorldCoords(player, 0.0, yoff * (CurrentSpeed + 0.3),
-                zoff * (CurrentSpeed + 0.3))
+            local newPos = GetOffsetFromEntityInWorldCoords(player, 0.0, yoff * (CurrentSpeed + 0.3), zoff * (CurrentSpeed + 0.3))
             local heading = GetEntityHeading(player)
             SetEntityVelocity(player, 0.0, 0.0, 0.0)
             if Config.FrozenPosition then

@@ -1,23 +1,30 @@
 Config = {
     -- Add your language
     DevMode             = false,      -- Leave false
+
     AlignMenu           = 'top-left', -- align menu
+
     useAdminCommand     = true,       -- Can open menu with adim command below
+
     commandAdmin        = "adminMenu",
+
     -- Language setting - English | Portuguese_PT | Portuguese_BR | French | German | Spanish
     Lang                = "English",
+
     Key                 = 0x3C3DD371, -- PGDOWN Open Menu
+
     CanOpenMenuWhenDead = true,       -- If true any staff can open menu when dead, !WARNING! staff can abuse this to get revived
+
     useQWreports        = true,       -- Disable this if you are not using qw reports
+
     VorpStable          = true,       -- If you are using vorp_stable then set to true if syn stable set false  when giving worses or wagons it will go directly to databse
 
     -- Heal
     Heal                = {
         Players = function()
-            --TriggerServerEvent("outsider_needs:Heal") -- Trigger to server and from there heal player
             TriggerEvent("vorpmetabolism:changeValue", "Thirst", 1000)
             TriggerEvent("vorpmetabolism:changeValue", "Hunger", 1000)
-            TriggerEvent('fred_meta:consume', 100, 100, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0) -- Fred Metabolism
+            -- TriggerEvent('fred_meta:consume', 100, 100, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0) -- Fred Metabolism
         end
     },
     ---------------------- NO CLIP ----------------------
@@ -49,79 +56,10 @@ Config = {
         h = 1,                  -- Rotation movement speed multiplier
     },
     FrozenPosition      = true, -- Frozen on open menu vorp.staff.OpenMenu
+
     AllowedGroups       = {
-        { group = { "admin" }, command = "vorp.staff.OpenMenu" },
-        { group = { "admin" }, command = "vorp.staff.Admin" }, -- Groups you want for these permissions
-        { group = { "admin" }, command = "vorp.staff.Boosters" },
-        { group = { "admin" }, command = "vorp.staff.Database" },
-        { group = { "admin" }, command = "vorp.staff.Teleports" },
-        { group = { "admin" }, command = "vorp.staff.Devtools" },
-        { group = { "admin" }, command = "vorp.staff.PlayersList" },
-        { group = { "admin" }, command = "vorp.staff.AdminActions" },
-        { group = { "admin" }, command = "vorp.staff.OfflineActions" },
-        { group = { "admin" }, command = "vorp.staff.PlayersListSubmenu" },
-        { group = { "admin" }, command = "vorp.staff.OpenSimpleActions" },
-        { group = { "admin" }, command = "vorp.staff.Spectate" },
-        { group = { "admin" }, command = "vorp.staff.Frezee" },
-        { group = { "admin" }, command = "vorp.staff.Revive" },
-        { group = { "admin" }, command = "vorp.staff.Heal" },
-        { group = { "admin" }, command = "vorp.staff.GoTo" },
-        { group = { "admin" }, command = "vorp.staff.Bring" },
-        { group = { "admin" }, command = "vorp.staff.Warn" },
-        { group = { "admin" }, command = "vorp.staff.UnWarn" },
-        { group = { "admin" }, command = "vorp.staff.OpenAdvancedActions" },
-        { group = { "admin" }, command = "vorp.staff.Kick" },
-        { group = { "admin" }, command = "vorp.staff.Ban" },
-        { group = { "admin" }, command = "vorp.staff.Unban" },
-        { group = { "admin" }, command = "vorp.staff.Respawn" },
-        { group = { "admin" }, command = "vorp.staff.Whitelist" },
-        { group = { "admin" }, command = "vorp.staff.Unwhitelist" },
-        { group = { "admin" }, command = "vorp.staff.Setjob" },
-        { group = { "admin" }, command = "vorp.staff.Setgroup" },
-        { group = { "admin" }, command = "vorp.staff.DeleteHorse" },
-        { group = { "admin" }, command = "vorp.staff.DeleteWagon" },
-        { group = { "admin" }, command = "vorp.staff.DeleteWagonsRadius" },
-        { group = { "admin" }, command = "vorp.staff.GetCoords" },
-        { group = { "admin" }, command = "vorp.staff.Announce" },
-        { group = { "admin" }, command = "vorp.staff.Godmode" },
-        { group = { "admin" }, command = "vorp.staff.InfiniteAmmo" },
-        { group = { "admin" }, command = "vorp.staff.Noclip" },
-        { group = { "admin" }, command = "vorp.staff.Golden" },
-        { group = { "admin" }, command = "vorp.staff.SpawnWagon" },
-        { group = { "admin" }, command = "vorp.staff.SpawHorse" },
-        { group = { "admin" }, command = "vorp.staff.SelfHeal" },
-        { group = { "admin" }, command = "vorp.staff.SelfRevive" },
-        { group = { "admin" }, command = "vorp.staff.OpenDatabase" },
-        { group = { "admin" }, command = "vorp.staff.OpenGiveMenu" },
-        { group = { "admin" }, command = "vorp.staff.ShowInvGive" },
-        { group = { "admin" }, command = "vorp.staff.Giveitems" },
-        { group = { "admin" }, command = "vorp.staff.GiveWeapons" },
-        { group = { "admin" }, command = "vorp.staff.GiveCurrency" },
-        { group = { "admin" }, command = "vorp.staff.GiveHorse" },
-        { group = { "admin" }, command = "vorp.staff.GiveWagons" },
-        { group = { "admin" }, command = "vorp.staff.OpenRemoveMenu" },
-        { group = { "admin" }, command = "vorp.staff.ShowInvRemove" },
-        { group = { "admin" }, command = "vorp.staff.RemoveAllMoney " },
-        { group = { "admin" }, command = "vorp.staff.RemoveAllGold" },
-        { group = { "admin" }, command = "vorp.staff.RemoveAllItems" },
-        { group = { "admin" }, command = "vorp.staff.RemoveAllWeapons" },
-        { group = { "admin" }, command = "vorp.staff.WayPoint" },
-        { group = { "admin" }, command = "vorp.staff.TpCoords" },
-        { group = { "admin" }, command = "vorp.staff.AutoTpm" },
-        { group = { "admin" }, command = "vorp.staff.TpPlayer" },
-        { group = { "admin" }, command = "vorp.staff.BringPlayer" },
-        { group = { "admin" }, command = "vorp.staff.ViewReports" },
-        { group = { "admin" }, command = "vorp.staff.Invisibility" },
-        { group = { "admin" }, command = "vorp.staff.SetPlayerOnFire" },
-        { group = { "admin" }, command = "vorp.staff.LightningStrikePlayer" },
-        { group = { "admin" }, command = "vorp.staff.TPToHeaven" },
-        { group = { "admin" }, command = "vorp.staff.InvisPlayer" },
-        { group = { "admin" }, command = "vorp.staff.KillPlayer" },
-        { group = { "admin" }, command = "vorp.staff.RagdollPlayer" },
-        { group = { "admin" }, command = "vorp.staff.DrainPlayerStam" },
-        { group = { "admin" }, command = "vorp.staff.CuffPlayer" },
-        { group = { "admin" }, command = "vorp.staff.PlayerTempHigh" },
-        { group = { "admin" }, command = "vorp.staff.OpenTrollActions" },
+        admin = true,
+        -- add more groups here that are allowed to use admin menu, advanced permissions are done in the permissions.cfg folder where you can add certain groups to certain actions
     },
     -----------------------------------------------------
     -- Users scoreboard
@@ -130,68 +68,8 @@ Config = {
     showUsersInfo       = "showAll", -- showAll --showJob --showGroup -- showID
     UseUsersMenu        = true,      -- Leave false if you dont need users menu
     EnablePlayerlist    = true,      -- Enable scroeboard
+    AlertCooldown       = 60,        -- Cooldown for request staff to request again (seconds)
     --------------------------------------------------------
     -- WEBHOOKS/LOGS
-    AlertCooldown       = 60,                                  -- Cooldown for request staff to request again (seconds)
-    webhookColor        = 16711680,                            -- EMBED COLOR RED
-    name                = "VORP",                              -- NAME OF EMBED
-    logo                = "https://via.placeholder.com/30x30", -- HEAD LOGO
-    footerLogo          = "https://via.placeholder.com/30x30", -- FOOTER LOGO
-    Avatar              = "https://via.placeholder.com/30x30", -- AVATAR LOGO
-    ReportLogs          = {
-        Reports = "",                                          -- for reports
-        RequestStaff = "",                                     -- for request staff
-        BugReport = "",                                        -- for bug report
-        RulesBroken = "",                                      -- for rules broken report
-        Cheating = ""                                          -- for cheating report
-    },
-    BoosterLogs         = {
-        NoClip = "",
-        InfiniteAmmo = "",
-        GoldenCores = "",
-        GodMode = "",
-        SelfHeal = "",
-        SelfRevive = "",
-        SelfSpawnHorse = "",
-        SelfSpawnWagon = "",
-    },
-    AdminLogs           = {
-        -- Simple actions
-        Freezed = "",
-        Bring = "",
-        Goto = "",
-        Revive = "",
-        Heal = "",
-        Warned = "",
-        Unwarned = "",
-        Spectate = "",
-        -- Advanced actions
-        Respawn = "",
-        Kick = "",
-        Ban = "",
-        Unban = "",
-        Whitelist = "",
-        Unwhitelist = "",
-        Setgroup = "",
-        Setjob = "",
-        Announce = ""
 
-    },
-    TeleportLogs        = {
-        Tpm = "",
-        Tptocoords = "",
-        Tptoplayer = "",
-        Bringplayer = "",
-    },
-    DatabaseLogs        = {
-        Giveitem = "",
-        Giveweapon = "",
-        Givecurrency = "",
-        Givehorse = "",
-        Givewagon = "",
-        Clearmoney = "",
-        Cleargold = "",
-        Clearitems = "",
-        Clearweapons = "",
-    }
 }
