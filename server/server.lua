@@ -105,9 +105,9 @@ RegisterNetEvent("vorp_admin:TpToPlayer", function(targetID, command, name)
         TriggerClientEvent('vorp_admin:gotoPlayer', _source, targetCoords)
 
         if name then
-            TriggerEvent("vorp_admin:logs", Logs.AdminLogs.Goto, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedgoto .. "\n> " .. name)
+            TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Goto, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedgoto .. "\n> " .. name)
         else
-            TriggerEvent("vorp_admin:logs", Logs.TeleportLogs.Tptoplayer, T.Webhooks.ActionTeleport.title, T.Webhooks.ActionTeleport.usedtptoplayer .. "\nID: " .. targetID)
+            TriggerEvent("vorp_admin:logs", _source, Logs.TeleportLogs.Tptoplayer, T.Webhooks.ActionTeleport.title, T.Webhooks.ActionTeleport.usedtptoplayer .. "\nID: " .. targetID)
         end
     else
         Core.NotifyRightTip(_source, T.Notify.userNotExist, 8000)
@@ -137,7 +137,7 @@ RegisterNetEvent("vorp_admin:freeze", function(targetID, freeze, command, name)
         TriggerClientEvent("vorp_admin:Freezeplayer", targetID, state)
 
         if name then -- only log when is using freeze
-            TriggerEvent("vorp_admin:logs", Logs.AdminLogs.Freezed, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedfreeze .. "\n> " .. name)
+            TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Freezed, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedfreeze .. "\n> " .. name)
         end
     end
 end)
@@ -153,11 +153,11 @@ RegisterNetEvent("vorp_admin:Bring", function(targetID, adminCoords, command, na
         TriggerClientEvent("vorp_admin:Bring", targetID, adminCoords)
 
         if name then
-            TriggerEvent("vorp_admin:logs", Logs.AdminLogs.Bring, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedbring .. "\n> " .. name)
+            TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Bring, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedbring .. "\n> " .. name)
         end
 
         if target then
-            TriggerEvent("vorp_admin:logs", Logs.TeleportLogs.Bringplayer, T.Webhooks.ActionTeleport.title, T.Webhooks.ActionTeleport.usedbringplayer .. "\nID: " .. target)
+            TriggerEvent("vorp_admin:logs", _source, Logs.TeleportLogs.Bringplayer, T.Webhooks.ActionTeleport.title, T.Webhooks.ActionTeleport.usedbringplayer .. "\nID: " .. target)
         end
     end
 end)
@@ -190,7 +190,7 @@ RegisterNetEvent("vorp_admin:kick", function(targetID, reason, command, name)
             DropPlayer(_target, reason)
         end)
 
-        TriggerEvent("vorp_admin:logs", Logs.AdminLogs.Kick, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedkick .. "\n > " .. name .. "\n: " .. reason)
+        TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Kick, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedkick .. "\n > " .. name .. "\n: " .. reason)
     end
 end)
 
@@ -232,7 +232,7 @@ RegisterNetEvent("vorp_admin:BanPlayer", function(targetID, staticid, time, comm
             TriggerEvent("vorpbans:addtodb", false, targetStaticId, datetime)
         end)
 
-        TriggerEvent("vorp_admin:logs", Logs.AdminLogs.Ban, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedban .. "\n > " .. name .. "\n: " .. time)
+        TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Ban, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedban .. "\n > " .. name .. "\n: " .. time)
     end
 end)
 
@@ -254,7 +254,7 @@ RegisterNetEvent("vorp_admin:respawnPlayer", function(targetID, command, name)
         TriggerClientEvent("vorp_admin:respawn", targetID) --add effects
     end)
 
-    TriggerEvent("vorp_admin:logs", Logs.AdminLogs.Respawn, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedrespawn .. "\n > " .. name)
+    TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Respawn, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedrespawn .. "\n > " .. name)
 end)
 
 
@@ -298,7 +298,7 @@ RegisterNetEvent("vorp_admin:givePlayer", function(targetID, action, data1, data
         Core.NotifyRightTip(targetID, T.Notify.receivedItem .. qty .. T.Notify.of .. itemCheck.label .. "~q~", 5000)
         Core.NotifyRightTip(_source, T.Notify.itemGiven, 4000)
 
-        TriggerEvent("vorp_admin:logs", Logs.DatabaseLogs.Giveitem, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgiveitem .. "\nPlayer: " .. name .. "\nItem: " .. item .. "\nQTY: " .. qty)
+        TriggerEvent("vorp_admin:logs", _source, Logs.DatabaseLogs.Giveitem, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgiveitem .. "\nPlayer: " .. name .. "\nItem: " .. item .. "\nQTY: " .. qty)
 
         return
     end
@@ -317,7 +317,7 @@ RegisterNetEvent("vorp_admin:givePlayer", function(targetID, action, data1, data
         Core.NotifyRightTip(targetID, T.Notify.receivedWeapon, 5000)
         Core.NotifyRightTip(_source, T.Notify.weaponGiven, 4000)
 
-        TriggerEvent("vorp_admin:logs", Logs.DatabaseLogs.Giveweapon, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgiveweapon .. "\nPlayer: " .. name .. "\nWeapon: " .. weapon)
+        TriggerEvent("vorp_admin:logs", _source, Logs.DatabaseLogs.Giveweapon, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgiveweapon .. "\nPlayer: " .. name .. "\nWeapon: " .. weapon)
 
         return
     end
@@ -340,7 +340,7 @@ RegisterNetEvent("vorp_admin:givePlayer", function(targetID, action, data1, data
         end
         Core.NotifyRightTip(_source, T.Notify.sent, 4000)
 
-        TriggerEvent("vorp_admin:logs", Logs.DatabaseLogs.Givecurrency, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgivecurrency .. "\nPlayer: " .. name .. "\nCurrency: " .. CurrencyType .. "\nQTY: " .. qty)
+        TriggerEvent("vorp_admin:logs", _source, Logs.DatabaseLogs.Givecurrency, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgivecurrency .. "\nPlayer: " .. name .. "\nCurrency: " .. CurrencyType .. "\nQTY: " .. qty)
 
         return
     end
@@ -372,7 +372,7 @@ RegisterNetEvent("vorp_admin:givePlayer", function(targetID, action, data1, data
         Core.NotifyRightTip(targetID, T.Notify.horseReceived, 5000)
         Core.NotifyRightTip(_source, T.Notify.horseGiven, 4000)
 
-        TriggerEvent("vorp_admin:logs", Logs.DatabaseLogs.Givehorse, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgivehorse .. "\nPlayer: " .. name .. "\nHorse: " .. hash)
+        TriggerEvent("vorp_admin:logs", _source, Logs.DatabaseLogs.Givehorse, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedgivehorse .. "\nPlayer: " .. name .. "\nHorse: " .. hash)
 
         return
     end
@@ -435,7 +435,7 @@ RegisterNetEvent("vorp_admin:ClearAllItems", function(type, targetID, command, n
         end
         Core.NotifyRightTip(_source, T.Notify.itemsWiped, 4000)
         Core.NotifyRightTip(targetID, T.Notify.itemWipe, 5000)
-        TriggerEvent("vorp_admin:logs", Logs.DatabaseLogs.Clearitems, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedclearitems .. "\nPlayer: " .. name .. "\nID: " .. targetID)
+        TriggerEvent("vorp_admin:logs", _source, Logs.DatabaseLogs.Clearitems, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedclearitems .. "\nPlayer: " .. name .. "\nID: " .. targetID)
     end
 
     if type == "weapons" then
@@ -449,7 +449,7 @@ RegisterNetEvent("vorp_admin:ClearAllItems", function(type, targetID, command, n
         end
         Core.NotifyRightTip(_source, T.Notify.weaponsWiped, 4000)
         Core.NotifyRightTip(targetID, T.Notify.weaponWipe, 5000)
-        TriggerEvent("vorp_admin:logs", Logs.DatabaseLogs.Clearweapons, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedclearweapons .. "\nPlayer: " .. name .. "\nID: " .. targetID)
+        TriggerEvent("vorp_admin:logs", _source, Logs.DatabaseLogs.Clearweapons, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedclearweapons .. "\nPlayer: " .. name .. "\nID: " .. targetID)
     end
 end)
 
@@ -487,12 +487,12 @@ RegisterNetEvent("vorp_admin:ClearCurrency", function(targetID, type, command, n
         Character.removeCurrency(0, money)
         Core.NotifyRightTip(_source, T.Notify.moneyRemoved, 4000)
         Core.NotifyRightTip(targetID, T.Notify.moneyRemovedFromAdmin, 4000)
-        TriggerEvent("vorp_admin:logs", Logs.DatabaseLogs.Clearmoney, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedclearmoney .. "\nPlayer: " .. name .. "\nID: " .. targetID .. "\nCurrency: " .. type)
+        TriggerEvent("vorp_admin:logs", _source, Logs.DatabaseLogs.Clearmoney, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedclearmoney .. "\nPlayer: " .. name .. "\nID: " .. targetID .. "\nCurrency: " .. type)
     else
         Character.removeCurrency(1, gold)
         Core.NotifyRightTip(_source, T.Notify.goldRemoved, 4000)
         Core.NotifyRightTip(targetID, T.Notify.goldRemovedFromAdmin, 4000)
-        TriggerEvent("vorp_admin:logs", Logs.DatabaseLogs.Cleargold, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedcleargold .. "\nPlayer: " .. name .. "\nID: " .. targetID .. "\nCurrency: " .. type)
+        TriggerEvent("vorp_admin:logs", _source, Logs.DatabaseLogs.Cleargold, T.Webhooks.ActionDatabase.title, T.Webhooks.ActionDatabase.usedcleargold .. "\nPlayer: " .. name .. "\nID: " .. targetID .. "\nCurrency: " .. type)
     end
 end)
 
@@ -520,7 +520,7 @@ RegisterNetEvent("vorp_admin:setGroup", function(targetID, newgroup, command, na
     Core.NotifyRightTip(_target, T.Notify.groupGiven .. NewPlayerGroup, 5000)
 
 
-    TriggerEvent("vorp_admin:logs", Logs.AdminLogs.Setgroup, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedsetgroup .. "\n > " .. name .. "\nGroup: " .. NewPlayerGroup)
+    TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Setgroup, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedsetgroup .. "\n > " .. name .. "\nGroup: " .. NewPlayerGroup)
 end)
 
 -- JOB
@@ -544,7 +544,7 @@ RegisterNetEvent("vorp_admin:setJob", function(targetID, newjob, newgrade, newJo
     Core.NotifyRightTip(_target, T.Notify.jobGiven .. newjob, 5000)
     Core.NotifyRightTip(_target, T.Notify.gradeGiven .. newgrade, 5000)
     Core.NotifyRightTip(_target, T.Notify.jobLabelGiven .. newJobLabel, 5000)
-    TriggerEvent("vorp_admin:logs", Logs.AdminLogs.Setjob, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedsetjob .. "\n > " .. name .. "\nJob:  " .. newjob .. " \nGrade: " .. newgrade)
+    TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Setjob, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedsetjob .. "\n > " .. name .. "\nJob:  " .. newjob .. " \nGrade: " .. newgrade)
 end)
 
 -- WHITELIST
@@ -556,7 +556,7 @@ RegisterNetEvent("vorp_admin:Whitelist", function(targetID, steam, type, command
 
     Core.Whitelist.unWhitelistUser(steam)
 
-    TriggerEvent("vorp_admin:logs", Logs.AdminLogs.Unwhitelist, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedunwhitelist .. "\n > " .. name .. "\n: " .. steam)
+    TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Unwhitelist, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedunwhitelist .. "\n > " .. name .. "\n: " .. steam)
 end)
 
 RegisterNetEvent("vorp_admin:Whitelistoffline", function(staticid, type, command)
@@ -583,7 +583,7 @@ RegisterNetEvent("vorp_admin:revive", function(targetID, command, name)
     end
 
     if name then
-        TriggerEvent("vorp_admin:logs", Logs.AdminLogs.Revive, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedreviveplayer .. "\n> " .. name)
+        TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Revive, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedreviveplayer .. "\n> " .. name)
     end
 
     if Core.getUser(_target) then
@@ -601,7 +601,7 @@ RegisterNetEvent("vorp_admin:heal", function(targetID, command, name)
     end
 
     if name then
-        TriggerEvent("vorp_admin:logs", Logs.AdminLogs.Heal, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedhealplayer .. "\n> " .. name)
+        TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Heal, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedhealplayer .. "\n> " .. name)
     end
 
     if Core.getUser(_target) then
@@ -612,37 +612,37 @@ end)
 -- SPAWN HORSE
 RegisterNetEvent("vorp_admin:spawnHorse", function(horse)
     local _source = source
-    TriggerEvent("vorp_admin:logs", Logs.BoosterLogs.SelfSpawnHorse, T.Webhooks.ActionBoosters.title, "Horse: " .. horse)
+    TriggerEvent("vorp_admin:logs", _source, Logs.BoosterLogs.SelfSpawnHorse, T.Webhooks.ActionBoosters.title, "Horse: " .. horse)
 end)
 
 -- SPAWN WAGON
 RegisterNetEvent("vorp_admin:spawnWagon", function(wagon)
     local _source = source
-    TriggerEvent("vorp_admin:logs", Logs.BoosterLogs.SelfSpawnWagon, T.Webhooks.ActionBoosters.title, "Wagon: " .. wagon)
+    TriggerEvent("vorp_admin:logs", _source, Logs.BoosterLogs.SelfSpawnWagon, T.Webhooks.ActionBoosters.title, "Wagon: " .. wagon)
 end)
 
 -- GODMODE
 RegisterNetEvent("vorp_admin:GodMode", function()
     local _source = source
-    TriggerEvent("vorp_admin:logs", Logs.BoosterLogs.GodMode, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedgod)
+    TriggerEvent("vorp_admin:logs", _source, Logs.BoosterLogs.GodMode, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedgod)
 end)
 
 -- GOLDEN CORES
 RegisterNetEvent("vorp_admin:GoldenCores", function()
     local _source = source
-    TriggerEvent("vorp_admin:logs", Logs.BoosterLogs.GoldenCores, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedgoldcores)
+    TriggerEvent("vorp_admin:logs", _source, Logs.BoosterLogs.GoldenCores, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedgoldcores)
 end)
 
 -- INFINITE AMMO
 RegisterNetEvent("vorp_admin:InfiAmmo", function()
     local _source = source
-    TriggerEvent("vorp_admin:logs", Logs.BoosterLogs.InfiniteAmmo, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedinfinitammo)
+    TriggerEvent("vorp_admin:logs", _source, Logs.BoosterLogs.InfiniteAmmo, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedinfinitammo)
 end)
 
 -- NOCLIP
 RegisterNetEvent("vorp_admin:NoClip", function()
     local _source = source
-    TriggerEvent("vorp_admin:logs", Logs.BoosterLogs.NoClip, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usednoclip)
+    TriggerEvent("vorp_admin:logs", _source, Logs.BoosterLogs.NoClip, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usednoclip)
 end)
 
 -- SPECTATE
@@ -654,7 +654,7 @@ RegisterNetEvent("vorp_admin:spectate", function(targetID, command, name)
     end
     local targetCoords = GetEntityCoords(GetPlayerPed(targetID))
     TriggerClientEvent("vorp_admin:spectatePlayer", _source, targetID, targetCoords)
-    TriggerEvent("vorp_admin:logs", Logs.AdminLogs.Spectate, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedspectate .. "\n > " .. name)
+    TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Spectate, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedspectate .. "\n > " .. name)
 end)
 
 
@@ -664,7 +664,7 @@ RegisterNetEvent("vorp_admin:announce", function(announce, command)
         return
     end
 
-    TriggerEvent("vorp_admin:logs", Logs.AdminLogs.Announce, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedannounce .. "\n > " .. announce)
+    TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Announce, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedannounce .. "\n > " .. announce)
 
     Core.NotifySimpleTop(-1, T.Notify.announce, announce, 10000)
 end)
@@ -676,7 +676,7 @@ RegisterNetEvent('vorp_admin:HealSelf', function(command)
     end
 
     local name = Player(_source).state.Character.FirstName .. Player(_source).state.Character.LastName
-    TriggerEvent("vorp_admin:logs", Logs.BoosterLogs.SelfHeal, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedheal .. "\n> " .. name)
+    TriggerEvent("vorp_admin:logs", _source, Logs.BoosterLogs.SelfHeal, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedheal .. "\n> " .. name)
 
     Core.Player.Heal(_source)
 end)
@@ -687,7 +687,7 @@ RegisterNetEvent('vorp_admin:ReviveSelf', function(command)
         return
     end
     local name = Player(_source).state.Character.FirstName .. Player(_source).state.Character.LastName
-    TriggerEvent("vorp_admin:logs", Logs.BoosterLogs.SelfRevive, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedrevive .. "\n> " .. name)
+    TriggerEvent("vorp_admin:logs", _source, Logs.BoosterLogs.SelfRevive, T.Webhooks.ActionBoosters.title, T.Webhooks.ActionBoosters.usedrevive .. "\n> " .. name)
     Core.Player.Revive(_source)
 end)
 
@@ -697,7 +697,7 @@ RegisterNetEvent("vorp_admin:Unban", function(staticid, command, name)
         return
     end
 
-    TriggerEvent("vorp_admin:logs", Logs.AdminLogs.Unban, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedunban .. "\n > " .. name .. "\n: " .. staticid)
+    TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Unban, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedunban .. "\n > " .. name .. "\n: " .. staticid)
 
     TriggerEvent("vorpbans:addtodb", false, staticid, 0)
 end)
@@ -718,7 +718,7 @@ RegisterNetEvent('vorp:teleportWayPoint', function(command, coords, waypointCoor
     end
 
     local description = T.Webhooks.ActionTeleport.usedtpm .. "\nWaypoint teleported to " .. tostring(waypointCoords) .. "\nfrom Coords : " .. tostring(coords)
-    TriggerEvent("vorp_admin:logs", Logs.TeleportLogs.Tpm, T.Webhooks.ActionTeleport.title, description)
+    TriggerEvent("vorp_admin:logs", _source, Logs.TeleportLogs.Tpm, T.Webhooks.ActionTeleport.title, description)
 
     TriggerClientEvent('vorp:teleportWayPoint', _source, coords)
 end)
@@ -726,7 +726,7 @@ end)
 RegisterNetEvent('vorp_admin:tptocoords', function(oldCoords, x, y, z)
     local _source = source
     local description = T.Webhooks.ActionTeleport.usedtptocoords .. "\nfrom coords: " .. tostring(oldCoords) .. "\nto coords: " .. tostring(vector3(x, y, z))
-    TriggerEvent("vorp_admin:logs", Logs.TeleportLogs.Tptocoords, T.Webhooks.ActionTeleport.title, description)
+    TriggerEvent("vorp_admin:logs", _source, Logs.TeleportLogs.Tptocoords, T.Webhooks.ActionTeleport.title, description)
 end)
 
 -----------------------------------------------------------------------------------------------------------------
@@ -832,7 +832,7 @@ function GetIdentity(source, identity)
     end
 end
 
-AddEventHandler('vorp_admin:logs', function(webhook, title, description)
+AddEventHandler('vorp_admin:logs', function(source, webhook, title, description)
     local _source = source
     local Identifier = GetPlayerIdentifier(_source, 1)
     local discordIdentity = GetIdentity(_source, "discord")
@@ -849,7 +849,7 @@ AddEventHandler('vorp_admin:logs', function(webhook, title, description)
         Identifier ..
         "` \n**Discord:** <@" ..
         discordId ..
-        ">**\nIP: **`" .. ip .. "`\n `" .. description .. "`"
+        ">**\nIP: **`" .. (ip or "none") .. "`\n `" .. description .. "`"
     Core.AddWebhook(title, webhook, message, Logs.webhookColor, Logs.name, Logs.logo, Logs.footerLogo, Logs.avatar)
 end)
 
@@ -868,7 +868,7 @@ RegisterNetEvent('vorp_admin:alertstaff', function(report)
         Core.NotifyRightTip(staff, T.Notify.player .. playername .. T.Notify.reportedToDiscord, 4000)
     end
 
-    TriggerEvent("vorp_admin:logs", Logs.ReportLogs.Reports, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.playerreported .. report)
+    TriggerEvent("vorp_admin:logs", _source, Logs.ReportLogs.Reports, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.playerreported .. report)
 end)
 
 
@@ -924,13 +924,13 @@ RegisterNetEvent("vorp_admin:requeststaff", function(type)
         end
     end
     if type == "new" then
-        TriggerEvent("vorp_admin:logs", Logs.ReportLogs.RequestStaff, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.requeststaff_disc)
+        TriggerEvent("vorp_admin:logs", _source, Logs.ReportLogs.RequestStaff, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.requeststaff_disc)
     elseif type == "bug" then
-        TriggerEvent("vorp_admin:logs", Logs.ReportLogs.BugReport, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.requeststaff_bug)
+        TriggerEvent("vorp_admin:logs", _source, Logs.ReportLogs.BugReport, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.requeststaff_bug)
     elseif type == "rules" then
-        TriggerEvent("vorp_admin:logs", Logs.ReportLogs.RulesBroken, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.requeststaff_rulesbroke)
+        TriggerEvent("vorp_admin:logs", _source, Logs.ReportLogs.RulesBroken, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.requeststaff_rulesbroke)
     elseif type == "cheating" then
-        TriggerEvent("vorp_admin:logs", Logs.ReportLogs.Cheating, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.requeststaff_cheating)
+        TriggerEvent("vorp_admin:logs", _source, Logs.ReportLogs.Cheating, T.Webhooks.ActionScoreBoard.title, T.Webhooks.ActionScoreBoard.requeststaff_cheating)
     end
 end)
 
