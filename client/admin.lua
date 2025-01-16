@@ -14,8 +14,12 @@ end
 
 function Admin()
     MenuData.CloseAll()
+    local num = 0
+    if GlobalState.PlayersInSession then
+        num = GlobalState.PlayersInSession
+    end
     local elements = {
-        { label = T.Menus.MainAdminOptions.playersList,    value = 'players', desc = T.Menus.MainAdminOptions.playersList_desc },
+        { label = T.Menus.MainAdminOptions.playersList,    value = 'players', desc = T.Menus.MainAdminOptions.playersList_desc .. "<br><br>" .. (num > 0 and num or "") },
         { label = T.Menus.MainAdminOptions.adminActions,   value = 'actions', desc = T.Menus.MainAdminOptions.adminActions_desc },
         { label = T.Menus.MainAdminOptions.offLineActions, value = 'offline', desc = T.Menus.MainAdminOptions.offLineActions_desc },
         { label = T.Menus.MainAdminOptions.viewReports,    value = 'view',    desc = T.Menus.MainAdminOptions.viewReports_desc },

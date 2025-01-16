@@ -34,7 +34,7 @@ Translation.Langs = {
             },
             MainAdminOptions = {
                 playersList = "List of Players",
-                playersList_desc = "Access a list of players currently online.",
+                playersList_desc = "Access a list of players currently online.<br><br>Players In Session: ",
                 adminActions = "Admin Actions",
                 adminActions_desc = "Access the menu for administrative actions.",
                 offLineActions = "Offline Actions",
@@ -560,7 +560,7 @@ Translation.Langs = {
             },
             MainAdminOptions = {
                 playersList = "Lista de Jogadores",
-                playersList_desc = "Acessa a lista de jogadores online atualmente.",
+                playersList_desc = "Acessa a lista de jogadores online atualmente.<br><br>Players In Session: ",
                 adminActions = "Ações de Admin",
                 adminActions_desc = "Acessa o menu de ações administrativas.",
                 offLineActions = "Ações Offline",
@@ -1091,7 +1091,7 @@ Translation.Langs = {
             },
             MainAdminOptions = {
                 playersList = "Lista de Jogadores",
-                playersList_desc = "Acesse a lista de jogadores online atualmente.",
+                playersList_desc = "Acesse a lista de jogadores online atualmente.<br><br>Players In Session: ",
                 adminActions = "Ações de Admin",
                 adminActions_desc = "Acesse o menu de ações administrativas.",
                 offLineActions = "Ações Offline",
@@ -1619,7 +1619,7 @@ Translation.Langs = {
             },
             MainAdminOptions = {
                 playersList = "Liste des Joueurs",
-                playersList_desc = "Accéder à la liste des joueurs actuellement en ligne.",
+                playersList_desc = "Accéder à la liste des joueurs actuellement en ligne.<br><br> Players In Session: ",
                 adminActions = "Actions Administratives",
                 adminActions_desc = "Accéder au menu des actions administratives.",
                 offLineActions = "Actions Hors Ligne",
@@ -2146,7 +2146,7 @@ Translation.Langs = {
             },
             MainAdminOptions = {
                 playersList = "Liste der Spieler",
-                playersList_desc = "Zugriff auf eine Liste der aktuell online befindlichen Spieler.",
+                playersList_desc = "Zugriff auf eine Liste der aktuell online befindlichen Spieler.<br><br>Players In Session: ",
                 adminActions = "Admin-Aktionen",
                 adminActions_desc = "Zugriff auf das Menü für administrative Aktionen.",
                 offLineActions = "Offline-Aktionen",
@@ -2674,7 +2674,7 @@ Translation.Langs = {
             },
             MainAdminOptions = {
                 playersList = "Lista de Jugadores",
-                playersList_desc = "Accede a una lista de jugadores actualmente en línea.",
+                playersList_desc = "Accede a una lista de jugadores actualmente en línea.<br><br>Players In Session: ",
                 adminActions = "Acciones de Administrador",
                 adminActions_desc = "Accede al menú de acciones administrativas.",
                 offLineActions = "Acciones Fuera de Línea",
@@ -3203,7 +3203,7 @@ Translation.Langs = {
             },
             MainAdminOptions = {
                 playersList = "Lista Jucatorilor",
-                playersList_desc = "Acceseaza lista jucatorilor online in prezent.",
+                playersList_desc = "Acceseaza lista jucatorilor online in prezent.<br><br> Players In Session: ",
                 adminActions = "Actiuni Admin",
                 adminActions_desc = "Acceseaza meniul pentru actiuni administrative.",
                 offLineActions = "Actiuni Offline",
