@@ -148,17 +148,13 @@ function Boost()
                 local AdminAllowed = IsAdminAllowed("vorp.staff.Noclip")
                 if AdminAllowed then
                     if not NoClipActive then
-                        SetEveryoneIgnorePlayer(PlayerId(), true)
-                        SetPedCanBeTargetted(player, false)
+                        EnableNoclip(player)
                         NoClipActive = true
-                        VORP.NotifyObjective(T.Notify.switchedOn, 5000)
-                        if Config.FrozenPosition then
-                            SetEntityHeading(player, GetEntityHeading(player) + 180)
-                        end
+                        VORP.NotifyObjective(T.Notify.switchedOn, -1)
                         TriggerServerEvent("vorp_admin:NoClip") -- log
                     else
-                        SetEveryoneIgnorePlayer(PlayerId(), false)
-                        SetPedCanBeTargetted(player, true)
+                        ResetNoclip(player)
+                        DisableRagdollingWhileFall()
                         NoClipActive = false
                         VORP.NotifyObjective(T.Notify.switchedOff, 5000)
                     end
@@ -241,17 +237,19 @@ local function DisableControls()
 end
 
 
-local Prompt1
-local Prompt2
-local Prompt4
-local Prompt6
+local Prompt1 = 0
+local Prompt2 = 0
+local Prompt4 = 0
+local Prompt6 = 0
 local PromptGroup = GetRandomIntInRange(0, 0xffffff)
 
--- Prompts
+--PROMPTS
 CreateThread(function()
-    repeat Wait(3000) until LocalPlayer.state.IsInSession
+    repeat Wait(1000) until LocalPlayer.state.IsInSession
+    FreezeEntityPosition(PlayerPedId(), false)
 
     local str = T.Menus.MainBoostOptions.Prompts.down .. "/" .. T.Menus.MainBoostOptions.Prompts.up
+
     Prompt1 = UiPromptRegisterBegin()
     UiPromptSetControlAction(Prompt1, Config.Controls.goDown)
     UiPromptSetControlAction(Prompt1, Config.Controls.goUp)
@@ -265,7 +263,7 @@ CreateThread(function()
 
     local str = T.Menus.MainBoostOptions.Prompts.speed
     Prompt2 = UiPromptRegisterBegin()
-    UiPromptSetControlAction(Prompt2, Config.Controls.changeSpeed) -- Shift
+    UiPromptSetControlAction(Prompt2, Config.Controls.changeSpeed) -- shift
     str = VarString(10, 'LITERAL_STRING', str)
     UiPromptSetText(Prompt2, str)
     UiPromptSetEnabled(Prompt2, true)
@@ -298,38 +296,92 @@ CreateThread(function()
     UiPromptRegisterEnd(Prompt6)
 end)
 
+function ResetNoclip(ped)
+    SetEntityCollision(ped, true, true)
+    FreezeEntityPosition(ped, false)
+    SetEntityInvincible(ped, false)
+    SetEntityVisible(ped, true)
+    SetEveryoneIgnorePlayer(PlayerId(), false)
+    SetPedCanBeTargetted(ped, true)
+    SetGameplayCamInitialHeading(0.0)
+    SetPlayerLockon(PlayerId(), true)
+    ClearPedTasks(ped, true, true)
+end
 
+function EnableNoclip(ped)
+    ClearPedTasks(ped, true, true)
+    SetGameplayCamInitialHeading(0.0)
+    SetPlayerLockon(PlayerId(), false)
+    SetEntityCollision(ped, false, true)
+    FreezeEntityPosition(ped, true)
+    SetEntityInvincible(ped, true)
+    SetEntityVisible(ped, false)
+    SetEveryoneIgnorePlayer(PlayerId(), true)
+    SetPedCanBeTargetted(ped, false)
+end
+
+-- credits to txAdmin for the function
+local function getFallImpulse(H)
+    local coefficient = 1.6428571428571428
+    local intercept = 3.5714285714285836
+    return coefficient * H + intercept
+end
+
+function DisableRagdollingWhileFall()
+    CreateThread(function()
+        local ped = PlayerPedId()
+        local pedHeight = GetEntityHeightAboveGround(ped)
+        if pedHeight == nil or pedHeight < 4.0 then
+            return
+        end
+
+        SetEntityInvincible(ped, true)
+        SetRagdollBlockingFlags(ped, (1 << 9)) --RBF_FALLING
+        local downForce = getFallImpulse(pedHeight)
+        ApplyForceToEntity(ped, 3, 0.0, 0.0, -downForce, 0.0, 0.0, 0.0, 0, true, true, false, true, false)
+
+        local fallAwaitLimit = 1000
+        local fallAwaitStep = 25
+        local fallAwaitElapsed = 0
+        while not IsPedFalling(ped) do
+            if fallAwaitElapsed >= fallAwaitLimit then
+                SetEntityInvincible(ped, false)
+
+                return
+            end
+            fallAwaitElapsed = fallAwaitElapsed + fallAwaitStep
+            Wait(fallAwaitStep)
+        end
+
+        repeat
+            Wait(50)
+        until not IsPedFalling(ped)
+        Wait(750)
+        SetEntityInvincible(ped, false)
+        ClearRagdollBlockingFlags(ped, (1 << 9)) --RBF_FALLIN
+    end)
+end
 
 CreateThread(function()
-    repeat Wait(3000) until LocalPlayer.state.IsInSession
+    repeat Wait(2000) until LocalPlayer.state.IsInSession
 
-    local player = PlayerPedId()
     local index = 1
     local CurrentSpeed = Config.Speeds[index].speed
-    local FollowCamMode = true
     local Label = Config.Speeds[index].label
 
     while true do
         local sleep = 1000
 
-        while NoClipActive do
+        if NoClipActive then
             sleep = 0
-            if IsPedInAnyVehicle(PlayerPedId(), false) then
-                player = GetVehiclePedIsIn(PlayerPedId(), false)
-            else
-                player = PlayerPedId()
-            end
-
+            local player = PlayerPedId()
             local yoff = 0.0
             local zoff = 0.0
 
             DisableControls()
+            SetEntityVisible(player, false)
 
-            if IsDisabledControlJustPressed(1, Config.Controls.camMode) then
-                FollowCamMode = not FollowCamMode
-            end
             local label = VarString(10, 'LITERAL_STRING', T.Menus.MainBoostOptions.Prompts.speed_desc .. Label .. " " .. CurrentSpeed)
-
             UiPromptSetActiveGroupThisFrame(PromptGroup, label, 0, 0, 0, 0)
 
             if IsDisabledControlJustPressed(1, Config.Controls.changeSpeed) then
@@ -345,89 +397,40 @@ CreateThread(function()
             end
 
             if IsDisabledControlPressed(0, Config.Controls.goForward) then
-                if Config.FrozenPosition then
-                    yoff = -Config.Offsets.y
-                else
-                    yoff = Config.Offsets.y
-                end
+                yoff = Config.Offsets.y
+                SetEntityRotation(player, 0.0, 0.0, 0.0, 2, false)
+                local heading = GetGameplayCamRelativeHeading()
+                SetEntityHeading(player, heading)
             end
 
             if IsDisabledControlPressed(0, Config.Controls.goBackward) then
-                if Config.FrozenPosition then
-                    yoff = Config.Offsets.y
-                else
-                    yoff = -Config.Offsets.y
-                end
-            end
-
-            if not FollowCamMode and IsDisabledControlPressed(0, Config.Controls.turnLeft) then
-                SetEntityHeading(PlayerPedId(), GetEntityHeading(PlayerPedId()) + Config.Offsets.h)
-            end
-
-            if not FollowCamMode and IsDisabledControlPressed(0, Config.Controls.turnRight) then
-                SetEntityHeading(PlayerPedId(), GetEntityHeading(PlayerPedId()) - Config.Offsets.h)
+                yoff = -Config.Offsets.y
+                SetEntityRotation(player, 0.0, 0.0, 0.0, 2, false)
+                local heading = GetGameplayCamRelativeHeading()
+                SetEntityHeading(player, heading)
             end
 
             if IsDisabledControlPressed(0, Config.Controls.goUp) then
                 zoff = Config.Offsets.z
+                local newPos = GetOffsetFromEntityInWorldCoords(player, 0.0, yoff * (CurrentSpeed + 0.3), zoff * (CurrentSpeed + 0.3))
+                SetEntityCoordsNoOffset(player, newPos.x, newPos.y, newPos.z, NoClipActive, NoClipActive, NoClipActive)
             end
 
             if IsDisabledControlPressed(0, Config.Controls.goDown) then
                 zoff = -Config.Offsets.z
+                local newPos = GetOffsetFromEntityInWorldCoords(player, 0.0, yoff * (CurrentSpeed + 0.3), zoff * (CurrentSpeed + 0.3))
+                SetEntityCoordsNoOffset(player, newPos.x, newPos.y, newPos.z, NoClipActive, NoClipActive, NoClipActive)
             end
 
             if IsDisabledControlPressed(0, Config.Controls.Cancel) then
-                SetEveryoneIgnorePlayer(PlayerId(), false)
-                SetPedCanBeTargetted(player, true)
                 NoClipActive = false
-                break
+                ResetNoclip(player)
+                DisableRagdollingWhileFall()
             end
 
 
             local newPos = GetOffsetFromEntityInWorldCoords(player, 0.0, yoff * (CurrentSpeed + 0.3), zoff * (CurrentSpeed + 0.3))
-            local heading = GetEntityHeading(player)
-            SetEntityVelocity(player, 0.0, 0.0, 0.0)
-            if Config.FrozenPosition then
-                SetEntityRotation(player, 0.0, 0.0, 180.0, 0, false)
-            else
-                SetEntityRotation(player, 0.0, 0.0, 0.0, 0, false)
-            end
-            if (FollowCamMode) then
-                SetEntityHeading(player, GetGameplayCamRelativeHeading())
-            else
-                SetEntityHeading(player, heading);
-            end
-            if Config.FrozenPosition then
-                SetEntityCoordsNoOffset(player, newPos.x, newPos.y, newPos.z, not NoClipActive, not NoClipActive,
-                    not NoClipActive)
-            else
-                SetEntityCoordsNoOffset(player, newPos.x, newPos.y, newPos.z, NoClipActive, NoClipActive, NoClipActive)
-            end
-
-            SetEntityAlpha(player, 51, false)
-            if (player ~= PlayerPedId()) then
-                SetEntityAlpha(PlayerPedId(), 51, false)
-            end
-
-            SetEntityCollision(player, false, false)
-            FreezeEntityPosition(player, true)
-            SetEntityInvincible(player, true)
-            SetEntityVisible(player, false)
-            SetEveryoneIgnorePlayer(PlayerPedId(), true)
-            SetPedCanBeTargetted(player, false)
-            Wait(0)
-
-            ResetEntityAlpha(player)
-            if (player ~= PlayerPedId()) then
-                ResetEntityAlpha(PlayerPedId())
-            end
-
-            SetEntityCollision(player, true, true)
-            FreezeEntityPosition(player, false)
-            SetEntityInvincible(player, false)
-            SetEntityVisible(player, true)
-            SetEveryoneIgnorePlayer(PlayerPedId(), false)
-            SetPedCanBeTargetted(player, true)
+            SetEntityCoordsNoOffset(player, newPos.x, newPos.y, newPos.z, NoClipActive, NoClipActive, NoClipActive)
         end
         Wait(sleep)
     end

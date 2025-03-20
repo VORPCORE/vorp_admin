@@ -37,7 +37,6 @@ Config = {
         goForward = 0x8FD015D8,   -- W
         goBackward = 0xD27782E3,  -- S
         changeSpeed = 0x8FFC75D6, -- L-Shift
-        camMode = 0x24978A28,     -- H
         Cancel = 0x4AF4D473       -- Delete
 
     },
@@ -51,11 +50,10 @@ Config = {
         { label = 'Max',       speed = 29 },
     },
     Offsets             = {
-        y = 0.2,                -- Forward and backward movement speed multiplier
-        z = 0.1,                -- Upward and downward movement speed multiplier
-        h = 1,                  -- Rotation movement speed multiplier
+        y = 0.2, -- Forward and backward movement speed multiplier
+        z = 0.1, -- Upward and downward movement speed multiplier
+        h = 1,   -- Rotation movement speed multiplier
     },
-    FrozenPosition      = true, -- Frozen on open menu vorp.staff.OpenMenu
 
     AllowedGroups       = {
         admin = true,
