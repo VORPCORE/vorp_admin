@@ -423,6 +423,7 @@ CreateThread(function()
             end
 
             if IsDisabledControlPressed(0, Config.Controls.Cancel) then
+                VORP.NotifyObjective(T.Notify.switchedOff, 5000)
                 NoClipActive = false
                 ResetNoclip(player)
                 DisableRagdollingWhileFall()
