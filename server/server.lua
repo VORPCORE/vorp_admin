@@ -880,7 +880,7 @@ AddEventHandler("vorp:SelectedCharacter", function(source, character)
 
     local staffgroup1 = User.getGroup
 
-    if staffgroup1 and staffgroup1 ~= "user" then
+    if staffgroup1 == "admin" then -- only admins
         stafftable[_source] = _source
     end
 
