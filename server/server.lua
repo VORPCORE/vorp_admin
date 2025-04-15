@@ -45,7 +45,7 @@ local function getUserData(User, _source)
 end
 
 -- Register CallBack
-Core.Callback.Register("vorp_admin:Callback:getplayersinfo", function(source, cb, args)
+Core.Callback.Register("vorp_admin:Callback:getplayersinfo", function(_, cb, args)
     if next(PlayersTable) then
         if args.search == "search" then -- is for unique player
             if PlayersTable[args.id] then
@@ -61,7 +61,7 @@ Core.Callback.Register("vorp_admin:Callback:getplayersinfo", function(source, cb
             end
         end
 
-        for id, v in pairs(PlayersTable) do
+        for id, _ in pairs(PlayersTable) do
             local User = Core.getUser(id)
             if User then
                 local data = getUserData(User, id)
@@ -79,12 +79,12 @@ local function CheckTable(group)
     return true
 end
 
-local function AllowedToExecuteAction(source, command)
+local function AllowedToExecuteAction(source)
     local User = Core.getUser(source)
     if not User then return end
     local group = User.getGroup
 
-    if IsPlayerAceAllowed(source, command) or CheckTable(group) then
+    if CheckTable(group) then
         return true
     end
 
@@ -94,10 +94,10 @@ end
 -------------------------------------------------------------------------------
 --------------------------------- EVENTS TELEPORTS -----------------------------
 --TP TO
-RegisterNetEvent("vorp_admin:TpToPlayer", function(targetID, command, name)
+RegisterNetEvent("vorp_admin:TpToPlayer", function(targetID, _, name)
     local _source = source
     if Core.getUser(targetID) then
-        if not AllowedToExecuteAction(_source, command) then
+        if not AllowedToExecuteAction(_source) then
             return
         end
 
@@ -115,9 +115,9 @@ RegisterNetEvent("vorp_admin:TpToPlayer", function(targetID, command, name)
 end)
 
 --SENDBACK
-RegisterNetEvent("vorp_admin:sendAdminBack", function(command)
+RegisterNetEvent("vorp_admin:sendAdminBack", function()
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
     TriggerClientEvent('vorp_admin:sendAdminBack', _source)
@@ -125,12 +125,12 @@ end)
 
 
 --FREEZE
-RegisterNetEvent("vorp_admin:freeze", function(targetID, freeze, command, name)
+RegisterNetEvent("vorp_admin:freeze", function(targetID, freeze, _, name)
     local _source = source
     local _target = targetID
     local state = freeze
     if Core.getUser(_target) then
-        if not AllowedToExecuteAction(_source, command) then
+        if not AllowedToExecuteAction(_source) then
             return
         end
 
@@ -143,10 +143,10 @@ RegisterNetEvent("vorp_admin:freeze", function(targetID, freeze, command, name)
 end)
 ---------------------------------------------------------------
 --BRING
-RegisterNetEvent("vorp_admin:Bring", function(targetID, adminCoords, command, name, target)
+RegisterNetEvent("vorp_admin:Bring", function(targetID, adminCoords, _, name, target)
     local _source = source
     if Core.getUser(targetID) then
-        if not AllowedToExecuteAction(_source, command) then
+        if not AllowedToExecuteAction(_source) then
             return
         end
 
@@ -163,10 +163,10 @@ RegisterNetEvent("vorp_admin:Bring", function(targetID, adminCoords, command, na
 end)
 
 --TPBACK
-RegisterNetEvent("vorp_admin:TeleportPlayerBack", function(targetID, command)
+RegisterNetEvent("vorp_admin:TeleportPlayerBack", function(targetID)
     local _source = source
     if Core.getUser(targetID) then
-        if not AllowedToExecuteAction(_source, command) then
+        if not AllowedToExecuteAction(_source) then
             return
         end
         TriggerClientEvent('vorp_admin:TeleportPlayerBack', targetID)
@@ -177,11 +177,11 @@ end)
 ---------------------------- ADVANCED ADMIN ACTIONS ---------------------------------------
 
 -- KICK
-RegisterNetEvent("vorp_admin:kick", function(targetID, reason, command, name)
+RegisterNetEvent("vorp_admin:kick", function(targetID, reason, _, name)
     local _source = source
     local _target = targetID
     if Core.getUser(targetID) then
-        if not AllowedToExecuteAction(_source, command) then
+        if not AllowedToExecuteAction(_source) then
             return
         end
         TriggerClientEvent('vorp:updatemissioNotify', _target, T.Notify.kickedNotify, T.Notify.kickedNotify, 5000)
@@ -196,14 +196,14 @@ end)
 
 
 -- BAN
-RegisterNetEvent("vorp_admin:BanPlayer", function(targetID, staticid, time, command, name)
+RegisterNetEvent("vorp_admin:BanPlayer", function(targetID, staticid, time, _, name)
     local _source = source
     local _target = targetID
     local targetStaticId = tonumber(staticid)
     local datetime = os.time(os.date("!*t"))
     local banTime
     if Core.getUser(_target) then
-        if not AllowedToExecuteAction(_source, command) then
+        if not AllowedToExecuteAction(_source) then
             return
         end
         if time:sub(-1) == 'd' then
@@ -237,13 +237,13 @@ RegisterNetEvent("vorp_admin:BanPlayer", function(targetID, staticid, time, comm
 end)
 
 -- RESPAWN
-RegisterNetEvent("vorp_admin:respawnPlayer", function(targetID, command, name)
+RegisterNetEvent("vorp_admin:respawnPlayer", function(targetID, _, name)
     local _source = source
     if not Core.getUser(targetID) then
         return
     end
 
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
 
@@ -263,13 +263,13 @@ end)
 --------------------------------------------------------------------
 -- DATABASE GIVE ITEM
 
-RegisterNetEvent("vorp_admin:givePlayer", function(targetID, action, data1, data2, data3, command, name)
+RegisterNetEvent("vorp_admin:givePlayer", function(targetID, action, data1, data2, data3, _, name)
     local _source = source
     local user = Core.getUser(targetID)
     if not user then
         return
     end
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
     local Character = user.getUsedCharacter
@@ -410,14 +410,14 @@ end)
 
 -- REMOVE DB
 
-RegisterNetEvent("vorp_admin:ClearAllItems", function(type, targetID, command, name)
+RegisterNetEvent("vorp_admin:ClearAllItems", function(type, targetID, _, name)
     local _source = source
 
     if not Core.getUser(targetID) then
         return
     end
 
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
 
@@ -429,7 +429,7 @@ RegisterNetEvent("vorp_admin:ClearAllItems", function(type, targetID, command, n
             return print("empty inventory ")
         end
 
-        for key, inventoryItems in pairs(inv) do
+        for _, inventoryItems in pairs(inv) do
             Wait(10)
             exports.vorp_inventory:subItem(targetID, inventoryItems.name, inventoryItems.count)
         end
@@ -440,7 +440,7 @@ RegisterNetEvent("vorp_admin:ClearAllItems", function(type, targetID, command, n
 
     if type == "weapons" then
         local weaponsPlayer = exports.vorp_inventory:getUserInventoryWeapons(targetID)
-        for key, value in pairs(weaponsPlayer) do
+        for _, value in pairs(weaponsPlayer) do
             local id = value.id
             exports.vorp_inventory:subWeapon(targetID, id)
             exports.vorp_inventory:deleteWeapon(targetID, id)
@@ -454,20 +454,22 @@ RegisterNetEvent("vorp_admin:ClearAllItems", function(type, targetID, command, n
 end)
 
 -- GET ITEMS FROM INVENTORY
-RegisterNetEvent("vorp_admin:checkInventory", function(targetID, command)
+RegisterNetEvent("vorp_admin:checkInventory", function(targetID)
     local _source = source
     if not Core.getUser(targetID) then
         return
     end
-    if not AllowedToExecuteAction(_source, command) then
+
+    if not AllowedToExecuteAction(_source) then
         return
     end
+
     local inv = exports.vorp_inventory:getUserInventoryItems(targetID)
     TriggerClientEvent("vorp_admin:getplayerInventory", _source, inv)
 end)
 
 -- REMOVE CURRENCY
-RegisterNetEvent("vorp_admin:ClearCurrency", function(targetID, type, command, name)
+RegisterNetEvent("vorp_admin:ClearCurrency", function(targetID, type, _, name)
     local _source = source
 
     local User = Core.getUser(targetID)
@@ -475,7 +477,7 @@ RegisterNetEvent("vorp_admin:ClearCurrency", function(targetID, type, command, n
         return
     end
 
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
 
@@ -500,7 +502,7 @@ end)
 -- ADMIN ACTIONS
 
 -- GROUP
-RegisterNetEvent("vorp_admin:setGroup", function(targetID, newgroup, command, name)
+RegisterNetEvent("vorp_admin:setGroup", function(targetID, newgroup, _, name)
     local _source = source
     local _target = targetID
     local NewPlayerGroup = newgroup
@@ -509,7 +511,7 @@ RegisterNetEvent("vorp_admin:setGroup", function(targetID, newgroup, command, na
         return
     end
 
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
 
@@ -524,11 +526,11 @@ RegisterNetEvent("vorp_admin:setGroup", function(targetID, newgroup, command, na
 end)
 
 -- JOB
-RegisterNetEvent("vorp_admin:setJob", function(targetID, newjob, newgrade, newJobLabel, command, name)
+RegisterNetEvent("vorp_admin:setJob", function(targetID, newjob, newgrade, newJobLabel, _, name)
     local _source = source
     local _target = targetID
 
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
 
@@ -548,9 +550,9 @@ RegisterNetEvent("vorp_admin:setJob", function(targetID, newjob, newgrade, newJo
 end)
 
 -- WHITELIST
-RegisterNetEvent("vorp_admin:Whitelist", function(targetID, steam, type, command, name)
+RegisterNetEvent("vorp_admin:Whitelist", function(_, steam, _, _, name)
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
 
@@ -559,11 +561,11 @@ RegisterNetEvent("vorp_admin:Whitelist", function(targetID, steam, type, command
     TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Unwhitelist, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedunwhitelist .. "\n > " .. name .. "\n: " .. steam)
 end)
 
-RegisterNetEvent("vorp_admin:Whitelistoffline", function(staticid, type, command)
+RegisterNetEvent("vorp_admin:Whitelistoffline", function(staticid, type)
     local _source = source
     local staticID = staticid
 
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
     if type == "whiteList" then
@@ -574,11 +576,11 @@ RegisterNetEvent("vorp_admin:Whitelistoffline", function(staticid, type, command
 end)
 
 -- REVIVE
-RegisterNetEvent("vorp_admin:revive", function(targetID, command, name)
+RegisterNetEvent("vorp_admin:revive", function(targetID, _, name)
     local _source = source
     local _target = targetID
 
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
 
@@ -592,11 +594,11 @@ RegisterNetEvent("vorp_admin:revive", function(targetID, command, name)
 end)
 
 -- HEAL
-RegisterNetEvent("vorp_admin:heal", function(targetID, command, name)
+RegisterNetEvent("vorp_admin:heal", function(targetID, _, name)
     local _source = source
     local _target = targetID
 
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
 
@@ -646,10 +648,10 @@ RegisterNetEvent("vorp_admin:NoClip", function()
 end)
 
 -- SPECTATE
-RegisterNetEvent("vorp_admin:spectate", function(targetID, command, name)
+RegisterNetEvent("vorp_admin:spectate", function(targetID, _, name)
     local _source = source
 
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
     local targetCoords = GetEntityCoords(GetPlayerPed(targetID))
@@ -658,9 +660,9 @@ RegisterNetEvent("vorp_admin:spectate", function(targetID, command, name)
 end)
 
 
-RegisterNetEvent("vorp_admin:announce", function(announce, command)
+RegisterNetEvent("vorp_admin:announce", function(announce)
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
 
@@ -669,9 +671,9 @@ RegisterNetEvent("vorp_admin:announce", function(announce, command)
     Core.NotifySimpleTop(-1, T.Notify.announce, announce, 10000)
 end)
 
-RegisterNetEvent('vorp_admin:HealSelf', function(command)
+RegisterNetEvent('vorp_admin:HealSelf', function()
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
 
@@ -681,9 +683,9 @@ RegisterNetEvent('vorp_admin:HealSelf', function(command)
     Core.Player.Heal(_source)
 end)
 
-RegisterNetEvent('vorp_admin:ReviveSelf', function(command)
+RegisterNetEvent('vorp_admin:ReviveSelf', function()
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
     local name = Player(_source).state.Character.FirstName .. Player(_source).state.Character.LastName
@@ -691,9 +693,9 @@ RegisterNetEvent('vorp_admin:ReviveSelf', function(command)
     Core.Player.Revive(_source)
 end)
 
-RegisterNetEvent("vorp_admin:Unban", function(staticid, command, name)
+RegisterNetEvent("vorp_admin:Unban", function(staticid, _, name)
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
 
@@ -702,18 +704,18 @@ RegisterNetEvent("vorp_admin:Unban", function(staticid, command, name)
     TriggerEvent("vorpbans:addtodb", false, staticid, 0)
 end)
 
-RegisterNetEvent("vorp_admin:BanOffline", function(staticid, time, command)
+RegisterNetEvent("vorp_admin:BanOffline", function(staticid, time)
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
 
     TriggerEvent("vorpbans:addtodb", false, staticid, time)
 end)
 
-RegisterNetEvent('vorp:teleportWayPoint', function(command, coords, waypointCoords)
+RegisterNetEvent('vorp:teleportWayPoint', function(_, coords, waypointCoords)
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
 
@@ -732,40 +734,36 @@ end)
 -----------------------------------------------------------------------------------------------------------------
 -- PERMISSIONS
 -- OPEN MAIN MENU
-Core.Callback.Register('vorp_admin:CanOpenStaffMenu', function(source, cb, object)
+Core.Callback.Register('vorp_admin:CanOpenStaffMenu', function(source, cb)
     local _source = source
-    local ace = IsPlayerAceAllowed(_source, object)
     local User = Core.getUser(_source)
     if not User then return end
+
     local group = User.getGroup
-    if ace or CheckTable(group) then
-        cb(true)
-    else
-        cb(false)
-    end
+    cb(CheckTable(group))
 end)
 
 -------------------------------------------------------------------------------------------------------------------
 -------------------------- Troll Actions--------------------------------------------------------------------------
-RegisterNetEvent('vorp_admin:ServerTrollKillPlayerHandler', function(playerserverid, command)
+RegisterNetEvent('vorp_admin:ServerTrollKillPlayerHandler', function(playerserverid)
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
     TriggerClientEvent('vorp_admin:ClientTrollKillPlayerHandler', playerserverid)
 end)
 
-RegisterNetEvent('vorp_admin:ServerTrollInvisibleHandler', function(playerserverid, command)
+RegisterNetEvent('vorp_admin:ServerTrollInvisibleHandler', function(playerserverid)
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
     TriggerClientEvent('vorp_admin:ClientTrollInvisbleHandler', playerserverid)
 end)
 
-RegisterNetEvent('vorp_admin:ServerTrollLightningStrikePlayerHandler', function(playerserverid, command)
+RegisterNetEvent('vorp_admin:ServerTrollLightningStrikePlayerHandler', function(playerserverid)
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
     local playerPed = GetPlayerPed(playerserverid)
@@ -773,49 +771,49 @@ RegisterNetEvent('vorp_admin:ServerTrollLightningStrikePlayerHandler', function(
     TriggerClientEvent('vorp_admin:ClientTrollLightningStrikePlayerHandler', -1, coords)
 end)
 
-RegisterNetEvent('vorp_admin:ServerTrollSetPlayerOnFireHandler', function(playerserverid, command)
+RegisterNetEvent('vorp_admin:ServerTrollSetPlayerOnFireHandler', function(playerserverid)
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
     TriggerClientEvent('vorp_admin:ClientTrollSetPlayerOnFireHandler', playerserverid)
 end)
 
-RegisterNetEvent('vorp_admin:ServerTrollTPToHeavenHandler', function(playerserverid, command)
+RegisterNetEvent('vorp_admin:ServerTrollTPToHeavenHandler', function(playerserverid)
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
     TriggerClientEvent('vorp_admin:ClientTrollTPToHeavenHandler', playerserverid)
 end)
 
-RegisterNetEvent('vorp_admin:ServerTrollRagdollPlayerHandler', function(playerserverid, command)
+RegisterNetEvent('vorp_admin:ServerTrollRagdollPlayerHandler', function(playerserverid)
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
     TriggerClientEvent('vorp_admin:ClientTrollRagdollPlayerHandler', playerserverid)
 end)
 
-RegisterNetEvent('vorp_admin:ServerDrainPlayerStamHandler', function(playerserverid, command)
+RegisterNetEvent('vorp_admin:ServerDrainPlayerStamHandler', function(playerserverid)
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
     TriggerClientEvent('vorp_admin:ClientDrainPlayerStamHandler', playerserverid)
 end)
 
-RegisterNetEvent('vorp_admin:ServerHandcuffPlayerHandler', function(playerserverid, command)
+RegisterNetEvent('vorp_admin:ServerHandcuffPlayerHandler', function(playerserverid)
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
     TriggerClientEvent('vorp_admin:ClientHandcuffPlayerHandler', playerserverid)
 end)
 
-RegisterNetEvent('vorp_admin:ServerTempHighPlayerHandler', function(playerserverid, command)
+RegisterNetEvent('vorp_admin:ServerTempHighPlayerHandler', function(playerserverid)
     local _source = source
-    if not AllowedToExecuteAction(_source, command) then
+    if not AllowedToExecuteAction(_source) then
         return
     end
     TriggerClientEvent('vorp_admin:ClientTempHighPlayerHandler', playerserverid)
@@ -824,8 +822,8 @@ end)
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------- DISCORD --------------------------------------------------------
 
-function GetIdentity(source, identity)
-    for k, v in pairs(GetPlayerIdentifiers(source)) do
+local function GetIdentity(source, identity)
+    for _, v in pairs(GetPlayerIdentifiers(source)) do
         if string.sub(v, 1, string.len(identity .. ":")) == identity .. ":" then
             return v
         end
@@ -873,7 +871,7 @@ end)
 
 
 
-AddEventHandler("vorp:SelectedCharacter", function(source, character)
+AddEventHandler("vorp:SelectedCharacter", function(source)
     local _source = source
     local User = Core.getUser(_source)
     if not User then return end
@@ -912,7 +910,7 @@ RegisterNetEvent("vorp_admin:requeststaff", function(type)
     Character = Character.getUsedCharacter
     local playername = Character.firstname .. ' ' .. Character.lastname
 
-    for id, staff in pairs(stafftable) do
+    for _, staff in pairs(stafftable) do
         if type == "new" then
             Core.NotifyRightTip(staff, playername .. " ID: " .. _source .. T.Notify.requestingAssistance .. T.Notify.new, 4000)
         elseif type == "bug" then
