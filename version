@@ -1,3 +1,9 @@
+<2.6>
+- remove ace permissions use only database users permissions
+- fix staff group that was allowing any group as long it wasnt user group
+- added better no clip and optimised (droppping from the air will not kill you)
+- display total amount of players in session 
+- other small changes and fixes
 <2.5>
 - new exports compability
 - whitelist options redone

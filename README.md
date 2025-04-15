@@ -5,8 +5,7 @@
 ----
 
 ## Features
-- Built in Ace permissions and database
-- Owners have all perms by default
+- Built in database permissions
 - Permissions for all actions
 - Administration tools
 - Scoreboard
@@ -21,8 +20,6 @@ Theres also a menu for users
 ## Installation
 
 - Add `ensure vorp_admin` to your file called `server.cfg`/ `resources.cfg`
-- Add this line `exec vorp_perms.cfg  # vorpframework permmisions` to the file called `server.cfg`/ `resources.cfg` anywhere
-- Next copy the file called `vorp_perms` included in the download and paste it, to where your `server.cfg`/ `resources.cfg` is
 - Restart server, enjoy.
 
 ## Dependencies
