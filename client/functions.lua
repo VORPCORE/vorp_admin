@@ -81,27 +81,27 @@ function OpenMenu()
             end
 
             if data.current.value == "administration" then
-                local AdminAllowed = IsAdminAllowed("vorp.staff.Admin")
+                local AdminAllowed = IsAdminAllowed("admin_menu")
                 if AdminAllowed then
                     Admin()
                 end
             elseif data.current.value == "boost" then
-                local AdminAllowed = IsAdminAllowed("vorp.staff.Boosters")
+                local AdminAllowed = IsAdminAllowed("boosters_menu")
                 if AdminAllowed then
                     Boost()
                 end
             elseif data.current.value == "database" then
-                local AdminAllowed = IsAdminAllowed("vorp.staff.Database")
+                local AdminAllowed = IsAdminAllowed("database_menu")
                 if AdminAllowed then
                     DataBase()
                 end
             elseif data.current.value == "teleport" then
-                local AdminAllowed = IsAdminAllowed("vorp.staff.Teleports")
+                local AdminAllowed = IsAdminAllowed("teleport_menu")
                 if AdminAllowed then
                     Teleport()
                 end
             elseif data.current.value == "devtools" then
-                local AdminAllowed = IsAdminAllowed("vorp.staff.Devtools")
+                local AdminAllowed = IsAdminAllowed("devtools_menu")
                 if AdminAllowed then
                     OpenDevTools()
                 end
@@ -115,7 +115,7 @@ end
 
 -- FUNCTIONS
 -- CREDITS to the author for the clipboard
-function Round(input, decimalPlaces)
+local function Round(input, decimalPlaces)
     return tonumber(string.format("%." .. (decimalPlaces or 0) .. "f", input))
 end
 

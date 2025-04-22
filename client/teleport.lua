@@ -37,21 +37,21 @@ function Teleport()
                     return VORP.NotifyObjective("theres no waypoint set", 5000)
                 end
 
-                TriggerServerEvent('vorp:teleportWayPoint', "vorp.staff.WayPoint", coords, waypointCoords)
+                TriggerServerEvent('vorp:teleportWayPoint', "", coords, waypointCoords)
             elseif data.current.value == 'autotpm' then
                 if autotpm == false then
                     autotpm = true
                     TriggerEvent('vorp:TipRight', T.Notify.switchedOn, 3000)
                     while autotpm do
                         Wait(2000)
-                        TriggerServerEvent('vorp:teleportWayPoint', "vorp.staff.AutoTpm")
+                        TriggerServerEvent('vorp:teleportWayPoint')
                     end
                 else
                     TriggerEvent('vorp:TipRight', T.Notify.switchedOff, 3000)
                     autotpm = false
                 end
             elseif data.current.value == "tptocoords" then
-                local AdminAllowed = IsAdminAllowed("vorp.staff.TpCoords")
+                local AdminAllowed = IsAdminAllowed("tp_to_coords")
                 if AdminAllowed then
                     local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
                         T.Menus.MainTeleportOptions.InsertCoordsInput.placeholder,
@@ -85,14 +85,14 @@ function Teleport()
                     function(result)
                         local TargetID = result
                         if TargetID ~= "" then
-                            TriggerServerEvent("vorp_admin:TpToPlayer", TargetID, "vorp.staff.TpPlayer")
+                            TriggerServerEvent("vorp_admin:TpToPlayer", TargetID)
                         else
                             VORP.NotifyObjective(T.Notify.empty, 5000)
                         end
                     end)
             elseif data.current.value == "admingoback" then
                 if lastLocation then
-                    TriggerServerEvent("vorp_admin:sendAdminBack", "vorp.staff.TpPlayer")
+                    TriggerServerEvent("vorp_admin:sendAdminBack")
                 end
             elseif data.current.value == "bringplayer" then
                 TriggerEvent("vorpinputs:getInput", T.Menus.DefaultsInputs.confirm, T.Menus.DefaultsInputs.serverID,
@@ -100,7 +100,7 @@ function Teleport()
                         local TargetID = result
                         if TargetID ~= "" and lastLocation then
                             local adminCoords = GetEntityCoords(PlayerPedId())
-                            TriggerServerEvent("vorp_admin:Bring", TargetID, adminCoords, "vorp.staff.BringPlayer", nil, TargetID)
+                            TriggerServerEvent("vorp_admin:Bring", TargetID, adminCoords, "", nil, TargetID)
                         else
                             VORP.NotifyObjective(T.Notify.empty, 5000)
                         end
@@ -110,7 +110,7 @@ function Teleport()
                     function(result)
                         local TargetID = result
                         if TargetID ~= "" and lastLocation then
-                            TriggerServerEvent("vorp_admin:TeleportPlayerBack", TargetID, "vorp.staff.SendBack")
+                            TriggerServerEvent("vorp_admin:TeleportPlayerBack", TargetID)
                         else
                             TriggerEvent("vorp:TipRight", T.Notify.goToPlayerFirst, 4000)
                         end

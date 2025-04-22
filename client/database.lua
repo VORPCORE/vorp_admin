@@ -43,7 +43,7 @@ function DataBase()
                 return _G[data.trigger]()
             end
             if data.current.value == "players" then
-                local AdminAllowed = IsAdminAllowed("vorp.staff.OpenDatabase")
+                local AdminAllowed = IsAdminAllowed("open_database_menu")
                 if AdminAllowed then
                     DatabasePlayers(data.current.PlayerData)
                 end
@@ -73,14 +73,14 @@ function DatabasePlayers(PlayerData)
                 return _G[data.trigger]()
             end
             if data.current.value == "give" then
-                local AdminAllowed = IsAdminAllowed("vorp.staff.OpenGiveMenu")
+                local AdminAllowed = IsAdminAllowed("give_items_menu")
                 if AdminAllowed then
                     GivePlayers(PlayerData)
                 end
             end
 
             if data.current.value == "remove" then
-                local AdminAllowed = IsAdminAllowed("vorp.staff.OpenRemoveMenu")
+                local AdminAllowed = IsAdminAllowed("remove_items_menu")
                 if AdminAllowed then
                     RemovePlayers(PlayerData)
                 end

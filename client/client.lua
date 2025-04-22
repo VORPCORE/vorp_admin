@@ -39,7 +39,7 @@ local function CanOpenUsersMenu()
 end
 
 local function OpenAdminMenu()
-    local AdminAllowed = IsAdminAllowed("vorp.staff.OpenMenu")
+    local AdminAllowed = IsAdminAllowed("open_menu")
     if AdminAllowed then
         OpenMenu()
         return true
@@ -54,7 +54,7 @@ CreateThread(function()
     if Config.useAdminCommand then
         TriggerEvent('chat:addSuggestion', '/' .. Config.commandAdmin, 'Open admin menu or use pagedown', { {} })
         RegisterCommand(Config.commandAdmin, function()
-            local AdminAllowed = IsAdminAllowed("vorp.staff.OpenMenu")
+            local AdminAllowed = IsAdminAllowed("open_menu")
             if AdminAllowed then
                 OpenMenu()
                 return true

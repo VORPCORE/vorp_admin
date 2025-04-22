@@ -38,22 +38,22 @@ function Admin()
                 _G[data.trigger]()
             end
             if data.current.value == "players" then
-                local AdminAllowed = IsAdminAllowed('vorp.staff.PlayersList')
+                local AdminAllowed = IsAdminAllowed('players_list_menu')
                 if AdminAllowed then
                     return PlayerList()
                 end
             elseif data.current.value == "actions" then
-                local AdminAllowed = IsAdminAllowed('vorp.staff.AdminActions')
+                local AdminAllowed = IsAdminAllowed('admin_actions_menu')
                 if AdminAllowed then
                     return Actions()
                 end
             elseif data.current.value == "offline" then
-                local AdminAllowed = IsAdminAllowed('vorp.staff.OfflineActions')
+                local AdminAllowed = IsAdminAllowed('offline_actions_menu')
                 if AdminAllowed then
                     return OffLine()
                 end
             elseif data.current.value == "view" then
-                local AdminAllowed = IsAdminAllowed('vorp.staff.ViewReports')
+                local AdminAllowed = IsAdminAllowed('view_reports_menu')
                 if AdminAllowed then
                     TriggerEvent("vorp_admin:viewreports")
                 end
@@ -130,7 +130,7 @@ function PlayerList()
     local players = result
     local sortedPlayers = {} -- Create a new table to store the sorted player list
 
-    for playerid, playersInfo in pairs(players) do
+    for _, playersInfo in pairs(players) do
         sortedPlayers[#sortedPlayers + 1] = playersInfo
     end
 
@@ -170,7 +170,7 @@ function PlayerList()
                 return _G[data.trigger]()
             end
             if data.current.value then
-                local AdminAllowed = IsAdminAllowed('vorp.staff.PlayersListSubmenu')
+                local AdminAllowed = IsAdminAllowed('players_list_submenu')
                 if AdminAllowed then
                     local player = data.current.info
                     return OpenSubAdminMenu(player)
@@ -202,17 +202,17 @@ function OpenSubAdminMenu(Player)
                 _G[data.trigger]()
             end
             if data.current.value == "simpleaction" then
-                local AdminAllowed = IsAdminAllowed('vorp.staff.OpenSimpleActions')
+                local AdminAllowed = IsAdminAllowed('simple_actions_menu')
                 if AdminAllowed then
                     OpenSimpleActionMenu(Player)
                 end
             elseif data.current.value == "advancedaction" then
-                local AdminAllowed = IsAdminAllowed('vorp.staff.OpenAdvancedActions')
+                local AdminAllowed = IsAdminAllowed('advanced_actions_menu')
                 if AdminAllowed then
                     OpenAdvancedActions(Player)
                 end
             elseif data.current.value == 'trollactions' then
-                local AdminAllowed = IsAdminAllowed('vorp.staff.OpenTrollActions')
+                local AdminAllowed = IsAdminAllowed('troll_actions_menu')
                 if AdminAllowed then
                     OpenTrollActions(Player)
                 end
@@ -615,17 +615,17 @@ function Actions()
             end
 
             if data.current.value == "delhorse" then
-                local AdminAllowed = IsAdminAllowed('vorp.staff.DeleteHorse')
+                local AdminAllowed = IsAdminAllowed('delete_horse')
                 if AdminAllowed then
                     TriggerEvent("vorp:delHorse") -- TODO Make Server Side
                 end
             elseif data.current.value == "delwagon" then
-                local AdminAllowed = IsAdminAllowed('vorp.staff.DeleteWagon')
+                local AdminAllowed = IsAdminAllowed('delete_wagon')
                 if AdminAllowed then
                     Delwagon()
                 end
             elseif data.current.value == "delwagonradius" then
-                local AdminAllowed = IsAdminAllowed('vorp.staff.DeleteWagonsRadius')
+                local AdminAllowed = IsAdminAllowed('delete_wagons_radius')
                 if AdminAllowed then
                     local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.SubActionsAdminOptions.DelWagonRadiusInput.placeholder, T.Menus.SubActionsAdminOptions.DelWagonRadiusInput.title, "number", T.Menus.SubActionsAdminOptions.DelWagonRadiusInput.errorMsg, "[0-9]{1,2}")
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
@@ -638,7 +638,7 @@ function Actions()
                     end)
                 end
             elseif data.current.value == "getcoords" then
-                local AdminAllowed = IsAdminAllowed('vorp.staff.GetCoords')
+                local AdminAllowed = IsAdminAllowed('get_coords')
                 if AdminAllowed then
                     OpenCoordsMenu()
                 end
@@ -648,7 +648,7 @@ function Actions()
                 TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                     local announce = result
                     if announce ~= "" and announce then
-                        TriggerServerEvent("vorp_admin:announce", announce, 'vorp.staff.Announce')
+                        TriggerServerEvent("vorp_admin:announce", announce)
                     else
                         VORP.NotifyObjective(T.Notify.empty, 5000)
                     end

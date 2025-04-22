@@ -123,12 +123,12 @@ function Boost()
                 _G[data.trigger]()
             end
             if data.current.value == "god" then
-                local AdminAllowed = IsAdminAllowed("vorp.staff.Godmode")
+                local AdminAllowed = IsAdminAllowed("godmode")
                 if AdminAllowed then
                     GODmode()
                 end
             elseif data.current.value == "invisibility" then
-                local AdminAllowed = IsAdminAllowed("vorp.staff.Invisibility")
+                local AdminAllowed = IsAdminAllowed("invisibility")
                 if AdminAllowed then
                     if invis == false then
                         SetEntityVisible(PlayerPedId(), false)
@@ -139,13 +139,13 @@ function Boost()
                     end
                 end
             elseif data.current.value == "goldcores" then
-                local AdminAllowed = IsAdminAllowed("vorp.staff.Golden")
+                local AdminAllowed = IsAdminAllowed("golden_cores")
                 if AdminAllowed then
                     GoldenCores()
                 end
             elseif data.current.value == "noclip" then
                 local player = PlayerPedId()
-                local AdminAllowed = IsAdminAllowed("vorp.staff.Noclip")
+                local AdminAllowed = IsAdminAllowed("noclip")
                 if AdminAllowed then
                     if not NoClipActive then
                         EnableNoclip(player)
@@ -160,14 +160,14 @@ function Boost()
                     end
                 end
             elseif data.current.value == "infiniteammo" then
-                local AdminAllowed = IsAdminAllowed("vorp.staff.InfiniteAmmo")
+                local AdminAllowed = IsAdminAllowed("infinite_ammo")
                 if AdminAllowed then
                     InfiAmmo()
                 end
             elseif data.current.value == "selfrevive" then
-                TriggerServerEvent('vorp_admin:ReviveSelf', "vorp.staff.SelfRevive")
+                TriggerServerEvent('vorp_admin:ReviveSelf', "selfrevive")
             elseif data.current.value == "selfheal" then
-                TriggerServerEvent('vorp_admin:HealSelf', "vorp.staff.SelfHeal")
+                TriggerServerEvent('vorp_admin:HealSelf', "selfheal")
                 Config.Heal.Players()
                 local horse = GetMount(PlayerPedId())
                 if horse ~= 0 then
@@ -176,21 +176,26 @@ function Boost()
                 end
             elseif data.current.value == "spawnhorse" then
                 local player = PlayerPedId()
-                local AdminAllowed = IsAdminAllowed("vorp.staff.SpawnHorse")
+                local AdminAllowed = IsAdminAllowed("spawn_horse")
                 if AdminAllowed then
                     local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.MainBoostOptions.SpawnHorseInput.placeholder, T.Menus.MainBoostOptions.SpawnHorseInput.title, "text", T.Menus.MainBoostOptions.SpawnHorseInput.errorMsg, "[A-Za-z0-9_ \\-]{5,60}")
                     MenuData.CloseAll()
+
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
-                        local horse = tostring(result)
+                        local horse_model = tostring(result)
                         local playerCoords = GetEntityCoords(player) + 1
-                        if horse ~= "" then
-                            RequestModel(horse, false)
-                            repeat Wait(0) until HasModelLoaded(horse)
-                            local horse = CreatePed(joaat(horse), playerCoords.x, playerCoords.y, playerCoords.z, 0.0, true, true, false, false)
+
+                        if horse_model ~= "" then
+                            RequestModel(horse_model, false)
+                            repeat Wait(0) until HasModelLoaded(horse_model)
+
+                            local horse = CreatePed(joaat(horse_model), playerCoords.x, playerCoords.y, playerCoords.z, 0.0, true, true, false, false)
                             repeat Wait(0) until DoesEntityExist(horse)
+
                             Citizen.InvokeNative(0x77FF8D35EEC6BBC4, horse, 1, 0)
                             Citizen.InvokeNative(0x028F76B6E78246EB, player, horse, -1, true)
-                            TriggerServerEvent("vorp_admin:spawnHorse", result) -- log
+
+                            TriggerServerEvent("vorp_admin:spawnHorse", horse_model) -- log
                         else
                             VORP.NotifyObjective(T.Notify.empty, 3000)
                         end
@@ -198,26 +203,27 @@ function Boost()
                 end
             elseif data.current.value == "spawnwagon" then
                 local player = PlayerPedId()
-                local AdminAllowed = IsAdminAllowed("vorp.staff.SpawnWagon")
+                local AdminAllowed = IsAdminAllowed("spawn_wagon")
                 if AdminAllowed then
                     local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
                         T.Menus.MainBoostOptions.SpawnWagonInput.placeholder,
                         T.Menus.MainBoostOptions.SpawnWagonInput.title, "text",
                         T.Menus.MainBoostOptions.SpawnWagonInput.errorMsg, "[A-Za-z0-9_ \\-]{5,60}")
                     MenuData.CloseAll()
+
                     TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
-                        local wagon = result
+                        local wagon_model = result
                         local playerCoords = GetEntityCoords(player)
-                        if wagon ~= "" then
-                            RequestModel(wagon, false)
-                            while not HasModelLoaded(wagon) do
-                                Wait(10)
-                            end
-                            wagon = CreateVehicle(wagon, playerCoords.x, playerCoords.y, playerCoords.z, 0, true, true, false, false)
+                        if wagon_model ~= "" then
+                            RequestModel(wagon_model, false)
+                            repeat Wait(0) until HasModelLoaded(wagon_model)
+
+                            local wagon = CreateVehicle(wagon_model, playerCoords.x, playerCoords.y, playerCoords.z, 0, true, true, false, false)
                             repeat Wait(0) until DoesEntityExist(wagon)
                             Citizen.InvokeNative(0x77FF8D35EEC6BBC4, wagon, 1, 0)
                             SetPedIntoVehicle(player, wagon, -1)
-                            TriggerServerEvent("vorp_admin:spawnWagon", result) -- log
+
+                            TriggerServerEvent("vorp_admin:spawnWagon", wagon_model) -- log
                         else
                             VORP.NotifyObjective(T.Notify.empty, 3000)
                         end
@@ -261,7 +267,7 @@ CreateThread(function()
     UiPromptSetGroup(Prompt1, PromptGroup, 0)
     UiPromptRegisterEnd(Prompt1)
 
-    local str = T.Menus.MainBoostOptions.Prompts.speed
+    str = T.Menus.MainBoostOptions.Prompts.speed
     Prompt2 = UiPromptRegisterBegin()
     UiPromptSetControlAction(Prompt2, Config.Controls.changeSpeed) -- shift
     str = VarString(10, 'LITERAL_STRING', str)
@@ -272,7 +278,7 @@ CreateThread(function()
     UiPromptSetGroup(Prompt2, PromptGroup, 0)
     UiPromptRegisterEnd(Prompt2)
 
-    local str = T.Menus.MainBoostOptions.Prompts.backward .. "/" .. T.Menus.MainBoostOptions.Prompts.forward
+    str = T.Menus.MainBoostOptions.Prompts.backward .. "/" .. T.Menus.MainBoostOptions.Prompts.forward
     Prompt4 = UiPromptRegisterBegin()
     UiPromptSetControlAction(Prompt4, Config.Controls.goBackward)
     UiPromptSetControlAction(Prompt4, Config.Controls.goForward)
@@ -284,7 +290,7 @@ CreateThread(function()
     UiPromptSetGroup(Prompt4, PromptGroup, 0)
     UiPromptRegisterEnd(Prompt4)
 
-    local str = T.Menus.MainBoostOptions.Prompts.cancel
+    str = T.Menus.MainBoostOptions.Prompts.cancel
     Prompt6 = UiPromptRegisterBegin()
     UiPromptSetControlAction(Prompt6, Config.Controls.Cancel)
     str = VarString(10, 'LITERAL_STRING', str)
