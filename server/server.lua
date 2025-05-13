@@ -78,7 +78,8 @@ local function AllowedToExecuteAction(source, action)
     local user <const> = Core.getUser(source)
     if not user then return end
 
-    local group <const> = user.getGroup or "admin"
+    local group <const> = Config.UseCharactersAdmin and user.getUsedCharacter.group or user.getGroup
+
     if Config.AllowedActions[group] then
         if Config.AllowedActions[group].actions.all then
             return true
@@ -544,15 +545,26 @@ RegisterNetEvent("vorp_admin:setGroup", function(targetID, newgroup, _, name)
     elseif Config.giveUserGroup then
         user.setGroup(NewPlayerGroup)
     end
+    local group = "none"
 
-    -- update staff table if group is staff
-    if Config.AllowedActions[NewPlayerGroup] then
-        if not stafftable[_target] then
-            stafftable[_target] = _target
+    if Config.UseCharactersAdmin then
+        if Config.giveCharacterGroup then
+            group = NewPlayerGroup
+        end
+    else
+        if Config.giveUserGroup then
+            group = NewPlayerGroup
         end
     end
 
-    Core.NotifyRightTip(_target, T.Notify.groupGiven .. NewPlayerGroup, 5000)
+    -- update staff table if group is staff
+    if Config.AllowedActions[group] then
+        stafftable[_target] = _target
+    else
+        return Core.NotifyRightTip(_source, "this group doesnt exist in the AllowedActions table", 8000)
+    end
+
+    Core.NotifyRightTip(_target, T.Notify.groupGiven .. group, 5000)
 
     TriggerEvent("vorp_admin:logs", _source, Logs.AdminLogs.Setgroup, T.Webhooks.ActionsAdmin.title, T.Webhooks.ActionsAdmin.usedsetgroup .. "\n > " .. name .. "\nGroup: " .. NewPlayerGroup)
 end)
@@ -937,7 +949,7 @@ AddEventHandler("vorp:SelectedCharacter", function(source)
 
     local user <const> = Core.getUser(_source)
     if not user then return end
-    local user_group = user.getGroup
+    local user_group = Config.UseCharactersAdmin and user.getUsedCharacter.group or user.getGroup
 
     if Config.AllowedActions[user_group] then -- only admins
         stafftable[_source] = _source
@@ -952,7 +964,7 @@ if Config.DevMode then
         local _source = source
         local user <const> = Core.getUser(_source)
         if not user then return end
-        local user_group = user.getGroup
+        local user_group = Config.UseCharactersAdmin and user.getUsedCharacter.group or user.getGroup
 
         if Config.AllowedActions[user_group] then
             stafftable[_source] = _source

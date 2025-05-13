@@ -2,6 +2,8 @@ Config = {
     -- Add your language
     DevMode             = false,      -- Leave false
 
+    UseCharactersAdmin  = true,       -- if false will use from users group, if true will use from characters group
+
     AlignMenu           = 'top-left', -- align menu
 
     useAdminCommand     = true,       -- Can open menu with adim command below
