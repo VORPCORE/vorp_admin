@@ -342,6 +342,8 @@ Translation.Langs = {
                 deleteModel_desc = "Delete the closest object",
                 coordsMenu = "Coordinates Menu",
                 coordsMenu_desc = "Open the coordinates menu",
+                devtoolOn       = "Dev Laser / Inspect",
+                devtool_desc    = "Turn on the beam and backlight",
             },
             MainTeleportOptions = {
                 tpmAuto = "Toggle Auto Teleport",
@@ -871,6 +873,8 @@ Translation.Langs = {
                 deleteModel_desc = "Apagar o objeto mais próximo",
                 coordsMenu = "Menu de Coordenadas",
                 coordsMenu_desc = "Abrir o menu de coordenadas",
+                devtoolOn       = "Dev Laser / Inspecionar",
+                devtool_desc    = "Ligue o feixe e a luz de fundo",
             },
             MainTeleportOptions = {
                 tpmAuto = "Alternar Teleporte Automático",
@@ -1401,6 +1405,8 @@ Translation.Langs = {
                 deleteModel_desc = "Excluir o objeto mais próximo",
                 coordsMenu = "Menu de Coordenadas",
                 coordsMenu_desc = "Abra o menu de coordenadas",
+                devtoolOn       = "Dev Laser / Inspecionar",
+                devtool_desc    = "Ligue o feixe e a luz de fundo",
             },
             MainTeleportOptions = {
                 tpmAuto = "Alternar Teleporte Automático",
@@ -1927,6 +1933,8 @@ Translation.Langs = {
                 deleteModel_desc = "Supprimez l'objet le plus proche",
                 coordsMenu = "Menu des Coordonnées",
                 coordsMenu_desc = "Ouvrez le menu des coordonnées",
+                devtoolOn       = "Développement laser / Inspection",
+                devtool_desc    = "Allumez le projecteur et le rétroéclairage",
             },
             MainTeleportOptions = {
                 tpmAuto = "Activer/Désactiver Téléportation Automatique",
@@ -2455,6 +2463,8 @@ Translation.Langs = {
                 deleteModel_desc = "Lösche das nächstgelegene Objekt",
                 coordsMenu = "Koordinatenmenü",
                 coordsMenu_desc = "Öffne das Koordinatenmenü",
+                devtoolOn       = "Dev Laser / Überprüfen",
+                devtool_desc    = "Schalten Sie den Scheinwerfer und die Hintergrundbeleuchtung ein.",
             },
             MainTeleportOptions = {
                 tpmAuto = "Automatisches Teleportieren umschalten",
@@ -2983,6 +2993,8 @@ Translation.Langs = {
                 deleteModel_desc = "Eliminar el objeto más cercano",
                 coordsMenu = "Menú de Coordenadas",
                 coordsMenu_desc = "Abrir el menú de coordenadas",
+                devtoolOn       = "Dev Laser / Inspección",
+                devtool_desc    = "Enciende el haz de luz y la retroiluminación",
             },
             MainTeleportOptions = {
                 tpmAuto = "Alternar Teletransportación Automática",
@@ -3513,6 +3525,8 @@ Translation.Langs = {
                 deleteModel_desc = "Sterge cel mai apropiat obiect",
                 coordsMenu = "Meniu Coordonate",
                 coordsMenu_desc = "Deschide meniul coordonatelor",
+                devtoolOn       = "Dezvoltare laser / Inspecție",
+                devtool_desc    = "Activați fasciculul și lumina de fundal",
             },
             MainTeleportOptions = {
                 tpmAuto = "Comuta Teleportare Automata",
