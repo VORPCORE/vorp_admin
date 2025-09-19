@@ -16,16 +16,20 @@ local function LoadModel(ped)
 end
 
 local devAimEnabled = false
+local laserThreadRunning = false
+local StartDevLaserLoop -- forward declaration
 
 local function ToggleDevLaser()
     devAimEnabled = not devAimEnabled
     if devAimEnabled then
         TriggerEvent("vorp:TipRight", "Dev Laser ON (aim at an entity)", 3000)
+        StartDevLaserLoop()
     else
-        DisableOutline()
+        -- graceful stop: loop will exit on next tick
         TriggerEvent("vorp:TipRight", "Dev Laser OFF", 2500)
     end
 end
+
 
 function OpenDevTools()
     MenuData.CloseAll()
@@ -303,20 +307,23 @@ local function CopyToClipboard(str)
     end
 end
 
--- Main loop
-CreateThread(function()
-    while true do
-        if not devAimEnabled then
-            Wait(500)
-        else
-            Wait(0)
-            local ped = PlayerPedId()
-            local start = GetEyesOrigin(ped)
-            local dir = RotationToDirection(GetGameplayCamRot(2))
-            local dest = start + (dir * 60.0)
+function StartDevLaserLoop()
+    if laserThreadRunning then return end
+    laserThreadRunning = true
 
+    CreateThread(function()
+        while devAimEnabled do
+            Wait(0)
+
+            local ped   = PlayerPedId()
+            local start = GetEyesOrigin(ped)
+            local dir   = RotationToDirection(GetGameplayCamRot(2))
+            local dest  = start + (dir * 60.0)
+
+            -- laser
             DrawLine(start.x, start.y, start.z, dest.x, dest.y, dest.z, 255, 25, 25, 255)
 
+            -- raycast
             local ray = StartShapeTestRay(start.x, start.y, start.z, dest.x, dest.y, dest.z, -1, ped, 0)
             local _, hit, endCoords, _, entityHit = GetShapeTestResult(ray)
 
@@ -326,15 +333,16 @@ CreateThread(function()
 
             if hit == 1 and entityHit ~= 0 and DoesEntityExist(entityHit) then
                 lastHit.entity = entityHit
-                local model = GetEntityModel(entityHit)
+                local model     = GetEntityModel(entityHit)
                 local modelName = PedModelsByHash[model] or PropModelsByHash[model] or "Unknown"
-                local ec = GetEntityCoords(entityHit)
-                local heading = GetEntityHeading(entityHit)
-                local rot = GetEntityRotation(entityHit)
+                local ec        = GetEntityCoords(entityHit)
+                local heading   = GetEntityHeading(entityHit)
+                local rot       = GetEntityRotation(entityHit)
 
                 info = ("Coords: %.2f, %.2f, %.2f\nModel Hash: %s\nModel Name: %s\nHeading: %.2f\nRotation: %.2f, %.2f, %.2f")
                     :format(ec.x, ec.y, ec.z, tostring(model), modelName, heading, rot.x, rot.y, rot.z)
 
+                -- red cube marker at hit
                 DrawBox(
                     endCoords.x - 0.03, endCoords.y - 0.03, endCoords.z - 0.03,
                     endCoords.x + 0.03, endCoords.y + 0.03, endCoords.z + 0.03,
@@ -342,17 +350,24 @@ CreateThread(function()
                 )
             end
 
+            -- HUD text
             DrawText2D(info, 0.5, 0.80, 0.40, 255, 255, 255, 235)
             DrawText2D("Press H = copy entity info | Press G = copy vector3(x, y, z)", 0.5, 0.92, 0.36, 255, 200, 200, 235)
 
-            if IsControlJustPressed(0, 0x24978A28) and lastHit.entity then -- H
+            -- H: copy full info (only if entity)
+            if IsControlJustPressed(0, 0x24978A28) and lastHit.entity then
                 CopyToClipboard(info)
             end
-            if IsControlJustPressed(0, 0x760A9C6F) and lastHit.coords then -- G
+            -- G: copy just vector3
+            if IsControlJustPressed(0, 0x760A9C6F) and lastHit.coords then
                 local c = lastHit.coords
                 CopyToClipboard(("vector3(%.2f, %.2f, %.2f)"):format(c.x, c.y, c.z))
             end
         end
-    end
-end)
+
+        -- cleanup after toggle OFF
+        laserThreadRunning = false
+        lastHit.coords, lastHit.entity = nil, nil
+    end)
+end
 -- =================== /DEV LASER / INSPECT ===================== --
