@@ -15,7 +15,17 @@ local function LoadModel(ped)
     end
 end
 
+local devAimEnabled = false
 
+local function ToggleDevLaser()
+    devAimEnabled = not devAimEnabled
+    if devAimEnabled then
+        TriggerEvent("vorp:TipRight", "Dev Laser ON (aim at an entity)", 3000)
+    else
+        DisableOutline()
+        TriggerEvent("vorp:TipRight", "Dev Laser OFF", 2500)
+    end
+end
 
 function OpenDevTools()
     MenuData.CloseAll()
@@ -188,7 +198,8 @@ function OpenObjMenu()
     local elements = {
         { label = T.Menus.SubDevToolsOptions.printModel,  value = 'print',     desc = T.Menus.SubDevToolsOptions.printModel_desc },
         { label = T.Menus.SubDevToolsOptions.deleteModel, value = 'del',       desc = T.Menus.SubDevToolsOptions.deleteModel_desc },
-        { label = T.Menus.SubDevToolsOptions.coordsMenu,  value = 'getcoords', desc = T.Menus.SubDevToolsOptions.coordsMenu_desc }
+        { label = T.Menus.SubDevToolsOptions.coordsMenu,  value = 'getcoords', desc = T.Menus.SubDevToolsOptions.coordsMenu_desc },
+        { label = T.Menus.SubDevToolsOptions.devtoolOn,  value = 'devlaser',  desc = T.Menus.SubDevToolsOptions.devtool_desc },
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'OpenObjMenu',
@@ -204,6 +215,7 @@ function OpenObjMenu()
             if data.current == "backup" then
                 return _G[data.trigger]()
             end
+
             if data.current.value == "print" then
                 local coords = GetEntityCoords(player)
                 local closestObject, distance = GetClosestObject(coords)
@@ -211,14 +223,18 @@ function OpenObjMenu()
                 local model = GetEntityModel(closestObject)
                 print(T.Notify.closesObject .. " " .. model, objectCoords)
                 TriggerEvent("vorp:TipRight", T.Notify.closesObject .. " " .. model, 6000)
+
             elseif data.current.value == "del" then
-                -- only client side
                 local coords = GetEntityCoords(player)
                 local closestObject, distance = GetClosestObject(coords)
                 TriggerEvent("vorp:TipRight", T.Notify.closesObject .. " " .. closestObject, 4000)
                 DeleteObject(closestObject)
+
             elseif data.current.value == "getcoords" then
                 OpenCoordsMenu()
+
+            elseif data.current.value == "devlaser" then
+                ToggleDevLaser()
             end
         end,
 
@@ -226,3 +242,117 @@ function OpenObjMenu()
             menu.close()
         end)
 end
+
+---------------------------------------------------------------------------------------------------
+-- DEV SPHERE AIM: shows small sphere at raycast hit + entity info + hotkey copy coords
+--   /devlaser  → toggle ON/OFF
+--   H          → copy entity info
+--   G          → copy vector3 coords of last hit
+---------------------------------------------------------------------------------------------------
+local lastHit = { coords = nil, entity = nil }
+local lastOutlined = nil
+
+-- build hash->name dictionary з datapeds.lua
+local PedModelsByHash = {}
+if Peds then
+    for _, model in ipairs(Peds) do
+        PedModelsByHash[GetHashKey(model:lower())] = model
+    end
+end
+
+-- build hash->name dictionary з dataprops.lua
+local PropModelsByHash = {}
+if Props then
+    for _, model in ipairs(Props) do
+        PropModelsByHash[GetHashKey(model:lower())] = model
+    end
+end
+
+-- Draw text
+local function DrawText2D(txt, x, y, scale, r, g, b, a)
+    local str = CreateVarString(10, "LITERAL_STRING", txt)
+    SetTextFontForCurrentCommand(0)
+    SetTextScale(scale, scale)
+    SetTextColor(r or 255, g or 255, b or 255, a or 255)
+    SetTextCentre(true)
+    DisplayText(str, x, y)
+end
+
+-- Rotation → direction
+local function RotationToDirection(rot)
+    local z = math.rad(rot.z)
+    local x = math.rad(rot.x)
+    local cosx = math.cos(x)
+    return vector3(-math.sin(z) * cosx, math.cos(z) * cosx, math.sin(x))
+end
+
+-- Start raycast from eyes
+local function GetEyesOrigin(ped)
+    return GetPedBoneCoords(ped, 21030, 0.0, 0.05, 0.02) -- SKEL_Head
+end
+
+-- Copy helper
+local function CopyToClipboard(str)
+    local ok = pcall(function() SendNUIMessage({ string = str }) end)
+    if ok then
+        TriggerEvent("vorp:TipRight", "Copied to clipboard", 2000)
+    else
+        TriggerEvent("chat:addMessage", { args = { "^2COPY", str } })
+        TriggerEvent("vorp:TipRight", "Copied text printed to console", 2500)
+        print(str)
+    end
+end
+
+-- Main loop
+CreateThread(function()
+    while true do
+        if not devAimEnabled then
+            Wait(500)
+        else
+            Wait(0)
+            local ped = PlayerPedId()
+            local start = GetEyesOrigin(ped)
+            local dir = RotationToDirection(GetGameplayCamRot(2))
+            local dest = start + (dir * 60.0)
+
+            DrawLine(start.x, start.y, start.z, dest.x, dest.y, dest.z, 255, 25, 25, 255)
+
+            local ray = StartShapeTestRay(start.x, start.y, start.z, dest.x, dest.y, dest.z, -1, ped, 0)
+            local _, hit, endCoords, _, entityHit = GetShapeTestResult(ray)
+
+            local info = ("Coords: %.2f, %.2f, %.2f"):format(endCoords.x, endCoords.y, endCoords.z)
+            lastHit.coords = endCoords
+            lastHit.entity = nil
+
+            if hit == 1 and entityHit ~= 0 and DoesEntityExist(entityHit) then
+                lastHit.entity = entityHit
+                local model = GetEntityModel(entityHit)
+                local modelName = PedModelsByHash[model] or PropModelsByHash[model] or "Unknown"
+                local ec = GetEntityCoords(entityHit)
+                local heading = GetEntityHeading(entityHit)
+                local rot = GetEntityRotation(entityHit)
+
+                info = ("Coords: %.2f, %.2f, %.2f\nModel Hash: %s\nModel Name: %s\nHeading: %.2f\nRotation: %.2f, %.2f, %.2f")
+                    :format(ec.x, ec.y, ec.z, tostring(model), modelName, heading, rot.x, rot.y, rot.z)
+
+                DrawBox(
+                    endCoords.x - 0.03, endCoords.y - 0.03, endCoords.z - 0.03,
+                    endCoords.x + 0.03, endCoords.y + 0.03, endCoords.z + 0.03,
+                    255, 50, 50, 200
+                )
+            end
+
+            DrawText2D(info, 0.5, 0.80, 0.40, 255, 255, 255, 235)
+            DrawText2D("Press H = copy entity info | Press G = copy vector3(x, y, z)", 0.5, 0.92, 0.36, 255, 200, 200, 235)
+
+            if IsControlJustPressed(0, 0x24978A28) and lastHit.entity then -- H
+                CopyToClipboard(info)
+            end
+            if IsControlJustPressed(0, 0x760A9C6F) and lastHit.coords then -- G
+                local c = lastHit.coords
+                CopyToClipboard(("vector3(%.2f, %.2f, %.2f)"):format(c.x, c.y, c.z))
+            end
+        end
+    end
+end)
+-- =================== /DEV LASER / INSPECT ===================== --
