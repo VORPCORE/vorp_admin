@@ -3,7 +3,7 @@ local active = false
 ---------------------------------------------------------------------------------------------------
 ---------------------------------- DEV TOOLS ------------------------------------------------------
 
-local function LoadModel(ped)
+local function loadModel(ped)
     if not IsModelInCdimage(ped) then
         print("invalid model")
         return
@@ -32,7 +32,7 @@ end
 
 
 function OpenDevTools()
-    MenuData.CloseAll()
+    MenuData.CloseAll(true, true, true)
     local elements = {
         { label = T.Menus.MainDevToolsOptions.spawnPedWithList,    value = 'pedlist',    desc = T.Menus.MainDevToolsOptions.spawnPedWithList_desc },
         { label = T.Menus.MainDevToolsOptions.spawnPedWithInput,   value = 'spawnped',   desc = T.Menus.MainDevToolsOptions.spawnPedWithInput_desc },
@@ -42,6 +42,7 @@ function OpenDevTools()
         { label = T.Menus.MainDevToolsOptions.objectMenu,          value = 'delobject',  desc = T.Menus.MainDevToolsOptions.objectMenu_desc },
         { label = T.Menus.MainDevToolsOptions.imapViwer,           value = 'imap',       desc = T.Menus.MainDevToolsOptions.imapViwer_desc },
         { label = T.Menus.MainDevToolsOptions.scenarioHashViwer,   value = 'scenario',   desc = T.Menus.MainDevToolsOptions.scenarioHashViwer_desc },
+        { label = T.Menus.MainDevToolsOptions.interiorId,          value = 'interiorid', desc = T.Menus.MainDevToolsOptions.interiorId_desc },
     }
     MenuData.Open('default', GetCurrentResourceName(), 'OpenDevTools',
         {
@@ -57,13 +58,13 @@ function OpenDevTools()
             end
 
             if data.current.value == "spawnped" then
-                MenuData.CloseAll()
+                MenuData.CloseAll(true, true, true)
                 local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm, T.Menus.MainDevToolsOptions.SpawnPedInput.placeholder, T.Menus.MainDevToolsOptions.SpawnPedInput.title, "text",
                     T.Menus.MainDevToolsOptions.SpawnPedInput.errorMsg, "[A-Za-z0-9_ \\-]{5,60}")
                 TriggerEvent("vorpinputs:advancedInput", json.encode(myInput), function(result)
                     local ped = tostring(result)
                     if ped ~= "" then
-                        LoadModel(ped)
+                        loadModel(ped)
                         local offset = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 5.0, 0.0)
                         local npc = CreatePed(joaat(ped), offset.x, offset.y, offset.z, 0.0, true, true, true, false)
                         repeat Wait(0) until DoesEntityExist(npc)
@@ -94,6 +95,12 @@ function OpenDevTools()
                 return OpenCoordsMenu()
             end
 
+            if data.current.value == "interiorid" then
+                local interiorId = GetInteriorFromEntity(PlayerPedId())
+                print("interiorId", interiorId)
+                return
+            end
+
             if data.current.value == "imap" then
                 return ExecuteCommand("imapview")
             end
@@ -112,7 +119,7 @@ function OpenDevTools()
             end
 
             if data.current.value == "spawnwagon" then
-                MenuData.CloseAll()
+                MenuData.CloseAll(true, true, true)
                 local myInput = Inputs("input", T.Menus.DefaultsInputs.confirm,
                     T.Menus.MainDevToolsOptions.SpawnWagonInput.placeholder,
                     T.Menus.MainDevToolsOptions.SpawnWagonInput.title, "text",
@@ -122,7 +129,7 @@ function OpenDevTools()
                     local player = PlayerPedId()
                     local playerCoords = GetOffsetFromEntityInWorldCoords(player, 0.0, 5.0, 0.0)
                     if wagon ~= "" then
-                        LoadModel(wagon)
+                        loadModel(wagon)
                         local Wagon = CreateVehicle(wagon, playerCoords.x, playerCoords.y, playerCoords.z, 0, true, true, true)
                         repeat Wait(0) until DoesEntityExist(Wagon)
                         Citizen.InvokeNative(0x77FF8D35EEC6BBC4, Wagon, 1, 0)
@@ -136,12 +143,12 @@ function OpenDevTools()
             end
         end,
         function(data, menu)
-            menu.close()
+            menu.close(true, true, true)
         end)
 end
 
 function SpawnPeds(action)
-    MenuData.CloseAll()
+    MenuData.CloseAll(true, true, true)
     local elements = {}
     if action == "peds" then
         for _, value in ipairs(Peds) do
@@ -167,7 +174,7 @@ function SpawnPeds(action)
             subtext  = T.Menus.DefaultsMenusTitle.menuSubTitleDevTools,
             align    = Config.AlignMenu,
             elements = elements,
-            lastmenu = 'OpenMenu'
+            lastmenu = 'OpenDevTools'
         },
         function(data, menu)
             if data.current == "backup" then
@@ -177,7 +184,7 @@ function SpawnPeds(action)
             if data.current.value then
                 local player = PlayerPedId()
                 local playerCoords = GetOffsetFromEntityInWorldCoords(player, 0.0, 5.0, 0.0)
-                LoadModel(data.current.value)
+                loadModel(data.current.value)
                 if action == "peds" then
                     local npc = CreatePed(joaat(data.current.value), playerCoords.x, playerCoords.y, playerCoords.z, 0.0, true, true, false, false)
                     repeat Wait(0) until DoesEntityExist(npc)
@@ -192,18 +199,18 @@ function SpawnPeds(action)
             end
         end,
         function(data, menu)
-            menu.close()
+            menu.close(true, true, true)
         end)
 end
 
 function OpenObjMenu()
-    MenuData.CloseAll()
+    MenuData.CloseAll(true, true, true)
     local player = PlayerPedId()
     local elements = {
         { label = T.Menus.SubDevToolsOptions.printModel,  value = 'print',     desc = T.Menus.SubDevToolsOptions.printModel_desc },
         { label = T.Menus.SubDevToolsOptions.deleteModel, value = 'del',       desc = T.Menus.SubDevToolsOptions.deleteModel_desc },
         { label = T.Menus.SubDevToolsOptions.coordsMenu,  value = 'getcoords', desc = T.Menus.SubDevToolsOptions.coordsMenu_desc },
-        { label = T.Menus.SubDevToolsOptions.devtoolOn,  value = 'devlaser',  desc = T.Menus.SubDevToolsOptions.devtool_desc },
+        { label = T.Menus.SubDevToolsOptions.devtoolOn,   value = 'devlaser',  desc = T.Menus.SubDevToolsOptions.devtool_desc },
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'OpenObjMenu',
@@ -227,23 +234,20 @@ function OpenObjMenu()
                 local model = GetEntityModel(closestObject)
                 print(T.Notify.closesObject .. " " .. model, objectCoords)
                 TriggerEvent("vorp:TipRight", T.Notify.closesObject .. " " .. model, 6000)
-
             elseif data.current.value == "del" then
                 local coords = GetEntityCoords(player)
                 local closestObject, distance = GetClosestObject(coords)
                 TriggerEvent("vorp:TipRight", T.Notify.closesObject .. " " .. closestObject, 4000)
                 DeleteObject(closestObject)
-
             elseif data.current.value == "getcoords" then
                 OpenCoordsMenu()
-
             elseif data.current.value == "devlaser" then
                 ToggleDevLaser()
             end
         end,
 
         function(menu)
-            menu.close()
+            menu.close(true, true, true)
         end)
 end
 
@@ -332,14 +336,14 @@ function StartDevLaserLoop()
             lastHit.entity = nil
 
             if hit == 1 and entityHit ~= 0 and DoesEntityExist(entityHit) then
-                lastHit.entity = entityHit
+                lastHit.entity  = entityHit
                 local model     = GetEntityModel(entityHit)
                 local modelName = PedModelsByHash[model] or PropModelsByHash[model] or "Unknown"
                 local ec        = GetEntityCoords(entityHit)
                 local heading   = GetEntityHeading(entityHit)
                 local rot       = GetEntityRotation(entityHit)
 
-                info = ("Coords: %.2f, %.2f, %.2f\nModel Hash: %s\nModel Name: %s\nHeading: %.2f\nRotation: %.2f, %.2f, %.2f")
+                info            = ("Coords: %.2f, %.2f, %.2f\nModel Hash: %s\nModel Name: %s\nHeading: %.2f\nRotation: %.2f, %.2f, %.2f")
                     :format(ec.x, ec.y, ec.z, tostring(model), modelName, heading, rot.x, rot.y, rot.z)
 
                 -- red cube marker at hit
@@ -370,4 +374,5 @@ function StartDevLaserLoop()
         lastHit.coords, lastHit.entity = nil, nil
     end)
 end
+
 -- =================== /DEV LASER / INSPECT ===================== --
