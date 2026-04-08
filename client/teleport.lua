@@ -131,6 +131,7 @@ function Teleport()
                         SetMinimapZone(1935063277)
                         SetEntityCoords(admin, 1269.724, -6855.1577, 43.168)
                         DoScreenFadeIn(3000)
+                        Wait(3000)
                         isAtGuarma = true
                     elseif isAtGuarma and lastCoords then
                         DoScreenFadeOut(2000)
