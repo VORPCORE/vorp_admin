@@ -117,6 +117,7 @@ selfheal
 selfrevive
 tp_to_waypoint
 tp_to_coords
+teleport_to_guarma
 
 troll_kill_player
 troll_invisible
@@ -195,6 +196,7 @@ local actions <const> = {
         selfrevive = true,             -- allow to use self revive
         tp_to_waypoint = true,         -- allow to use tp to waypoint
         tp_to_coords = true,           -- allow to use tp to coords
+        teleport_to_guarma = true,     -- allow to use teleport to guarma
 
         -- troll menu actions
         troll_kill_player = true,        -- allow to use troll kill player
