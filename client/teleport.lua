@@ -2,6 +2,7 @@
 ---------------------------------------- TELEPORTS ---------------------------------------------------------
 local lastLocation = {}
 local autotpm = false
+local isAtGuarma = false
 local T = Translation.Langs[Config.Lang]
 
 function Teleport()
@@ -14,6 +15,7 @@ function Teleport()
         { label = T.Menus.MainTeleportOptions.adminGoBackLastLocation,  value = 'admingoback', desc = T.Menus.MainTeleportOptions.adminGoBackLastLocation_desc },
         { label = T.Menus.MainTeleportOptions.bringPlayer,              value = 'bringplayer', desc = T.Menus.MainTeleportOptions.bringPlayer_desc },
         { label = T.Menus.MainTeleportOptions.sendPlayerToLastLocation, value = 'sendback',    desc = T.Menus.MainTeleportOptions.sendPlayerToLastLocation_desc },
+        { label = T.Menus.MainTeleportOptions.teleportToGuarma,         value = 'tpguarma',    desc = T.Menus.MainTeleportOptions.teleportToGuarma_desc },
     }
     MenuData.Open('default', GetCurrentResourceName(), 'Teleport',
         {
@@ -115,6 +117,20 @@ function Teleport()
                             TriggerEvent("vorp:TipRight", T.Notify.goToPlayerFirst, 4000)
                         end
                     end)
+            elseif data.current.value == "tpguarma" then
+                if not isAtGuarma then
+                    Citizen.InvokeNative(0xA657EC9DBC6CC900, 1935063277) -- Minimap
+                    Citizen.InvokeNative(0xE8770EE02AEE45C2, 1) -- Water
+                    Citizen.InvokeNative(0x74E2261D2A66849A, true) -- Horizon
+                    SetEntityCoords(Ped, 1269.724, -6855.1577, 43.168)
+                    isAtGuarma = true
+                else
+                    Citizen.InvokeNative(0x74E2261D2A66849A, false)
+                    Citizen.InvokeNative(0xA657EC9DBC6CC900, -1868977180)
+                    Citizen.InvokeNative(0xE8770EE02AEE45C2, 0)
+                    SetEntityCoords(Ped, 2670.69, -1547.34, 45.819)
+                    isAtGuarma = false
+                end
             end
         end,
 

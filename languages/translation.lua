@@ -366,6 +366,8 @@ Translation.Langs = {
                     placeholder = "X Y Z",
                     errorMsg = "Only numbers, not - and ."
                 },
+                teleportToGuarma = "Go to / Back from Guarma",
+                teleportToGuarma_desc = "Teleport to Guarma or back from Guarma if you are already there",
             },
             MainUserOptions = {
                 playerReport = "Report Players",
