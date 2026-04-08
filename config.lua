@@ -67,6 +67,13 @@ Config = {
     AlertCooldown       = 60,        -- Cooldown for request staff to request again (seconds)
     --------------------------------------------------------
 
+    -- Teleport to Guarma coords
+    -- You can change it, if you have custom guarma coords
+    GuamarmaCoords = {
+        x = 1269.724,
+        y = -6855.1577,
+        z = 43.168
+    }
 }
 
 -- if both are true it will give admin to both character and user group

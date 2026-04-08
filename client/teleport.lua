@@ -129,7 +129,7 @@ function Teleport()
                         SetGuarmaWorldHorizonActive(true)
                         SetWorldWaterType(1)
                         SetMinimapZone(1935063277)
-                        SetEntityCoords(admin, 1269.724, -6855.1577, 43.168)
+                        SetEntityCoords(admin, Config.GuamarmaCoords.x, Config.GuamarmaCoords.y, Config.GuamarmaCoords.z)
                         DoScreenFadeIn(3000)
                         Wait(3000)
                         isAtGuarma = true
