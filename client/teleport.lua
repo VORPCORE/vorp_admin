@@ -15,7 +15,7 @@ function Teleport()
         { label = T.Menus.MainTeleportOptions.adminGoBackLastLocation,  value = 'admingoback', desc = T.Menus.MainTeleportOptions.adminGoBackLastLocation_desc },
         { label = T.Menus.MainTeleportOptions.bringPlayer,              value = 'bringplayer', desc = T.Menus.MainTeleportOptions.bringPlayer_desc },
         { label = T.Menus.MainTeleportOptions.sendPlayerToLastLocation, value = 'sendback',    desc = T.Menus.MainTeleportOptions.sendPlayerToLastLocation_desc },
-        { label = T.Menus.MainTeleportOptions.teleportToGuarma,         value = 'tpguarma',    desc = T.Menus.MainTeleportOptions.teleportToGuarma_desc },
+        { label = T.Menus.MainTeleportOptions.teleportToGuarma,         value = 'tptoguarma',    desc = T.Menus.MainTeleportOptions.teleportToGuarma_desc },
     }
     MenuData.Open('default', GetCurrentResourceName(), 'Teleport',
         {
@@ -117,7 +117,7 @@ function Teleport()
                             TriggerEvent("vorp:TipRight", T.Notify.goToPlayerFirst, 4000)
                         end
                     end)
-            elseif data.current.value == "tpguarma" then
+            elseif data.current.value == "tptoguarma" then
                 if not isAtGuarma then
                     Citizen.InvokeNative(0xA657EC9DBC6CC900, 1935063277) -- Minimap
                     Citizen.InvokeNative(0xE8770EE02AEE45C2, 1) -- Water
