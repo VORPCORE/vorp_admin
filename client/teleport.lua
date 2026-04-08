@@ -3,6 +3,7 @@
 local lastLocation = {}
 local autotpm = false
 local isAtGuarma = false
+local lastCoords = nil
 local T = Translation.Langs[Config.Lang]
 
 function Teleport()
@@ -121,7 +122,8 @@ function Teleport()
                 local AdminAllowed = IsAdminAllowed("teleport_to_guarma")
                 if AdminAllowed then
                     local admin = PlayerPedId()
-                    if not isAtGuarma then
+                    if not isAtGuarma and not lastCoords then
+                        lastCoords = GetEntityCoords(admin)
                         DoScreenFadeOut(2000)
                         Wait(2000)
                         SetGuarmaWorldHorizonActive(true)
@@ -136,8 +138,9 @@ function Teleport()
                         SetGuarmaWorldHorizonActive(false)
                         SetWorldWaterType(0)
                         SetMinimapZone(-1868977180)
-                        SetEntityCoords(admin, 2670.69, -1547.34, 45.819)
+                        SetEntityCoords(admin, lastCoords.x, lastCoords.y, lastCoords.z)
                         DoScreenFadeIn(3000)
+                        lastCoords = nil
                         isAtGuarma = false
                     end
                 end
