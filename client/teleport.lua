@@ -119,15 +119,15 @@ function Teleport()
                     end)
             elseif data.current.value == "tptoguarma" then
                 if not isAtGuarma then
-                    Citizen.InvokeNative(0xA657EC9DBC6CC900, 1935063277) -- Minimap
-                    Citizen.InvokeNative(0xE8770EE02AEE45C2, 1) -- Water
-                    Citizen.InvokeNative(0x74E2261D2A66849A, true) -- Horizon
+                    SetGuarmaWorldHorizonActive(true)
+                    SetWorldWaterType(1)
+                    SetMinimapZone(1935063277)
                     SetEntityCoords(Ped, 1269.724, -6855.1577, 43.168)
                     isAtGuarma = true
                 else
-                    Citizen.InvokeNative(0x74E2261D2A66849A, false)
-                    Citizen.InvokeNative(0xA657EC9DBC6CC900, -1868977180)
-                    Citizen.InvokeNative(0xE8770EE02AEE45C2, 0)
+                    SetGuarmaWorldHorizonActive(false)
+                    SetWorldWaterType(0)
+                    SetMinimapZone(-1868977180)
                     SetEntityCoords(Ped, 2670.69, -1547.34, 45.819)
                     isAtGuarma = false
                 end
