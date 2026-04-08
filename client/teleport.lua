@@ -119,16 +119,22 @@ function Teleport()
                     end)
             elseif data.current.value == "tptoguarma" then
                 if not isAtGuarma then
+                    DoScreenFadeOut(2000)
+                    Wait(2000)
                     SetGuarmaWorldHorizonActive(true)
                     SetWorldWaterType(1)
                     SetMinimapZone(1935063277)
                     SetEntityCoords(Ped, 1269.724, -6855.1577, 43.168)
+                    DoScreenFadeIn(3000)
                     isAtGuarma = true
                 else
+                    DoScreenFadeOut(2000)
+                    Wait(2000)
                     SetGuarmaWorldHorizonActive(false)
                     SetWorldWaterType(0)
                     SetMinimapZone(-1868977180)
                     SetEntityCoords(Ped, 2670.69, -1547.34, 45.819)
+                    DoScreenFadeIn(3000)
                     isAtGuarma = false
                 end
             end
