@@ -133,7 +133,6 @@ function Teleport()
                         DoScreenFadeIn(3000)
                         isAtGuarma = true
                     elseif isAtGuarma and lastCoords then
-                        isAtGuarma = false
                         DoScreenFadeOut(2000)
                         Wait(2000)
                         SetGuarmaWorldHorizonActive(false)
@@ -142,6 +141,7 @@ function Teleport()
                         SetEntityCoords(admin, lastCoords.x, lastCoords.y, lastCoords.z)
                         DoScreenFadeIn(3000)
                         Wait(3000)
+                        isAtGuarma = false
                         lastCoords = nil
                     end
                 end
