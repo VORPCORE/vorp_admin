@@ -77,6 +77,13 @@ Config.GuamarmaCoords = {
         z = 43.168
     },
 
+    -- Guarma map zone hashes
+    GuarmaAreaHashes = {
+        [joaat("GuarmaD")] = true,
+        [joaat("Guarma")] = true,
+        [-512529193] = true
+    },
+
     -- Default mainland coordinates (fallback)
     -- When a player travels to Guarma, their current position is saved
     -- If no saved position is found when returning, they will be teleported to these coordinates

@@ -4,17 +4,12 @@ local lastLocation = {}
 local autotpm = false
 local lastCoords = nil
 local T = Translation.Langs[Config.Lang]
-local guarmaAreaHashes = {
-    [joaat("GuarmaD")] = true,
-    [joaat("Guarma")] = true,
-    [-512529193] = true,
-}
 
 --- Returns true when the player is currently in a Guarma area.
 local function isPlayerInGuarma()
     local pedCoords = GetEntityCoords(PlayerPedId())
     local area = GetMapZoneAtCoords(pedCoords, 10)
-    return guarmaAreaHashes[area] == true
+    return Config.GuamarmaCoords.GuarmaAreaHashes[area] == true
 end
 
 --- Applies Guarma world state and minimap settings.
@@ -153,7 +148,7 @@ function Teleport()
                 if AdminAllowed then
                     local admin = PlayerPedId()
                     if isPlayerInGuarma() then
-                        local returnCoords = lastCoords or Config.MainLandCoords
+                        local returnCoords = lastCoords or Config.GuamarmaCoords.MainLandCoords
 
                         setGuarmaWorldState(false)
                         teleportPedToCoords(admin, returnCoords)
@@ -162,7 +157,7 @@ function Teleport()
                         lastCoords = GetEntityCoords(admin)
 
                         setGuarmaWorldState(true)
-                        teleportPedToCoords(admin, Config.GuarmaCoords or Config.GuamarmaCoords)
+                        teleportPedToCoords(admin, Config.GuamarmaCoords.GuarmaCoords)
                     end
                 end
             end
