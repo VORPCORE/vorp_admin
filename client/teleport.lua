@@ -106,10 +106,7 @@ function Teleport()
                                 finalCoords[#finalCoords + 1] = i
                             end
                             local x, y, z = tonumber(finalCoords[1]), tonumber(finalCoords[2]), tonumber(finalCoords[3])
-                            DoScreenFadeOut(2000)
-                            Wait(2000)
-                            SetEntityCoords(admin, x, y, z, false, false, false, false)
-                            DoScreenFadeIn(3000)
+                            teleportPedToCoords(admin, { x = x, y = y, z = z })
                             TriggerServerEvent("vorp_admin:tptocoords", oldCoords, x, y, z)
                         else
                             VORP.NotifyObjective(T.Notify.empty, 5000)
