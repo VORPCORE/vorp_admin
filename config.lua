@@ -78,6 +78,8 @@ Config.GuamarmaCoords = {
     },
 
     -- Guarma map zone hashes
+    -- Only change this if you know what you are doing,
+    -- This is used to detect if player is in guarma or not.
     GuarmaAreaHashes = {
         [joaat("GuarmaD")] = true,
         [joaat("Guarma")] = true,
