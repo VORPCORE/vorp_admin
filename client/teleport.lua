@@ -37,7 +37,6 @@ local function teleportPedToCoords(ped, coords)
     Wait(2000)
     SetEntityCoords(ped, coords.x, coords.y, coords.z, false, false, false, false)
     DoScreenFadeIn(3000)
-    Wait(3000)
 end
 
 function Teleport()
