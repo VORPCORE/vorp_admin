@@ -2,9 +2,43 @@
 ---------------------------------------- TELEPORTS ---------------------------------------------------------
 local lastLocation = {}
 local autotpm = false
-local isAtGuarma = false
 local lastCoords = nil
 local T = Translation.Langs[Config.Lang]
+local guarmaAreaHashes = {
+    [joaat("GuarmaD")] = true,
+    [joaat("Guarma")] = true,
+    [-512529193] = true,
+}
+
+--- Returns true when the player is currently in a Guarma area.
+local function isPlayerInGuarma()
+    local pedCoords = GetEntityCoords(PlayerPedId())
+    local area = GetMapZoneAtCoords(pedCoords, 10)
+    return guarmaAreaHashes[area] == true
+end
+
+--- Applies Guarma world state and minimap settings.
+local function setGuarmaWorldState(enabled)
+    if enabled then
+        SetGuarmaWorldHorizonActive(true)
+        SetWorldWaterType(1)
+        SetMinimapZone(1935063277)
+        return
+    end
+
+    SetGuarmaWorldHorizonActive(false)
+    SetWorldWaterType(0)
+    SetMinimapZone(-1868977180)
+end
+
+--- Teleports the ped after a fade transition.
+local function teleportPedToCoords(ped, coords)
+    DoScreenFadeOut(2000)
+    Wait(2000)
+    SetEntityCoords(ped, coords.x, coords.y, coords.z, false, false, false, false)
+    DoScreenFadeIn(3000)
+    Wait(3000)
+end
 
 function Teleport()
     MenuData.CloseAll()
@@ -122,28 +156,17 @@ function Teleport()
                 local AdminAllowed = IsAdminAllowed("teleport_to_guarma")
                 if AdminAllowed then
                     local admin = PlayerPedId()
-                    if not isAtGuarma and not lastCoords then
-                        lastCoords = GetEntityCoords(admin)
-                        DoScreenFadeOut(2000)
-                        Wait(2000)
-                        SetGuarmaWorldHorizonActive(true)
-                        SetWorldWaterType(1)
-                        SetMinimapZone(1935063277)
-                        SetEntityCoords(admin, Config.GuamarmaCoords.x, Config.GuamarmaCoords.y, Config.GuamarmaCoords.z)
-                        DoScreenFadeIn(3000)
-                        Wait(3000)
-                        isAtGuarma = true
-                    elseif isAtGuarma and lastCoords then
-                        DoScreenFadeOut(2000)
-                        Wait(2000)
-                        SetGuarmaWorldHorizonActive(false)
-                        SetWorldWaterType(0)
-                        SetMinimapZone(-1868977180)
-                        SetEntityCoords(admin, lastCoords.x, lastCoords.y, lastCoords.z)
-                        DoScreenFadeIn(3000)
-                        Wait(3000)
-                        isAtGuarma = false
+                    if isPlayerInGuarma() then
+                        local returnCoords = lastCoords or Config.MainLandCoords
+
+                        setGuarmaWorldState(false)
+                        teleportPedToCoords(admin, returnCoords)
                         lastCoords = nil
+                    else
+                        lastCoords = GetEntityCoords(admin)
+
+                        setGuarmaWorldState(true)
+                        teleportPedToCoords(admin, Config.GuarmaCoords or Config.GuamarmaCoords)
                     end
                 end
             end

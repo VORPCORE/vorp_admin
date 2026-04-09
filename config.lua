@@ -66,13 +66,24 @@ Config = {
     EnablePlayerlist    = true,      -- Enable scroeboard
     AlertCooldown       = 60,        -- Cooldown for request staff to request again (seconds)
     --------------------------------------------------------
+}
 
-    -- Teleport to Guarma coords
-    -- You can change it, if you have custom guarma coords
-    GuamarmaCoords = {
+Config.GuamarmaCoords = {
+    -- Teleport to Guarma coordinates
+    -- Position where the player will be teleported when choosing to travel to Guarma
+    GuarmaCoords = {
         x = 1269.724,
         y = -6855.1577,
         z = 43.168
+    },
+
+    -- Default mainland coordinates (fallback)
+    -- When a player travels to Guarma, their current position is saved
+    -- If no saved position is found when returning, they will be teleported to these coordinates
+    MainLandCoords = {
+        x = -277.76,
+        y = 805.12,
+        z = 119.38
     }
 }
 
