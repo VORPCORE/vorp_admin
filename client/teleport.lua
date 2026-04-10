@@ -15,15 +15,15 @@ end
 --- Applies Guarma world state and minimap settings.
 local function setGuarmaWorldState(enabled)
     if enabled then
-        SetGuarmaWorldHorizonActive(true)
-        SetWorldWaterType(1)
-        SetMinimapZone(1935063277)
+        Citizen.InvokeNative(0x74E2261D2A66849A, true)
+        Citizen.InvokeNative(0xE8770EE02AEE45C2, 1)
+        Citizen.InvokeNative(0xA657EC9DBC6CC900, 1935063277)
         return
     end
 
-    SetGuarmaWorldHorizonActive(false)
-    SetWorldWaterType(0)
-    SetMinimapZone(-1868977180)
+    Citizen.InvokeNative(0x74E2261D2A66849A, false)
+    Citizen.InvokeNative(0xE8770EE02AEE45C2, 0)
+    Citizen.InvokeNative(0xA657EC9DBC6CC900, -1868977180)
 end
 
 --- Teleports the ped after a fade transition.
