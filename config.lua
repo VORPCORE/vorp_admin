@@ -83,7 +83,6 @@ Config.GuamarmaCoords = {
     GuarmaAreaHashes = {
         [joaat("GuarmaD")] = true,
         [joaat("Guarma")] = true,
-        [-512529193] = true
     },
 
     -- Default mainland coordinates (fallback)
