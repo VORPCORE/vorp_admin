@@ -28,10 +28,13 @@ end
 
 --- Teleports the ped after a fade transition.
 local function teleportPedToCoords(ped, coords)
-    DoScreenFadeOut(2000)
-    Wait(2000)
+    DoScreenFadeOut(500)
+    RequestCollisionAtCoord(coords.x, coords.y, coords.z)
+    Wait(1000)
     SetEntityCoords(ped, coords.x, coords.y, coords.z, false, false, false, false)
-    DoScreenFadeIn(3000)
+    repeat Wait(0) until HasCollisionLoadedAroundEntity(ped)
+    Wait(1000)
+    DoScreenFadeIn(650)
 end
 
 function Teleport()

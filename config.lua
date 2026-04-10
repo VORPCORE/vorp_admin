@@ -90,9 +90,9 @@ Config.GuamarmaCoords = {
     -- When a player travels to Guarma, their current position is saved
     -- If no saved position is found when returning, they will be teleported to these coordinates
     MainLandCoords = {
-        x = -277.76,
-        y = 805.12,
-        z = 119.38
+        x = 2717.04,
+        y = -1435.52,
+        z = 46.22
     }
 }
 
