@@ -66,7 +66,33 @@ Config = {
     EnablePlayerlist    = true,      -- Enable scroeboard
     AlertCooldown       = 60,        -- Cooldown for request staff to request again (seconds)
     --------------------------------------------------------
+}
 
+Config.GuamarmaCoords = {
+    -- Teleport to Guarma coordinates
+    -- Position where the player will be teleported when choosing to travel to Guarma
+    GuarmaCoords = {
+        x = 1269.724,
+        y = -6855.1577,
+        z = 43.168
+    },
+
+    -- Guarma map zone hashes
+    -- Only change this if you know what you are doing,
+    -- This is used to detect if player is in guarma or not.
+    GuarmaAreaHashes = {
+        [joaat("GuarmaD")] = true,
+        [joaat("Guarma")] = true,
+    },
+
+    -- Default mainland coordinates (fallback)
+    -- When a player travels to Guarma, their current position is saved
+    -- If no saved position is found when returning, they will be teleported to these coordinates
+    MainLandCoords = {
+        x = 2717.04,
+        y = -1435.52,
+        z = 46.22
+    }
 }
 
 -- if both are true it will give admin to both character and user group
@@ -117,6 +143,7 @@ selfheal
 selfrevive
 tp_to_waypoint
 tp_to_coords
+teleport_to_guarma
 
 troll_kill_player
 troll_invisible
@@ -195,6 +222,7 @@ local actions <const> = {
         selfrevive = true,             -- allow to use self revive
         tp_to_waypoint = true,         -- allow to use tp to waypoint
         tp_to_coords = true,           -- allow to use tp to coords
+        teleport_to_guarma = true,     -- allow to use teleport to guarma
 
         -- troll menu actions
         troll_kill_player = true,        -- allow to use troll kill player

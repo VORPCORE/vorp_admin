@@ -366,6 +366,8 @@ Translation.Langs = {
                     placeholder = "X Y Z",
                     errorMsg = "Only numbers, not - and ."
                 },
+                teleportToGuarma = "Go to / Back from Guarma",
+                teleportToGuarma_desc = "Teleport to Guarma or back from Guarma if you are already there",
             },
             MainUserOptions = {
                 playerReport = "Report Players",
@@ -900,6 +902,8 @@ Translation.Langs = {
                     placeholder = "X Y Z",
                     errorMsg = "Apenas números, não usar - e ."
                 },
+                teleportToGuarma = "Ir para / Voltar de Guarma",
+                teleportToGuarma_desc = "Teletransporta para Guarma ou volta de Guarma se ja estiver la",
             },
             MainUserOptions = {
                 playerReport = "Denunciar Jogadores",
@@ -1433,6 +1437,8 @@ Translation.Langs = {
                     placeholder = "X Y Z",
                     errorMsg = "Apenas números, sem - e ."
                 },
+                teleportToGuarma = "Ir para / Voltar de Guarma",
+                teleportToGuarma_desc = "Teletransporta para Guarma ou volta de Guarma se voce ja estiver la",
             },
             MainUserOptions = {
                 playerReport = "Relatar Jogadores",
@@ -1963,6 +1969,8 @@ Translation.Langs = {
                     placeholder = "X Y Z",
                     errorMsg = "Seuls les chiffres sont autorisés, pas de - et de ."
                 },
+                teleportToGuarma = "Aller a / Revenir de Guarma",
+                teleportToGuarma_desc = "Teleporte vers Guarma ou en revient si vous y etes deja",
             },
             MainUserOptions = {
                 playerReport = "Signaler des Joueurs",
@@ -2495,6 +2503,8 @@ Translation.Langs = {
                     placeholder = "X Y Z",
                     errorMsg = "Nur Zahlen, keine - und ."
                 },
+                teleportToGuarma = "Nach Guarma / Zuruck von Guarma",
+                teleportToGuarma_desc = "Teleportiere nach Guarma oder zuruck von Guarma, wenn du bereits dort bist",
             },
             MainUserOptions = {
                 playerReport = "Spieler melden",
@@ -3027,6 +3037,8 @@ Translation.Langs = {
                     placeholder = "X Y Z",
                     errorMsg = "Solo números, no - ni ."
                 },
+                teleportToGuarma = "Ir a / Volver de Guarma",
+                teleportToGuarma_desc = "Te teletransporta a Guarma o te devuelve de Guarma si ya estas alli",
             },
             MainUserOptions = {
                 playerReport = "Reportar Jugadores",
@@ -3561,6 +3573,8 @@ Translation.Langs = {
                     placeholder = "X Y Z",
                     errorMsg = "Doar cifre, fara - si ."
                 },
+                teleportToGuarma = "Mergi la / Revino din Guarma",
+                teleportToGuarma_desc = "Te teleporteaza in Guarma sau inapoi din Guarma daca esti deja acolo",
             },
             MainUserOptions = {
                 playerReport = "Raporteaza Jucatori",

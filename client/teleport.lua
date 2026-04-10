@@ -2,7 +2,40 @@
 ---------------------------------------- TELEPORTS ---------------------------------------------------------
 local lastLocation = {}
 local autotpm = false
+local lastCoords = nil
 local T = Translation.Langs[Config.Lang]
+
+--- Returns true when the player is currently in a Guarma area.
+local function isPlayerInGuarma()
+    local pedCoords = GetEntityCoords(PlayerPedId())
+    local area = GetMapZoneAtCoords(pedCoords, 10)
+    return Config.GuamarmaCoords.GuarmaAreaHashes[area] == true
+end
+
+--- Applies Guarma world state and minimap settings.
+local function setGuarmaWorldState(enabled)
+    if enabled then
+        Citizen.InvokeNative(0x74E2261D2A66849A, true)
+        Citizen.InvokeNative(0xE8770EE02AEE45C2, 1)
+        Citizen.InvokeNative(0xA657EC9DBC6CC900, 1935063277)
+        return
+    end
+
+    Citizen.InvokeNative(0x74E2261D2A66849A, false)
+    Citizen.InvokeNative(0xE8770EE02AEE45C2, 0)
+    Citizen.InvokeNative(0xA657EC9DBC6CC900, -1868977180)
+end
+
+--- Teleports the ped after a fade transition.
+local function teleportPedToCoords(ped, coords)
+    DoScreenFadeOut(500)
+    RequestCollisionAtCoord(coords.x, coords.y, coords.z)
+    Wait(1000)
+    SetEntityCoords(ped, coords.x, coords.y, coords.z, false, false, false, false)
+    repeat Wait(0) until HasCollisionLoadedAroundEntity(ped)
+    Wait(1000)
+    DoScreenFadeIn(650)
+end
 
 function Teleport()
     MenuData.CloseAll()
@@ -14,6 +47,7 @@ function Teleport()
         { label = T.Menus.MainTeleportOptions.adminGoBackLastLocation,  value = 'admingoback', desc = T.Menus.MainTeleportOptions.adminGoBackLastLocation_desc },
         { label = T.Menus.MainTeleportOptions.bringPlayer,              value = 'bringplayer', desc = T.Menus.MainTeleportOptions.bringPlayer_desc },
         { label = T.Menus.MainTeleportOptions.sendPlayerToLastLocation, value = 'sendback',    desc = T.Menus.MainTeleportOptions.sendPlayerToLastLocation_desc },
+        { label = T.Menus.MainTeleportOptions.teleportToGuarma,         value = 'tptoguarma',    desc = T.Menus.MainTeleportOptions.teleportToGuarma_desc },
     }
     MenuData.Open('default', GetCurrentResourceName(), 'Teleport',
         {
@@ -70,10 +104,7 @@ function Teleport()
                                 finalCoords[#finalCoords + 1] = i
                             end
                             local x, y, z = tonumber(finalCoords[1]), tonumber(finalCoords[2]), tonumber(finalCoords[3])
-                            DoScreenFadeOut(2000)
-                            Wait(2000)
-                            SetEntityCoords(admin, x, y, z, false, false, false, false)
-                            DoScreenFadeIn(3000)
+                            teleportPedToCoords(admin, { x = x, y = y, z = z })
                             TriggerServerEvent("vorp_admin:tptocoords", oldCoords, x, y, z)
                         else
                             VORP.NotifyObjective(T.Notify.empty, 5000)
@@ -115,6 +146,23 @@ function Teleport()
                             TriggerEvent("vorp:TipRight", T.Notify.goToPlayerFirst, 4000)
                         end
                     end)
+            elseif data.current.value == "tptoguarma" then
+                local AdminAllowed = IsAdminAllowed("teleport_to_guarma")
+                if AdminAllowed then
+                    local admin = PlayerPedId()
+                    if isPlayerInGuarma() then
+                        local returnCoords = lastCoords or Config.GuamarmaCoords.MainLandCoords
+
+                        setGuarmaWorldState(false)
+                        teleportPedToCoords(admin, returnCoords)
+                        lastCoords = nil
+                    else
+                        lastCoords = GetEntityCoords(admin)
+
+                        setGuarmaWorldState(true)
+                        teleportPedToCoords(admin, Config.GuamarmaCoords.GuarmaCoords)
+                    end
+                end
             end
         end,
 
