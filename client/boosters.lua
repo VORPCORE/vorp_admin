@@ -152,10 +152,16 @@ function Boost()
                         NoClipActive = true
                         VORP.NotifyObjective(T.Notify.switchedOn, -1)
                         TriggerServerEvent("vorp_admin:NoClip") -- log
+                        CreateThread(function()
+                            while NoClipActive do
+                                Wait(500)
+                                SetEntityVisible(PlayerPedId(), false)
+                            end
+                        end)
                     else
+                        NoClipActive = false
                         ResetNoclip(player)
                         DisableRagdollingWhileFall()
-                        NoClipActive = false
                         VORP.NotifyObjective(T.Notify.switchedOff, 5000)
                     end
                 end
