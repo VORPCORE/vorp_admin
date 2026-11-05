@@ -22,7 +22,7 @@ server_scripts {
 }
 
 -- Version check dont touch
-version '2.6'
+version '2.7'
 vorp_checker 'yes'
 vorp_name '^4Resource version Check^3'
 vorp_github 'https://github.com/VORPCORE/vorp_admin'

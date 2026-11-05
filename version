@@ -1,3 +1,8 @@
+<2.7>
+- fixed copy to clipboard you must also update vorp_lib
+- added tp to guarma and back to admins
+- added new get interior id
+- added ray cast lazer for detecting props
 <2.6>
 - remove ace permissions use only database users permissions
 - fix staff group that was allowing any group as long it wasnt user group
