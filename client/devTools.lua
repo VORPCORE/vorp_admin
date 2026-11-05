@@ -299,18 +299,6 @@ local function GetEyesOrigin(ped)
     return GetPedBoneCoords(ped, 21030, 0.0, 0.05, 0.02) -- SKEL_Head
 end
 
--- Copy helper
-local function CopyToClipboard(str)
-    local ok = pcall(function() SendNUIMessage({ string = str }) end)
-    if ok then
-        TriggerEvent("vorp:TipRight", "Copied to clipboard", 2000)
-    else
-        TriggerEvent("chat:addMessage", { args = { "^2COPY", str } })
-        TriggerEvent("vorp:TipRight", "Copied text printed to console", 2500)
-        print(str)
-    end
-end
-
 function StartDevLaserLoop()
     if laserThreadRunning then return end
     laserThreadRunning = true
@@ -360,12 +348,13 @@ function StartDevLaserLoop()
 
             -- H: copy full info (only if entity)
             if IsControlJustPressed(0, 0x24978A28) and lastHit.entity then
-                CopyToClipboard(info)
+                CopyTextToClipboard(info)
             end
             -- G: copy just vector3
             if IsControlJustPressed(0, 0x760A9C6F) and lastHit.coords then
                 local c = lastHit.coords
-                CopyToClipboard(("vector3(%.2f, %.2f, %.2f)"):format(c.x, c.y, c.z))
+                if not c then return end
+                CopyTextToClipboard(("vector3(%.2f, %.2f, %.2f)"):format(c.x, c.y, c.z))
             end
         end
 

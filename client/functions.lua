@@ -114,7 +114,16 @@ function OpenMenu()
 end
 
 -- FUNCTIONS
--- CREDITS to the author for the clipboard
+-- clipboard is handled by vorp_lib (needs a real NUI click since the CEF update)
+function CopyTextToClipboard(str)
+    if str == nil then return end
+    exports.vorp_lib:copyToClipBoard(tostring(str), function(copied)
+        if copied then
+            TriggerEvent('vorp:TipRight', T.Notify.copied, 3000)
+        end
+    end)
+end
+
 local function Round(input, decimalPlaces)
     return tonumber(string.format("%." .. (decimalPlaces or 0) .. "f", input))
 end
@@ -125,23 +134,15 @@ function CopyToClipboard(dataType)
     local x, y, z = Round(coords.x, 2), Round(coords.y, 2), Round(coords.z, 2)
 
     if dataType == 'v2' then
-        local copiedText = string.format('{x = %s, y = %s, z = %s}', x, y, z)
-        SendNUIMessage({ string = copiedText })
-        TriggerEvent('vorp:TipRight', T.Notify.copied, 3000)
+        CopyTextToClipboard(string.format('{x = %s, y = %s, z = %s}', x, y, z))
     elseif dataType == 'v3' then
-        local copiedText = string.format('vector3(%s, %s, %s)', x, y, z)
-        SendNUIMessage({ string = copiedText })
-        TriggerEvent('vorp:TipRight', T.Notify.copied, 3000)
+        CopyTextToClipboard(string.format('vector3(%s, %s, %s)', x, y, z))
     elseif dataType == 'v4' then
         local heading = GetEntityHeading(ped)
         local h = Round(heading, 2)
-        local copiedText = string.format('vector4(%s, %s, %s, %s)', x, y, z, h)
-        SendNUIMessage({ string = copiedText })
-        TriggerEvent('vorp:TipRight', T.Notify.copied, 3000)
+        CopyTextToClipboard(string.format('vector4(%s, %s, %s, %s)', x, y, z, h))
     elseif dataType == 'heading' then
-        local heading = Round(GetEntityHeading(ped), 2)
-        SendNUIMessage({ string = heading })
-        TriggerEvent('vorp:TipRight', T.Notify.copied, 3000)
+        CopyTextToClipboard(Round(GetEntityHeading(ped), 2))
     end
 end
 

@@ -21,13 +21,6 @@ server_scripts {
     'server/*.lua',
 }
 
-ui_page 'html/index.html'
-
-files { -- Credits to https://github.com/LVRP-BEN/bl_coords for clipboard copy method
-    'html/index.html',
-    'html/index.js'
-}
-
 -- Version check dont touch
 version '2.6'
 vorp_checker 'yes'
