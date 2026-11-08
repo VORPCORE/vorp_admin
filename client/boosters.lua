@@ -157,6 +157,7 @@ function Boost()
                                 Wait(500)
                                 SetEntityVisible(PlayerPedId(), false)
                             end
+                            SetEntityVisible(PlayerPedId(), true)
                         end)
                     else
                         NoClipActive = false
