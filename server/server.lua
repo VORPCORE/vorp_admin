@@ -798,7 +798,7 @@ RegisterNetEvent('vorp:teleportWayPoint', function(_, coords, waypointCoords)
     local description = T.Webhooks.ActionTeleport.usedtpm .. "\nWaypoint teleported to " .. tostring(waypointCoords) .. "\nfrom Coords : " .. tostring(coords)
     TriggerEvent("vorp_admin:logs", _source, Logs.TeleportLogs.Tpm, T.Webhooks.ActionTeleport.title, description)
 
-    TriggerClientEvent('vorp:teleportWayPoint', _source, coords)
+    TriggerClientEvent('vorp:teleportWayPoint', _source, coords) -- GOES TO VORP_CORE CLIENT SIDE FUNCTION
 end)
 
 RegisterNetEvent('vorp_admin:tptocoords', function(oldCoords, x, y, z)

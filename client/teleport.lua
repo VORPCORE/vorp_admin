@@ -8,7 +8,7 @@ local T = Translation.Langs[Config.Lang]
 --- Returns true when the player is currently in a Guarma area.
 local function isPlayerInGuarma()
     local pedCoords = GetEntityCoords(PlayerPedId())
-    local area = GetMapZoneAtCoords(pedCoords, 10)
+    local area = GetMapZoneAtCoords(pedCoords.x, pedCoords.y, pedCoords.z, 10)
     return Config.GuamarmaCoords.GuarmaAreaHashes[area] == true
 end
 
@@ -31,7 +31,22 @@ local function teleportPedToCoords(ped, coords)
     DoScreenFadeOut(500)
     RequestCollisionAtCoord(coords.x, coords.y, coords.z)
     Wait(1000)
-    SetEntityCoords(ped, coords.x, coords.y, coords.z, false, false, false, false)
+    local mount = GetMount(ped)
+    if mount > 0 then
+        -- allow teleport on horse
+        local isSeatFree = IsMountSeatFree(mount, 0) == 1
+        if isSeatFree then
+            SetEntityCoords(mount, coords.x, coords.y, coords.z, false, false, false, false)
+        else
+            -- theres another player in the backseat teleport wthout horse.
+            TaskDismountAnimal(ped, 0, 0, 0, 0, mount)
+            Wait(1500)
+            SetEntityCoords(ped, coords.x, coords.y, coords.z, false, false, false, false)
+        end
+    else
+        -- no horse just teleport player
+        SetEntityCoords(ped, coords.x, coords.y, coords.z, false, false, false, false)
+    end
     repeat Wait(0) until HasCollisionLoadedAroundEntity(ped)
     Wait(1000)
     DoScreenFadeIn(650)
@@ -47,7 +62,7 @@ function Teleport()
         { label = T.Menus.MainTeleportOptions.adminGoBackLastLocation,  value = 'admingoback', desc = T.Menus.MainTeleportOptions.adminGoBackLastLocation_desc },
         { label = T.Menus.MainTeleportOptions.bringPlayer,              value = 'bringplayer', desc = T.Menus.MainTeleportOptions.bringPlayer_desc },
         { label = T.Menus.MainTeleportOptions.sendPlayerToLastLocation, value = 'sendback',    desc = T.Menus.MainTeleportOptions.sendPlayerToLastLocation_desc },
-        { label = T.Menus.MainTeleportOptions.teleportToGuarma,         value = 'tptoguarma',    desc = T.Menus.MainTeleportOptions.teleportToGuarma_desc },
+        { label = T.Menus.MainTeleportOptions.teleportToGuarma,         value = 'tptoguarma',  desc = T.Menus.MainTeleportOptions.teleportToGuarma_desc },
     }
     MenuData.Open('default', GetCurrentResourceName(), 'Teleport',
         {
